@@ -1,0 +1,20 @@
+---
+import '../styles/global.css';
+import { Font } from 'astro:assets';
+import backgroundImage from '../images/background.jpg';
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Home</title>
+        <Font cssVariable="--font-kalamayka" />
+        <Font cssVariable="--departure" />
+    </head>
+    <body class="min-h-screen bg-cover bg-fixed bg-center font-kal" style={`background-image: url(${backgroundImage.src});`}>
+        <slot />
+    </body>
+</html>
