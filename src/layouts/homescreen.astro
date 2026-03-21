@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { Font } from 'astro:assets';
+import { Font, Image } from 'astro:assets';
 import backgroundImage from '../images/background.jpg';
 ---
 
@@ -14,7 +14,15 @@ import backgroundImage from '../images/background.jpg';
         <Font cssVariable="--font-kalamayka" />
         <Font cssVariable="--departure" />
     </head>
-    <body class="min-h-screen bg-cover bg-fixed bg-center font-kal" style={`background-image: url(${backgroundImage.src});`}>
+    <body class="relative min-h-screen bg-black font-kal">
+        <Image
+            src={backgroundImage}
+            alt=""
+            format="webp"
+            quality={80}
+            loading="eager"
+            class="fixed inset-0 -z-10 h-full w-full object-cover"
+        />
         <slot />
     </body>
 </html>

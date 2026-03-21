@@ -1,18 +1,9 @@
 ---
 import "../styles/global.css";
 import HomescreenLayout from "../layouts/homescreen.astro";
+import HomeSidebar from "../components/home-sidebar";
 ---
 
 <HomescreenLayout>
-	<main class="flex flex-col w-full h-dvh items-center justify-center">
-		<div class="w-full flex flex-col h-auto items-center justify-center">
-			<h1 class="text-[40px] font-kal text-white font-semibold"
-			style="text-shadow: 0 205px 57px rgba(0, 0, 0, 0.01), 0 131px 52px rgba(0, 0, 0, 0.09), 0 74px 44px rgba(0, 0, 0, 0.30), 0 33px 33px rgba(0, 0, 0, 0.51), 0 8px 18px rgba(0, 0, 0, 0.59)">
-			Find any design tool you need
-			</h1>
-			<div class="bg-black w-[400px] h-auto mt-[10px] px-[10px] py-[5px] rounded-[10px]" style="box-shadow: 0 1000px 250px 0 rgba(255, 255, 255, 0.01), 0 640px 250px 0 rgba(255, 255, 255, 0.04), 0 360px 216px 0 rgba(255, 255, 255, 0.15), 0 160px 160px 0 rgba(255, 255, 255, 0.26), 0 40px 88px 0 rgba(255, 255, 255, 0.29);">
-				<span class="text-[12px] text-white font-departure">ask anything</span>
-			</div>
-		</div>
-	</main>
+	<HomeSidebar client:load />
 </HomescreenLayout>
