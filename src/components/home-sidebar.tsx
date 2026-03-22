@@ -1,34 +1,25 @@
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-  useSidebar,
-} from "@/components/ui/sidebar"
-import { motion } from "motion/react"
+import * as React from "react"
 import heart from "@/assets/love.png?url"
-import instagramIcon from "@/assets/instagram.svg?url"
-import githubIcon from "@/assets/github.svg?url"
-import threadsIcon from "@/assets/threads.svg?url"
-import twitterIcon from "@/assets/twitter.svg?url"
-
-function SidebarToggleControls() {
-  const { isMobile, open, openMobile } = useSidebar()
-  const isSidebarVisible = isMobile ? openMobile : open
-
-  return (
-    <>
-      {!isSidebarVisible ? (
-        <SidebarTrigger className="fixed top-4 left-4 z-50 bg-black/80 text-white hover:bg-white/10 hover:text-white" />
-      ) : null}
-    </>
-  )
-}
 
 export default function HomeSidebar() {
+  const [isOpen, setIsOpen] = React.useState(false)
+
+  React.useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false)
+      }
+
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "b") {
+        event.preventDefault()
+        setIsOpen((current) => !current)
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [])
+
   const resourceLinks = [
     { label: "Colours", href: "https://coolors.co" },
     { label: "Mockups", href: "https://www.mockupworld.co" },
@@ -39,24 +30,51 @@ export default function HomeSidebar() {
     { label: "Tools", href: "https://www.figma.com" },
   ]
 
-  const socialLinks = [
-    { label: "Instagram", href: "https://instagram.com", icon: instagramIcon },
-    { label: "GitHub", href: "https://github.com", icon: githubIcon },
-    { label: "Threads", href: "https://threads.net", icon: threadsIcon },
-    { label: "Twitter", href: "https://x.com", icon: twitterIcon },
-  ]
-
   return (
-    <SidebarProvider defaultOpen={false}>
-      <Sidebar className="border-none! border-r-0 border-l-0 shadow-none [--sidebar:#000] [--sidebar-foreground:#fff] [--sidebar-border:transparent] [--sidebar-accent:rgba(255,255,255,0.12)] [--sidebar-accent-foreground:#fff] **:data-[slot=sidebar-container]:border-r-0 **:data-[slot=sidebar-container]:border-l-0">
-        <SidebarHeader className="flex flex-row items-center gap-2 px-4 py-4">
-          <p className="text-md font-semibold tracking-wide text-sidebar-foreground">
-            Design Index
-          </p>
-          <SidebarTrigger className="ml-auto text-white hover:bg-white/10 hover:text-white" />
-        </SidebarHeader>
-        <SidebarContent>
-          <ul className="space-y-1.25 px-2 font-departure">
+    <>
+      {!isOpen ? (
+        <button
+          type="button"
+          aria-label="Open sidebar"
+          onClick={() => setIsOpen(true)}
+          className="fixed top-4 left-4 z-50 rounded-md bg-black/80 p-2 text-white transition-colors hover:bg-white/10"
+        >
+          <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+          </svg>
+        </button>
+      ) : null}
+
+      {isOpen ? (
+        <button
+          type="button"
+          aria-label="Close sidebar overlay"
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 z-40 bg-black/45 md:hidden"
+        />
+      ) : null}
+
+      <aside
+        className={`fixed top-0 left-0 z-50 flex h-dvh w-72 flex-col bg-black text-white shadow-xl transition-transform duration-200 ease-out md:w-64 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <header className="flex items-center gap-2 px-4 py-4">
+          <p className="text-md font-semibold tracking-wide">Design Index</p>
+          <button
+            type="button"
+            aria-label="Close sidebar"
+            onClick={() => setIsOpen(false)}
+            className="ml-auto rounded-md p-1.5 text-white transition-colors hover:bg-white/10"
+          >
+            <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </header>
+
+        <nav className="flex-1 overflow-auto px-2">
+          <ul className="space-y-1.25 font-departure">
             {resourceLinks.map((link) => (
               <li key={link.label}>
                 <a
@@ -70,75 +88,16 @@ export default function HomeSidebar() {
               </li>
             ))}
           </ul>
-        </SidebarContent>
-        <SidebarFooter className="px-4! py-5!">
-            <div className="flex flex-row items-center justify-center font-departure text-white text-[10px]">
-                <span>Made with</span>
-                <img src={heart} alt="heart icon" className="inline w-4 h-4 mx-1" />
-                <span> by Atharv</span>
-            </div>
-        </SidebarFooter>
-      </Sidebar>
+        </nav>
 
-      <SidebarInset className="bg-transparent">
-        <SidebarToggleControls />
-        <motion.div
-          className="fixed top-4 right-4 z-40 flex items-center gap-2"
-          initial="hidden"
-          animate="show"
-          variants={{
-            hidden: {},
-            show: {
-              transition: {
-                staggerChildren: 0.06,
-                delayChildren: 0.15,
-              },
-            },
-          }}
-        >
-          {socialLinks.map((social) => (
-            <motion.a
-              key={social.label}
-              href={social.href}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={social.label}
-              className="rounded-md p-1.5 transition-colors hover:bg-white/10"
-              variants={{
-                hidden: { opacity: 0, y: -8, scale: 0.92 },
-                show: { opacity: 1, y: 0, scale: 1 },
-              }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -2, scale: 1.05 }}
-              whileTap={{ scale: 0.96 }}
-            >
-              <img src={social.icon} alt={social.label} className="size-4 brightness-0 invert" />
-            </motion.a>
-          ))}
-        </motion.div>
-        <main className="flex h-dvh w-full flex-col items-center justify-center">
-          <div className="flex h-auto w-full flex-col items-center justify-center">
-            <motion.h1
-              className="text-[40px] font-kal font-semibold text-white [text-shadow:0_205px_57px_rgba(0,0,0,0.01),0_131px_52px_rgba(0,0,0,0.09),0_74px_44px_rgba(0,0,0,0.30),0_33px_33px_rgba(0,0,0,0.51),0_8px_18px_rgba(0,0,0,0.59)]"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            >
-              Find any design tool you need
-            </motion.h1>
-            <motion.div
-              className="mt-2.5 h-auto w-100 rounded-[10px] bg-black px-2.5 py-1.25 [box-shadow:0_1000px_250px_0_rgba(255,255,255,0.01),0_640px_250px_0_rgba(255,255,255,0.04),0_360px_216px_0_rgba(255,255,255,0.15),0_160px_160px_0_rgba(255,255,255,0.26),0_40px_88px_0_rgba(255,255,255,0.29)]"
-              initial={{ opacity: 0, y: 10, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.55, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            >
-                <span className="font-departure text-[12px] text-white">
-                  ask anything
-                </span>
-            </motion.div>
+        <footer className="px-4 py-5">
+          <div className="flex items-center justify-center font-departure text-[10px] text-white">
+            <span>Made with</span>
+            <img src={heart} alt="heart icon" className="mx-1 inline h-4 w-4" />
+            <span> by Atharv</span>
           </div>
-        </main>
-      </SidebarInset>
-    </SidebarProvider>
+        </footer>
+      </aside>
+    </>
   )
 }

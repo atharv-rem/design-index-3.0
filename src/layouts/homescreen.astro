@@ -1,7 +1,22 @@
 ---
 import '../styles/global.css';
-import { Font, Image } from 'astro:assets';
+import { Font, Picture } from 'astro:assets';
 import backgroundImage from '../images/background.jpg';
+
+type Props = {
+    title?: string;
+    description?: string;
+    noindex?: boolean;
+};
+
+const {
+    title = 'Design Index | Find Design Tools Fast',
+    description = 'Discover curated design resources, tools, fonts, and inspiration in one fast searchable index.',
+    noindex = false,
+} = Astro.props;
+
+const canonicalUrl = Astro.url.href;
+const ogImage = new URL('/favicon.svg', Astro.url).href;
 ---
 
 <html lang="en">
@@ -10,19 +25,38 @@ import backgroundImage from '../images/background.jpg';
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>Home</title>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow'} />
+        <meta name="theme-color" content="#000000" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
         <Font cssVariable="--font-kalamayka" />
         <Font cssVariable="--departure" />
     </head>
     <body class="relative min-h-screen bg-black font-kal">
-        <Image
-            src={backgroundImage}
-            alt=""
-            format="webp"
-            quality={80}
-            loading="eager"
-            class="fixed inset-0 -z-10 h-full w-full object-cover"
-        />
+        <div class="fixed inset-0 -z-10">
+            <Picture
+                src={backgroundImage}
+                formats={['avif', 'webp']}
+                alt=""
+                quality={55}
+                widths={[640, 960, 1280, 1600]}
+                sizes="100vw"
+                loading="eager"
+                class="h-full w-full object-cover"
+            />
+        </div>
         <slot />
     </body>
 </html>
