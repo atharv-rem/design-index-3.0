@@ -1,0 +1,72 @@
+---
+import HomescreenLayout from "../layouts/homescreen.astro";
+
+export const prerender = false;
+
+const title = "Terms and Conditions | Design Index";
+const description =
+	"Read the Terms of Service for using Design Index, including website usage, ownership, liability, and policy updates.";
+const canonicalUrl = Astro.url.href;
+const ogImage = new URL("/favicon.svg", Astro.url).href;
+---
+
+<HomescreenLayout title={title} description={description}>
+	<link rel="canonical" href={canonicalUrl} />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={description} />
+	<meta property="og:url" content={canonicalUrl} />
+	<meta property="og:image" content={ogImage} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={title} />
+	<meta name="twitter:description" content={description} />
+	<meta name="twitter:image" content={ogImage} />
+
+	<div class="pointer-events-none fixed inset-0 bg-black/50" aria-hidden="true"></div>
+
+	<main class="relative z-10 min-h-screen text-white">
+		<section class="mx-auto w-full max-w-[500px] bg-white/10 p-8 backdrop-blur-sm md:p-10" style="box-shadow: 0 1450px 250px 0 rgba(0, 0, 0, 0.01), 0 928px 250px 0 rgba(0, 0, 0, 0.09), 0 522px 250px 0 rgba(0, 0, 0, 0.30), 0 232px 232px 0 rgba(0, 0, 0, 0.51), 0 58px 128px 0 rgba(0, 0, 0, 0.59);">
+			<p class="mb-3 text-sm font-semibold text-white">Terms and Conditions</p>
+			<h1 class="text-[30px] font-bold  text-white md:text-4xl">Terms of Service</h1>
+
+			<p class="mt-6 text-base leading-[18px] text-[#e5e5e5] font-departure">Effective Date: July 20, 2025</p>
+
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				Welcome to design index, a curated directory of the best design resources on the internet. By accessing or using this website, you agree to be bound by these Terms of Service. Please read these terms carefully before using our website.
+			</p>
+
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				By accessing or using design index, you agree to comply with and be bound by these Terms of Service. If you do not agree with any part of these terms, you must not use our website.
+			</p>
+
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				<b>1. Use of Website:</b> This Site is intended for personal and non-commercial use. You may not copy, reproduce, republish, upload, or distribute any part of the Site for commercial purposes without our prior written consent. You may not use this Site in any way that causes damage or interferes with other's use of it.
+			</p>
+
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				<b>2. Content Ownership:</b> The Site features links, previews, and OG (Open Graph) images from third-party websites. All trademarks, logos, images, and content referenced or displayed on the Site belong to their respective owners. We do not claim ownership over third-party content. Use of such content on this Site is strictly for informational and attribution purposes.
+			</p>
+
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				<b>3. Third Party links:</b> This Site contains links to external websites that are not owned or controlled by us. We are not responsible for the content, policies, or practices of any third-party sites. We encourage you to read the privacy policies and terms of service of any external websites you visit.
+			</p>
+
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				<b>4. No Guarantee:</b> While we strive to keep the content updated and accurate, we make no guarantees regarding the completeness, reliability, or availability of resources listed. Use the information and links at your own discretion.
+			</p>
+
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				<b>5. Limitation of Liability:</b> In no event shall we be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of this Site or any third-party content linked from it.
+			</p>
+
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				<b>6. Changes to Terms:</b> We reserve the right to modify or update these Terms of Service at any time without prior notice. Your continued use of the Site after any changes constitutes your acceptance of the revised terms.
+			</p>
+
+			<p class="mt-6 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				If you have any questions or concerns about these Terms of Service, please contact us at:
+				<a href="mailto:atharv.rem@gmail.com" class="underline decoration-white/40 underline-offset-4">atharv.rem@gmail.com</a>
+			</p>
+		</section>
+	</main>
+</HomescreenLayout>

@@ -21,13 +21,16 @@ export default function HomeSidebar() {
   }, [])
 
   const resourceLinks = [
-    { label: "Colours", href: "https://coolors.co" },
-    { label: "Mockups", href: "https://www.mockupworld.co" },
-    { label: "Illustrations", href: "https://undraw.co/illustrations" },
-    { label: "Icons", href: "https://iconify.design" },
-    { label: "Fonts", href: "https://fonts.google.com" },
-    { label: "Design Inspiration", href: "https://dribbble.com" },
-    { label: "Tools", href: "https://www.figma.com" },
+    { label: "Home", href: "/" },
+    { label: "Colours", href: "/colours" },
+    { label: "Mockups", href: "/mockups" },
+    { label: "Illustrations", href: "/illustrations" },
+    { label: "Icons", href: "/icons" },
+    { label: "Fonts", href: "/fonts" },
+    { label: "Design Inspiration", href: "/design-inspo" },
+    { label: "Tools", href: "/tools" },
+    { label: "Terms", href: "/terms" },
+    { label: "About", href: "/about" },
   ]
 
   return (
@@ -79,8 +82,7 @@ export default function HomeSidebar() {
               <li key={link.label}>
                 <a
                   href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
+                  onClick={() => setIsOpen(false)}
                   className="block rounded-md px-2 py-1.5 text-sm text-[#bebebe] transition-colors hover:bg-white/10"
                 >
                   {link.label}

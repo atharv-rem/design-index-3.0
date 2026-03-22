@@ -1,64 +1,62 @@
 ---
-import "../styles/global.css";
+import HomescreenLayout from "../layouts/homescreen.astro";
 
 export const prerender = false;
 
-const title = "About Athar | Design Index";
+const title = "About Design Index | Design Index";
 const description =
-  "Learn more about Athar, a developer focused on frontend experiences, clean UI, and practical modern web tools.";
+	"About Atharv Remeshan, the creator of Design Index, and the mission behind this curated resource collection.";
 const canonicalUrl = Astro.url.href;
 const ogImage = new URL("/favicon.svg", Astro.url).href;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		<meta name="robots" content="index,follow" />
-		<link rel="canonical" href={canonicalUrl} />
+<HomescreenLayout title={title} description={description}>
+	<link rel="canonical" href={canonicalUrl} />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={description} />
+	<meta property="og:url" content={canonicalUrl} />
+	<meta property="og:image" content={ogImage} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={title} />
+	<meta name="twitter:description" content={description} />
+	<meta name="twitter:image" content={ogImage} />
 
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:url" content={canonicalUrl} />
-		<meta property="og:image" content={ogImage} />
+	<div class="pointer-events-none fixed inset-0 bg-black/50" aria-hidden="true"></div>
 
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={ogImage} />
-	</head>
-	<body>
-		<main class="min-h-screen bg-slate-50 px-6 py-12 text-slate-800">
-			<section class="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-8 shadow-sm md:p-10">
-				<p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">About Me</p>
-				<h1 class="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">Hi, I'm Athar</h1>
+	<main class="relative z-10 h-dvh text-white items-center justify-center flex flex-col">
+		<section class="h-full max-w-[500px] bg-white/10 p-8 backdrop-blur-sm md:p-10 flex flex-col justify-center" style="box-shadow: 0 1450px 250px 0 rgba(0, 0, 0, 0.01), 0 928px 250px 0 rgba(0, 0, 0, 0.09), 0 522px 250px 0 rgba(0, 0, 0, 0.30), 0 232px 232px 0 rgba(0, 0, 0, 0.51), 0 58px 128px 0 rgba(0, 0, 0, 0.59);">
+			<p class="mb-3 text-sm font-semibold text-white">About Me</p>
+			<h1 class="text-[30px] font-bold  text-white md:text-4xl">Hi, I'm Atharv Remeshan</h1>
 
-				<p class="mt-6 text-base leading-7 text-slate-700">
-					I'm a curious developer who enjoys building simple, useful web experiences. I like turning ideas
-					into clean interfaces and learning new tools along the way.
-				</p>
+			<p class="mt-6 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				I'm a designer and developer based in Mumbai, India. I created this website to help fellow designers find the best design resources available on the internet.
+			</p>
 
-				<p class="mt-4 text-base leading-7 text-slate-700">
-					When I'm not coding, I spend time exploring design inspiration, improving my workflow, and working
-					on projects that help me grow as a creator.
-				</p>
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				I started this directory because I know what it's like to be an average designer with big ideas and limited resources. I spent hours searching for high-quality mockups, fonts, illustrations, icons, and color tools - most of them scattered, overpriced, or hard to find.
+			</p>
 
-				<div class="mt-8 grid gap-4 sm:grid-cols-2">
-					<div class="rounded-xl bg-slate-100 p-4">
-						<h2 class="text-sm font-semibold text-slate-900">What I Enjoy</h2>
-						<p class="mt-2 text-sm leading-6 text-slate-700">Frontend development, UI design, and shipping practical ideas.</p>
-					</div>
-					<div class="rounded-xl bg-slate-100 p-4">
-						<h2 class="text-sm font-semibold text-slate-900">Currently Learning</h2>
-						<p class="mt-2 text-sm leading-6 text-slate-700">Astro, Tailwind CSS, and building fast modern websites.</p>
-					</div>
-			</div>
-			</section>
-		</main>
-	</body>
-</html>
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				But over time, I discovered a world of free and underrated resources that helped me improve my work dramatically.
+			</p>
+
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				This site is my way of giving back - a curated collection of design tools, inspiration, and assets that are:
+			</p>
+
+			<ul class="mt-4 list-disc space-y-2 pl-6 text-base leading-[18px] text-[#e5e5e5] font-departure marker:text-zinc-200">
+				<li>Handpicked for Quality</li>
+				<li>Mostly free or freemium</li>
+				<li>Built to help you grow as a designer</li>
+			</ul>
+
+			<p class="mt-4 text-base leading-[18px] text-[#e5e5e5] font-departure">
+				Whether you're just starting out or already working on client projects, I hope these resources help you save time, learn faster, and create better work.
+			</p>
+
+			<p class="mt-6 text-base leading-[18px] text-[#e5e5e5] font-departure">Thanks for being here,</p>
+			<p class="mt-2 text-base leading-[18px] text-[#e5e5e5] font-departure">~ Atharv Remeshan</p>
+		</section>
+	</main>
+</HomescreenLayout>

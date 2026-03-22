@@ -1,6 +1,5 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
-import HomeSidebar from "../components/home-sidebar";
 import instagramIcon from "../assets/instagram.svg?url";
 import githubIcon from "../assets/github.svg?url";
 import threadsIcon from "../assets/threads.svg?url";
@@ -20,8 +19,6 @@ const socialLinks = [
 	title="Design Index | Find Any Design Tool"
 	description="Find curated design tools, color resources, mockups, illustration libraries, and inspiration links in one place."
 >
-	<HomeSidebar client:idle />
-
 	<div class="fixed top-4 right-4 z-40 flex items-center gap-2">
 		{
 			socialLinks.map((social) => (

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import HomeSidebar from '../components/home-sidebar';
 import { Font, Picture } from 'astro:assets';
 import backgroundImage from '../images/background.jpg';
 
@@ -7,12 +8,14 @@ type Props = {
     title?: string;
     description?: string;
     noindex?: boolean;
+    backgroundVariant?: 'image' | 'slate';
 };
 
 const {
     title = 'Design Index | Find Design Tools Fast',
     description = 'Discover curated design resources, tools, fonts, and inspiration in one fast searchable index.',
     noindex = false,
+    backgroundVariant = 'image',
 } = Astro.props;
 
 const canonicalUrl = Astro.url.href;
@@ -44,19 +47,26 @@ const ogImage = new URL('/favicon.svg', Astro.url).href;
         <Font cssVariable="--font-kalamayka" />
         <Font cssVariable="--departure" />
     </head>
-    <body class="relative min-h-screen bg-black font-kal">
-        <div class="fixed inset-0 -z-10">
-            <Picture
-                src={backgroundImage}
-                formats={['avif', 'webp']}
-                alt=""
-                quality={55}
-                widths={[640, 960, 1280, 1600]}
-                sizes="100vw"
-                loading="eager"
-                class="h-full w-full object-cover"
-            />
-        </div>
+    <body class={`relative min-h-screen font-kal ${backgroundVariant === 'slate' ? 'bg-[#0B0B0B]' : 'bg-black'}`}>
+        {
+            backgroundVariant === 'image' ? (
+                <div class="fixed inset-0 -z-10">
+                    <Picture
+                        src={backgroundImage}
+                        formats={['avif', 'webp']}
+                        alt=""
+                        quality={55}
+                        widths={[640, 960, 1280, 1600]}
+                        sizes="100vw"
+                        loading="eager"
+                        class="h-full w-full object-cover"
+                    />
+                </div>
+            ) : (
+                <div class="fixed inset-0 -z-10 bg-[#0B0B0B]" />
+            )
+        }
+        <HomeSidebar client:idle />
         <slot />
     </body>
 </html>
