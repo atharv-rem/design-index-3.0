@@ -3,6 +3,7 @@ import '../styles/global.css';
 import HomeSidebar from '../components/home-sidebar';
 import { Font, Picture } from 'astro:assets';
 import backgroundImage from '../images/background.jpg';
+import mobileBackgroundImage from '../images/background mobile.png';
 
 type Props = {
     title?: string;
@@ -52,6 +53,16 @@ const ogImage = new URL('/favicon.svg', Astro.url).href;
             backgroundVariant === 'image' ? (
                 <div class="fixed inset-0 -z-10">
                     <Picture
+                        src={mobileBackgroundImage}
+                        formats={['avif', 'webp']}
+                        alt=""
+                        quality={55}
+                        widths={[360, 480, 640, 768]}
+                        sizes="100vw"
+                        loading="eager"
+                        class="h-full w-full object-cover object-center md:hidden"
+                    />
+                    <Picture
                         src={backgroundImage}
                         formats={['avif', 'webp']}
                         alt=""
@@ -59,7 +70,7 @@ const ogImage = new URL('/favicon.svg', Astro.url).href;
                         widths={[640, 960, 1280, 1600]}
                         sizes="100vw"
                         loading="eager"
-                        class="h-full w-full object-cover object-[60%_center] md:object-center"
+                        class="hidden h-full w-full object-cover object-[60%_center] md:block md:object-center"
                     />
                 </div>
             ) : (
