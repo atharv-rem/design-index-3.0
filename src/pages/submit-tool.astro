@@ -1,0 +1,91 @@
+---
+import HomescreenLayout from "../layouts/homescreen.astro";
+---
+
+<HomescreenLayout
+	title="Submit a Tool | Design Index"
+	description="Submit a design tool to be reviewed and potentially added to the Design Index directory."
+	keywords="submit design tool, design directory submission, add tool to design index"
+	backgroundVariant="slate"
+>
+	<main class="mt-[50px] px-[20px]">
+		<section>
+			<div>
+				<h1 class="mt-3 font-departure font-regular text-4xl leading-none text-white md:text-[40px]">SUBMIT A TOOL</h1>
+				<p class="mt-4 rounded-lg bg-[#181818] px-[10px] py-[5px] font-departure text-sm leading-[20px] text-zinc-300 md:text-base">
+					Know a great design resource? Submit it here and we will review it for quality, usefulness, and relevance.
+				</p>
+			</div>
+
+			<form class="mt-6 rounded-lg border border-white/10 bg-[#121212] p-4 md:max-w-2xl" action="#" method="post">
+				<div class="grid gap-4 md:grid-cols-2">
+					<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] text-zinc-400">
+						Tool Name
+						<input
+							type="text"
+							name="toolName"
+							placeholder="Figma"
+							class="h-10 rounded-md border border-white/10 bg-black px-3 font-departure text-sm normal-case tracking-normal text-white placeholder:text-zinc-500 focus:border-white/30 focus:outline-none"
+						/>
+					</label>
+
+					<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] text-zinc-400">
+						Tool URL
+						<input
+							type="url"
+							name="toolUrl"
+							placeholder="https://example.com"
+							class="h-10 rounded-md border border-white/10 bg-black px-3 font-departure text-sm normal-case tracking-normal text-white placeholder:text-zinc-500 focus:border-white/30 focus:outline-none"
+						/>
+					</label>
+				</div>
+
+				<div class="mt-4 grid gap-4 md:grid-cols-2">
+					<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] text-zinc-400">
+						Category
+						<select
+							name="category"
+							class="h-10 rounded-md border border-white/10 bg-black px-3 font-departure text-sm normal-case tracking-normal text-white focus:border-white/30 focus:outline-none"
+						>
+							<option value="">Select a category</option>
+							<option value="colours">Colours</option>
+							<option value="mockups">Mockups</option>
+							<option value="illustrations">Illustrations</option>
+							<option value="icons">Icons</option>
+							<option value="fonts">Fonts</option>
+							<option value="inspiration">Design Inspiration</option>
+							<option value="tools">Tools</option>
+						</select>
+					</label>
+
+					<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] text-zinc-400">
+						Your Email
+						<input
+							type="email"
+							name="email"
+							placeholder="you@example.com"
+							class="h-10 rounded-md border border-white/10 bg-black px-3 font-departure text-sm normal-case tracking-normal text-white placeholder:text-zinc-500 focus:border-white/30 focus:outline-none"
+						/>
+					</label>
+				</div>
+
+				<label class="mt-4 flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] text-zinc-400">
+					Why this tool?
+					<textarea
+						name="reason"
+						rows="5"
+						placeholder="What makes this tool useful for designers?"
+						class="rounded-md border border-white/10 bg-black px-3 py-2 font-departure text-sm normal-case tracking-normal text-white placeholder:text-zinc-500 focus:border-white/30 focus:outline-none"
+					></textarea>
+				</label>
+
+				<button
+					type="submit"
+					class="mt-4 inline-flex h-10 items-center justify-center rounded-md border border-white/20 bg-white/5 px-4 font-departure text-xs uppercase tracking-[0.12em] text-white transition-colors hover:bg-white/10"
+				>
+					Submit Tool
+				</button>
+			</form>
+		</section>
+	</main>
+</HomescreenLayout>

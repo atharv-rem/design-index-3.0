@@ -6,21 +6,14 @@ export const prerender = false;
 const title = "Terms and Conditions | Design Index";
 const description =
 	"Read the Terms of Service for using Design Index, including website usage, ownership, liability, and policy updates.";
-const canonicalUrl = Astro.url.href;
-const ogImage = new URL("/favicon.svg", Astro.url).href;
 ---
 
-<HomescreenLayout title={title} description={description}>
-	<link rel="canonical" href={canonicalUrl} />
-	<meta property="og:type" content="website" />
-	<meta property="og:title" content={title} />
-	<meta property="og:description" content={description} />
-	<meta property="og:url" content={canonicalUrl} />
-	<meta property="og:image" content={ogImage} />
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content={title} />
-	<meta name="twitter:description" content={description} />
-	<meta name="twitter:image" content={ogImage} />
+<HomescreenLayout
+	title={title}
+	description={description}
+	keywords="design index terms, design directory terms, website terms of service, legal terms"
+	ogType="article"
+>
 
 	<div class="pointer-events-none fixed inset-0 bg-black/50" aria-hidden="true"></div>
 

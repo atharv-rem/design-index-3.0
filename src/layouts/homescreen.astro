@@ -8,14 +8,18 @@ import mobileBackgroundImage from '../images/background mobile.png';
 type Props = {
     title?: string;
     description?: string;
+    keywords?: string;
     noindex?: boolean;
+    ogType?: 'website' | 'article';
     backgroundVariant?: 'image' | 'slate';
 };
 
 const {
-    title = 'Design Index | Find Design Tools Fast',
-    description = 'Discover curated design resources, tools, fonts, and inspiration in one fast searchable index.',
+    title = 'Design Index | Curated Design Tools, Resources, and Inspiration',
+    description = 'Discover curated design tools, mockups, icons, fonts, color resources, and inspiration in one fast searchable index.',
+    keywords = 'design tools, design resources, mockups, icons, fonts, color palettes, design inspiration, UI resources',
     noindex = false,
+    ogType = 'website',
     backgroundVariant = 'image',
 } = Astro.props;
 
@@ -31,20 +35,26 @@ const ogImage = new URL('/favicon.svg', Astro.url).href;
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
         <meta name="description" content={description} />
-        <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow'} />
+        <meta name="keywords" content={keywords} />
+        <meta name="author" content="Atharv Remeshan" />
+        <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'} />
         <meta name="theme-color" content="#000000" />
         <link rel="canonical" href={canonicalUrl} />
 
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content={ogType} />
+        <meta property="og:site_name" content="Design Index" />
+        <meta property="og:locale" content="en_US" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:image" content={ogImage} />
+        <meta property="og:image:alt" content="Design Index" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={ogImage} />
+        <meta name="twitter:image:alt" content="Design Index" />
         <Font cssVariable="--font-kalamayka" />
         <Font cssVariable="--departure" />
     </head>
@@ -77,7 +87,8 @@ const ogImage = new URL('/favicon.svg', Astro.url).href;
                 <div class="fixed inset-0 -z-10 bg-[#0B0B0B]" />
             )
         }
-        <HomeSidebar client:idle />
-        <slot />
+        <HomeSidebar client:load>
+            <slot />
+        </HomeSidebar>
     </body>
 </html>

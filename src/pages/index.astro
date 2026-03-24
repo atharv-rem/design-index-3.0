@@ -16,33 +16,36 @@ const socialLinks = [
 ---
 
 <HomescreenLayout
-	title="Design Index | Find Any Design Tool"
-	description="Find curated design tools, color resources, mockups, illustration libraries, and inspiration links in one place."
+	title="Design Index | Best Design Tools, Resources, and Inspiration"
+	description="Browse the best curated design tools, mockups, icon sets, fonts, color resources, and design inspiration links in one place."
+	keywords="design tools, design resources, UI tools, mockups, icons, fonts, color palettes, design inspiration"
 >
-	<div class="fixed top-4 right-4 z-40 flex items-center gap-2">
-		{
-			socialLinks.map((social) => (
-				<a
-					href={social.href}
-					target="_blank"
-					rel="noreferrer"
-					aria-label={social.label}
-					class="rounded-md p-1.5 transition-transform duration-200 ease-out hover:-translate-y-0.5 hover:bg-white/10"
-				>
-					<img src={social.icon} alt={social.label} class="size-4 brightness-0 invert" />
-				</a>
-			))
-		}
-	</div>
-
-	<main class="pointer-events-none fixed inset-0 z-30 flex items-center justify-center px-6">
-		<div class="flex h-auto w-full flex-col items-center justify-center">
-			<h1 class=" text-left md:text-center text-[50px] leading-[45px] md:leading-0 md:text-[32px] font-kal font-semibold text-white md:text-[40px] [text-shadow:0_205px_57px_rgba(0,0,0,0.01),0_131px_52px_rgba(0,0,0,0.09),0_74px_44px_rgba(0,0,0,0.30),0_33px_33px_rgba(0,0,0,0.51),0_8px_18px_rgba(0,0,0,0.59)]">
-				Find any design tool you need
-			</h1>
-			<div class=" mt-[20px] md:mt-[40px] h-auto w-full max-w-[400px] bg-black px-2.5 py-1.5 text-left [box-shadow:0_1000px_250px_0_rgba(255,255,255,0.01),0_640px_250px_0_rgba(255,255,255,0.04),0_360px_216px_0_rgba(255,255,255,0.15),0_160px_160px_0_rgba(255,255,255,0.26),0_40px_88px_0_rgba(255,255,255,0.29)]">
-				<span class="font-departure text-[13px] leading-0 text-white">ask anything</span>
-			</div>
+	<div class="relative min-h-screen w-full">
+		<div class="absolute top-4 right-4 z-40 flex items-center gap-2">
+			{
+				socialLinks.map((social) => (
+					<a
+						href={social.href}
+						target="_blank"
+						rel="noreferrer"
+						aria-label={social.label}
+						class="rounded-md p-1.5 transition-transform duration-200 ease-out hover:-translate-y-0.5 hover:bg-white/10"
+					>
+						<img src={social.icon} alt={social.label} class="size-4 brightness-0 invert" />
+					</a>
+				))
+			}
 		</div>
-	</main>
+
+		<main class="pointer-events-none absolute inset-0 z-30 flex items-center justify-center px-6">
+			<div class="flex h-auto w-full flex-col items-center justify-center">
+				<h1 class=" text-left md:text-center text-[50px] leading-[45px] md:leading-0 font-kal font-semibold text-white md:text-[40px] [text-shadow:0_205px_57px_rgba(0,0,0,0.01),0_131px_52px_rgba(0,0,0,0.09),0_74px_44px_rgba(0,0,0,0.30),0_33px_33px_rgba(0,0,0,0.51),0_8px_18px_rgba(0,0,0,0.59)]">
+					Find any design tool you need
+				</h1>
+				<div class=" mt-[20px] md:mt-[40px] h-auto w-full max-w-[400px] bg-black px-2.5 py-1.5 text-left [box-shadow:0_1000px_250px_0_rgba(255,255,255,0.01),0_640px_250px_0_rgba(255,255,255,0.04),0_360px_216px_0_rgba(255,255,255,0.15),0_160px_160px_0_rgba(255,255,255,0.26),0_40px_88px_0_rgba(255,255,255,0.29)]">
+					<span class="font-departure text-[13px] leading-0 text-white">ask anything</span>
+				</div>
+			</div>
+		</main>
+	</div>
 </HomescreenLayout>

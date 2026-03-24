@@ -1,4 +1,6 @@
 import heart from "@/assets/love.png?url"
+import type { ReactNode } from "react"
+import { motion } from "motion/react"
 import {
   Sidebar,
   SidebarContent,
@@ -40,14 +42,32 @@ const linkGroups = [
       { label: "About", href: "/about" },
     ],
   },
+  {
+    title: "Contribute",
+    links: [
+      { label: "Submit Tool", href: "/submit-tool" },
+      { label: "Feedback", href: "/feedback" },
+    ],
+  },
 ]
 
 function HomeSidebarContent() {
-  const { setOpenMobile, toggleSidebar } = useSidebar()
+  const { setOpenMobile, toggleSidebar, isMobile } = useSidebar()
+
+  const mobileMotion = isMobile
+    ? {
+        initial: { opacity: 0, y: 8 },
+        animate: { opacity: 1, y: 0 },
+      }
+    : undefined
 
   return (
     <>
       <SidebarHeader className="px-4 py-4">
+        <motion.div
+          {...mobileMotion}
+          transition={{ type: "spring", stiffness: 180, damping: 24, mass: 0.95 }}
+        >
         <div className="flex items-center gap-2">
           <p className="text-md font-semibold tracking-wide text-white">Design Index</p>
           <button
@@ -61,11 +81,17 @@ function HomeSidebarContent() {
             </svg>
           </button>
         </div>
+        </motion.div>
       </SidebarHeader>
 
       <SidebarContent className="px-2 pb-2">
-        {linkGroups.map((group) => (
-          <SidebarGroup key={group.title} className="px-0 py-1.5">
+        {linkGroups.map((group, index) => (
+          <motion.div
+            key={group.title}
+            {...mobileMotion}
+            transition={{ type: "spring", stiffness: 170, damping: 24, mass: 0.95, delay: 0.06 + index * 0.05 }}
+          >
+          <SidebarGroup className="px-0 py-1.5">
             <SidebarGroupLabel className="px-2 pb-1 font-departure text-[11px] uppercase tracking-[0.16em] text-[#8f8f8f]">
               {group.title}
             </SidebarGroupLabel>
@@ -84,23 +110,33 @@ function HomeSidebarContent() {
               ))}
             </SidebarMenu>
           </SidebarGroup>
+          </motion.div>
         ))}
       </SidebarContent>
 
       <SidebarFooter className="px-4 py-5">
+        <motion.div
+          {...mobileMotion}
+          transition={{ type: "spring", stiffness: 165, damping: 25, mass: 1, delay: 0.22 }}
+        >
         <div className="flex items-center justify-center font-departure text-[15px] text-white md:text-[10px]">
           <span>Made with</span>
           <img src={heart} alt="heart icon" className="mx-1 inline h-4 w-4" />
           <span> by Atharv</span>
         </div>
+        </motion.div>
       </SidebarFooter>
     </>
   )
 }
 
-export default function HomeSidebar() {
+type HomeSidebarProps = {
+  children?: ReactNode
+}
+
+export default function HomeSidebar({ children }: HomeSidebarProps) {
   return (
-    <SidebarProvider defaultOpen={false} className="min-h-0 w-0">
+    <SidebarProvider defaultOpen={false} className="min-h-svh w-full">
       <SidebarTrigger className="fixed top-4 left-4 z-40 rounded-md bg-black/80 p-2 text-white transition-colors hover:bg-white/10" />
 
       <Sidebar
@@ -109,6 +145,10 @@ export default function HomeSidebar() {
       >
         <HomeSidebarContent />
       </Sidebar>
+
+      <div className="min-w-0 flex-1">
+        {children}
+      </div>
     </SidebarProvider>
   )
 }
