@@ -18,18 +18,16 @@ import {
 
 const linkGroups = [
   {
+    title: "Home",
+    links: [{ label: "Home", href: "/" }],
+  },
+  {
     title: "Explore",
     links: [
-      { label: "Home", href: "/" },
       { label: "Colours", href: "/colours" },
       { label: "Mockups", href: "/mockups" },
       { label: "Illustrations", href: "/illustrations" },
       { label: "Icons", href: "/icons" },
-    ],
-  },
-  {
-    title: "Learn",
-    links: [
       { label: "Fonts", href: "/fonts" },
       { label: "Design Inspiration", href: "/design-inspo" },
       { label: "Tools", href: "/tools" },

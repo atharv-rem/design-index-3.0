@@ -1,0 +1,29 @@
+---
+const filters = [
+  { value: "free", label: "FREE" },
+  { value: "paid", label: "PAID" },
+  { value: "all", label: "FREE & PAID" },
+];
+---
+
+<div class="mt-5" data-pricing-filter>
+  <p class="mb-2 font-departure text-[11px] uppercase tracking-[0.16em] text-zinc-400">Filter by pricing</p>
+  <div class="flex flex-wrap gap-2">
+    {
+      filters.map((filter, index) => (
+        <button
+          type="button"
+          data-filter={filter.value}
+          aria-pressed={index === 2 ? "true" : "false"}
+          class={`rounded-[10px] border px-3 py-1.5 font-departure text-xs transition-colors ${
+            index === 2
+              ? "border-zinc-100 bg-zinc-100 text-black"
+              : "border-zinc-700 bg-[#111111] text-zinc-300 hover:border-zinc-500 hover:text-white"
+          }`}
+        >
+          {filter.label}
+        </button>
+      ))
+    }
+  </div>
+</div>
