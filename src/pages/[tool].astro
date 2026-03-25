@@ -45,14 +45,23 @@ const suggestedTools = mockTools
 
         <p class="mt-4 font-departure text-sm leading-6 text-zinc-300">{tool.extended_description}</p>
         <p class="mt-4 font-departure text-[11px] uppercase text-zinc-500">Category: {tool.category}</p>
-        <a
-          href={tool.website_url}
-          target="_blank"
-          rel="noreferrer"
-          class="mt-5 inline-flex h-10 items-center justify-center rounded-md border border-white/20 bg-white/5 px-4 font-departure text-xs uppercase tracking-[0.12em] text-white transition-colors hover:bg-white/10"
-        >
-          Visit Website
-        </a>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <a
+            href={tool.website_url}
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex h-10 items-center justify-center rounded-md border border-white/20 bg-white/5 px-4 font-departure text-xs uppercase tracking-[0.12em] text-white transition-colors hover:bg-white/10"
+          >
+            Visit Website
+          </a>
+          <button
+            type="button"
+            data-share-tool
+            class="inline-flex h-10 items-center justify-center rounded-md border border-white/20 bg-white/5 px-4 font-departure text-xs uppercase tracking-[0.12em] text-white transition-colors hover:bg-white/10"
+          >
+            Share
+          </button>
+        </div>
         <div class="mt-6">
           <p class="font-departure text-[11px] uppercase text-zinc-500">Try these tools</p>
           <div class="mt-3 grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -79,7 +88,7 @@ const suggestedTools = mockTools
         </div>
       </aside>
 
-      <div class="rounded-xl border border-white/10 bg-black/30 p-2 lg:h-full overflow-hidden">
+      <div class="hidden overflow-hidden rounded-xl border border-white/10 bg-black/30 p-2 lg:block lg:h-full">
         <div class="mb-2 flex items-center justify-between px-2 py-1">
           <p class="font-departure text-[11px] uppercase text-zinc-500">Live preview</p>
           <div class="flex items-center gap-1.5" aria-hidden="true">
@@ -112,10 +121,42 @@ const suggestedTools = mockTools
 </HomescreenLayout>
 
 <script is:inline>
+  const shareButton = document.querySelector("[data-share-tool]");
   const wrapper = document.querySelector("[data-embed-wrapper]");
   const stage = wrapper?.querySelector("[data-embed-stage]");
   const iframe = wrapper?.querySelector("[data-embed-iframe]");
   const loading = wrapper?.querySelector("[data-embed-loading]");
+
+  if (shareButton) {
+    const defaultLabel = shareButton.textContent;
+
+    const setShareLabel = (value) => {
+      shareButton.textContent = value;
+      window.setTimeout(() => {
+        shareButton.textContent = defaultLabel;
+      }, 1400);
+    };
+
+    shareButton.addEventListener("click", async () => {
+      const shareUrl = window.location.href;
+
+      try {
+        if (navigator.share) {
+          await navigator.share({
+            title: document.title,
+            url: shareUrl,
+          });
+          setShareLabel("Shared");
+          return;
+        }
+
+        await navigator.clipboard.writeText(shareUrl);
+        setShareLabel("Copied");
+      } catch {
+        setShareLabel("Failed");
+      }
+    });
+  }
 
   if (iframe && loading && stage) {
     const hideLoading = () => loading.remove();
