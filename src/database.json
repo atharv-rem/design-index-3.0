@@ -1,0 +1,2482 @@
+[
+  {
+    "primary_key": 1,
+    "category": "colour",
+    "tool_name": "Color Combination Generator",
+    "pricing": "free",
+    "website": "https://colors.muz.li/ai-color-combination-generator/",
+    "description": "AI tool that generates trendy color palettes.",
+    "extended_description": "AI‑powered tool by Muzli that turns text prompts, keywords, or images into harmonious color palettes—perfect for quick inspiration",
+    "og_image_link": "https://colors.muz.li/ai-color-combination-generator/og-image.png"
+  },
+  {
+    "primary_key": 2,
+    "category": "colour",
+    "tool_name": "Brand Colors",
+    "pricing": "free",
+    "website": "https://brandcolors.net/",
+    "description": "official brand color codes from 600+ major companies.",
+    "extended_description": "The ultimate compendium of official brand hex codes—with over 500 recognizable brands—ideal for designers needing exact brand colors",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/brand%20colours.avif"
+  },
+  {
+    "primary_key": 3,
+    "category": "colour",
+    "tool_name": "Cheeky Palettes",
+    "pricing": "free",
+    "website": "https://www.cheekypalettes.com/",
+    "description": "custom or curated palettes in real UI mockups with Tailwind CSS variants",
+    "extended_description": "Lets you use colour palettes from its curated library and displays it in real-world websites for generating Tailwind shades",
+    "og_image_link": "https://cheekypalettes.com/og-image.png"
+  },
+  {
+    "primary_key": 4,
+    "category": "colour",
+    "tool_name": "Color Hunt",
+    "pricing": "free",
+    "website": "https://colorhunt.co/",
+    "description": "curated color palette collection by Gal Shir",
+    "extended_description": "community-curated gallery of hand-picked palettes in styles like pastel, retro, neon, and more—updated daily for fresh inspiration",
+    "og_image_link": "https://colorhunt.co/img/color-hunt-og.png"
+  },
+  {
+    "primary_key": 5,
+    "category": "colour",
+    "tool_name": "Colorable",
+    "pricing": "free",
+    "website": "https://colorable.jxnblk.com/",
+    "description": "Tool for checking color‑contrast accessibility.",
+    "extended_description": "contrast testing tool that rates palette combinations against WCAG accessibility standards—making it essential for UI/UX compliance",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/colorable.avif"
+  },
+  {
+    "primary_key": 6,
+    "category": "colour",
+    "tool_name": "ColorMagic",
+    "pricing": "free",
+    "website": "https://colormagic.app/",
+    "description": "AI powered color palette generator",
+    "extended_description": "AI-driven palette generator that creates themes from words, images, or HEX codes, featuring a trending‑palette browser and image color extraction",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/colormagic.avif"
+  },
+  {
+    "primary_key": 7,
+    "category": "colour",
+    "tool_name": "ColPat",
+    "pricing": "free",
+    "website": "https://colpat.itsvg.in/",
+    "description": "Color pattern creator for website backgrounds.",
+    "extended_description": "An AI-enhanced palette creator with customization options, trending palettes, and Tailwind integration, designed for flexible and creative color exploration",
+    "og_image_link": "https://colpat.itsvg.in/og.png"
+  },
+  {
+    "primary_key": 8,
+    "category": "colour",
+    "tool_name": "Coolors",
+    "pricing": "free",
+    "website": "https://coolors.co/",
+    "description": "color palette generator",
+    "extended_description": "fast, polished tool (with web, mobile, and plugins) for generating palettes, checking contrast, managing libraries, and integrating with design apps",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/coolors.png"
+  },
+  {
+    "primary_key": 9,
+    "category": "colour",
+    "tool_name": "Design Gradients",
+    "pricing": "free",
+    "website": "https://www.designgradients.com/",
+    "description": "collection of modern gradient designs.",
+    "extended_description": "gallery of ready-made gradients—perfect for adding color depth, background styling, or UI accents",
+    "og_image_link": "https://designgradients.com/web-cover@2x.png"
+  },
+  {
+    "primary_key": 10,
+    "category": "colour",
+    "tool_name": "Grabient",
+    "pricing": "free",
+    "website": "https://www.grabient.com/",
+    "description": "Simple gradient picker with copy‑friendly CSS.",
+    "extended_description": "gallery of ready-made gradients—perfect for adding color depth, background styling, or UI accents",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/grabient.avif"
+  },
+  {
+    "primary_key": 11,
+    "category": "colour",
+    "tool_name": "Gradient",
+    "pricing": "free",
+    "website": "https://gradient.shapefactory.co/",
+    "description": "generate cool gradients",
+    "extended_description": "creative gradient editor from ShapeFactory that helps you craft custom gradients for backgrounds and design elements",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/gradient.avif"
+  },
+  {
+    "primary_key": 12,
+    "category": "colour",
+    "tool_name": "Happy Hues",
+    "pricing": "free",
+    "website": "https://www.happyhues.co/",
+    "description": "Designer‑tested color palettes showcased in real UI layouts.",
+    "extended_description": "Showcases fully-built UI palettes—inclusive of UI components with real-life mockups—so you can see how palettes look in the real world",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/happy%20hues.avif"
+  },
+  {
+    "primary_key": 13,
+    "category": "colour",
+    "tool_name": "Hue",
+    "pricing": "free",
+    "website": "https://hue.tools/",
+    "description": "toolset for exploring color harmonies and conversions",
+    "extended_description": "suite of hue-based utilities: color calculators, harmonizers, contrast checkers, and pickers—ideal for working precisely with hue values.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/hue%20tools.avif"
+  },
+  {
+    "primary_key": 14,
+    "category": "colour",
+    "tool_name": "Huemint",
+    "pricing": "free",
+    "website": "https://huemint.com/",
+    "description": "AI‑driven palette generation tailored to your style.",
+    "extended_description": "AI-based color palette generator that creates unique, brand-ready color schemes with live previews and export options.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/hue%20mint.avif"
+  },
+  {
+    "primary_key": 15,
+    "category": "colour",
+    "tool_name": "Khroma",
+    "pricing": "free",
+    "website": "https://www.khroma.co/",
+    "description": "ML‑powered palette discovery based on your color preferences.",
+    "extended_description": "Learns your favorite colors to generate endless, personalized palettes with hex, RGB, CSS, and WCAG ratings—fully savable and searchable",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/khroma.avif"
+  },
+  {
+    "primary_key": 16,
+    "category": "colour",
+    "tool_name": "Muzli Colors",
+    "pricing": "free",
+    "website": "https://colors.muz.li/",
+    "description": "Gallery of modern palette examples and generators.",
+    "extended_description": "Simple tool to create and test beautiful color palettes with real-time UI previews.",
+    "og_image_link": "https://colors.muz.li/assets/images/ogimage.png"
+  },
+  {
+    "primary_key": 17,
+    "category": "colour",
+    "tool_name": "PaletteMaker",
+    "pricing": "free",
+    "website": "https://palettemaker.com/app",
+    "description": "color pattern generator",
+    "extended_description": "intuitive app to build palettes and preview them in real-world UI mockups—great for branding, web, and illustration",
+    "og_image_link": "https://palettemaker.com/_nuxt/preview.8bacddd4.png"
+  },
+  {
+    "primary_key": 18,
+    "category": "colour",
+    "tool_name": "Pigment",
+    "pricing": "free",
+    "website": "https://pigment.shapefactory.co/",
+    "description": "Color exploration and palette generation space.",
+    "extended_description": "Generates vibrant palettes “based on pigment and lighting” rather than math; offers hex/RGB/Pantone exports",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/pigment.avif"
+  },
+  {
+    "primary_key": 19,
+    "category": "colour",
+    "tool_name": "Poline",
+    "pricing": "free",
+    "website": "https://meodai.github.io/poline",
+    "description": "Line‑based color palette art & generator.",
+    "extended_description": "Esoteric engine that uses polar-coordinate maths to generate expressive, artful color palettes—tweakable via interactive anchors",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/poline.avif"
+  },
+  {
+    "primary_key": 20,
+    "category": "colour",
+    "tool_name": "RampenSau",
+    "pricing": "free",
+    "website": "https://meodai.github.io/rampensau/",
+    "description": "Ramp-based gradient preview and testing tool.",
+    "extended_description": "lightweight JS/TS tool that generates smooth, customizable color ramps for data viz and creative coding.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/rampensau.avif"
+  },
+  {
+    "primary_key": 21,
+    "category": "colour",
+    "tool_name": "Randoma11y",
+    "pricing": "free",
+    "website": "https://randoma11y.com/",
+    "description": "Generate random, accessible color pairs for better contrast.",
+    "extended_description": "Creates color combos that meet WCAG contrast levels—ideal for accessibility-first design",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/random11y.avif"
+  },
+  {
+    "primary_key": 22,
+    "category": "colour",
+    "tool_name": "Realtime Colors",
+    "pricing": "free",
+    "website": "https://www.realtimecolors.com",
+    "description": "Visualize palettes directly on webpage mockups.",
+    "extended_description": "Live palette & font testing on realistic web layouts with contrast adjustments, Figma plugin, export functions, and even HSL color game",
+    "og_image_link": "https://www.realtimecolors.com/preview.png"
+  },
+  {
+    "primary_key": 23,
+    "category": "colour",
+    "tool_name": "Shader Gradient",
+    "pricing": "free",
+    "website": "https://www.shadergradient.co/",
+    "description": "Shader‑style gradient creation and export.",
+    "extended_description": "Creates animated, shader-based gradients with interactive controls; exports for Framer, Figma, and React",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/shader.avif"
+  },
+  {
+    "primary_key": 24,
+    "category": "colour",
+    "tool_name": "UIcolors",
+    "pricing": "free,paid",
+    "website": "https://uicolors.app/create",
+    "description": "Simple UI for building and exporting color palettes.",
+    "extended_description": "Generate and fine-tune Tailwind CSS color scales with an intuitive interface—supports contrast checks, live previews, and direct export for design systems",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/ui%20colors.avif"
+  },
+  {
+    "primary_key": 25,
+    "category": "colour",
+    "tool_name": "Web Gradients",
+    "pricing": "free",
+    "website": "https://webgradients.com/",
+    "description": "Collection of 180+ free linear gradients",
+    "extended_description": "library of 180 hand-picked linear gradients with ready-to-use CSS, PNGs, and Sketch/Photoshop Packs",
+    "og_image_link": "https://webgradients.com/Open_graph_image_1200x630.jpg"
+  },
+  {
+    "primary_key": 26,
+    "category": "colour",
+    "tool_name": "Gradii",
+    "pricing": "free",
+    "website": "https://www.gradii.fun/",
+    "description": "generate cool gradients",
+    "extended_description": "minimalist mesh-gradient generator ideal for wallpapers and designs; open‑source, playable, and free",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/gradi.avif"
+  },
+  {
+    "primary_key": 27,
+    "category": "colour",
+    "tool_name": "BGJar",
+    "pricing": "free",
+    "website": "https://bgjar.com",
+    "description": "Background generator offering patterns, blobs, and gradients.",
+    "extended_description": "Create and download fully customizable SVG backgrounds—shapes, patterns, animations, and more, all free and export-ready",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/bg%20jar.avif"
+  },
+  {
+    "primary_key": 28,
+    "category": "colour",
+    "tool_name": "Charco design",
+    "pricing": "free",
+    "website": "https://www.charco.design/grads-v2",
+    "description": "Stylish curated gradient library for designers.",
+    "extended_description": "set of 18 grainy mesh gradients, perfect for rich visuals—available in CSS, Figma, and Dribbble formats",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/charco.avif"
+  },
+  {
+    "primary_key": 29,
+    "category": "colour",
+    "tool_name": "Fffuel",
+    "pricing": "free",
+    "website": "https://fffuel.co/",
+    "description": "Trendy design resource hub featuring palettes & inspirations.",
+    "extended_description": "suite of free SVG generators and color tools (gradients, patterns, blobs, textures)—fully customizable with exports to SVG, PNG, or Base64",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/fffuel.avif"
+  },
+  {
+    "primary_key": 30,
+    "category": "colour",
+    "tool_name": "Haikei",
+    "pricing": "free",
+    "website": "https://haikei.app",
+    "description": "Random SVG shape & gradient generator for backgrounds.",
+    "extended_description": "variety of generative SVG tools (blobs, shapes, patterns) for social media, blogs, and design assets, with easy export",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/haikei.avif"
+  },
+  {
+    "primary_key": 31,
+    "category": "colour",
+    "tool_name": "PatternKid",
+    "pricing": "free",
+    "website": "https://patternkid.com",
+    "description": "Curated collection of SVG patterns and seamless textures.",
+    "extended_description": "tool for crafting geometric asset patterns—ideal for decks, web splash screens, or social media visuals",
+    "og_image_link": "https://patternkid.com/og-image.png"
+  },
+  {
+    "primary_key": 32,
+    "category": "mockup",
+    "tool_name": "Minimal mockups",
+    "pricing": "free",
+    "website": "https://www.minimalmockups.com",
+    "description": "minimal PSD mockups for devices, packaging, and print.",
+    "extended_description": "High‑quality PSD mockups — including smartphones, laptops, boxes, magazines, cosmetics, business cards, and more",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/minimal%20mockups.avif"
+  },
+  {
+    "primary_key": 33,
+    "category": "mockup",
+    "tool_name": "Bendito Mockup",
+    "pricing": "paid",
+    "website": "https://benditomockup.com/",
+    "description": "Bold, artistic mockups with real-life scenes",
+    "extended_description": "Mockup shop featuring bold, lifestyle‑driven scenes (restaurants, apparel, packaging), with both free samples (bottles, magazines, posters) and premium bundles .",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/bendito.avif"
+  },
+  {
+    "primary_key": 34,
+    "category": "mockup",
+    "tool_name": "Creatoom",
+    "pricing": "free,paid",
+    "website": "https://creatoom.com/",
+    "description": "Marketplace for premium and free PSD mockups across categories.",
+    "extended_description": "mockups focused on flyer and print designs—great for showcasing posters, leaflets, and promotional material.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/createroom.avif"
+  },
+  {
+    "primary_key": 35,
+    "category": "mockup",
+    "tool_name": "Flyerwrk",
+    "pricing": "free,paid",
+    "website": "https://www.flyerwrk.com/en-us/collections/mockups",
+    "description": "High-quality mockup templates for print, apparel, and branding.",
+    "extended_description": "High-quality, photorealistic PSD mockups for showcasing designs on apparel, posters, stickers, and more—perfect for bold, urban presentations",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/flywerk.avif"
+  },
+  {
+    "primary_key": 36,
+    "category": "mockup",
+    "tool_name": "Fockups",
+    "pricing": "free",
+    "website": "https://fockups.com/",
+    "description": "Realistic, messy mockups that embrace imperfection.",
+    "extended_description": "Realistic mockups that show your designs in messy, damaged, real-world settings—perfect for gritty, honest presentations.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/fockups.avif"
+  },
+  {
+    "primary_key": 37,
+    "category": "mockup",
+    "tool_name": "Free Design Resources",
+    "pricing": "free",
+    "website": "https://freedesignresources.net/category/free-mockups/",
+    "description": "PSD mockups for print, branding, and more.",
+    "extended_description": "curated directory listing free mockups across various categories (device, print, branding), with links to contributor‑sourced assets.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/free%20design%20resource.avif"
+  },
+  {
+    "primary_key": 38,
+    "category": "mockup",
+    "tool_name": "Good Mockups",
+    "pricing": "free",
+    "website": "https://goodmockups.com/",
+    "description": "High-res mockups across devices, packaging, and stationery.",
+    "extended_description": "vast, hand‑picked library of free mockups - Apple devices, apparel, print, signage, books, logos, websites",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/good%20mockups.avif"
+  },
+  {
+    "primary_key": 39,
+    "category": "mockup",
+    "tool_name": "LS Graphics",
+    "pricing": "free",
+    "website": "https://www.ls.graphics",
+    "description": "Premium and free mockups with online editing tools.",
+    "extended_description": "vast online library of high-quality mockups—including banners, devices, stationery, and outdoor signage—ready for customization in-browser or via Figma plugin",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/ls%20graphics.avif"
+  },
+  {
+    "primary_key": 40,
+    "category": "mockup",
+    "tool_name": "Mockey",
+    "pricing": "free,paid",
+    "website": "https://mockey.ai",
+    "description": "AI mockup generator with 5k+ templates",
+    "extended_description": "AI-powered mockup generator with a huge library of editable templates—2D, 3D, packaging, apparel, and more.",
+    "og_image_link": "https://mockey.ai/wp-content/uploads/sites/15/2022/08/preview.jpg"
+  },
+  {
+    "primary_key": 41,
+    "category": "mockup",
+    "tool_name": "Mockup Cloud",
+    "pricing": "free,paid",
+    "website": "https://www.mockupcloud.com/",
+    "description": "PSD mockups for branding and presentations.",
+    "extended_description": "PSD mockups (branding, stationery, devices, apparel) crafted by professionals—ideal for polished design presentations",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mockup%20cloud.avif"
+  },
+  {
+    "primary_key": 42,
+    "category": "mockup",
+    "tool_name": "Mockup World",
+    "pricing": "free",
+    "website": "https://www.mockupworld.co/",
+    "description": "PSD mockups for web, print, and devices.",
+    "extended_description": "Curated free mockups covering screens, packaging, posters, apparel, and more—high-quality, photo-realistic assets for designers",
+    "og_image_link": "https://www.mockupworld.co/wp-content/uploads/2021/11/mockupworld-mockups-social.png"
+  },
+  {
+    "primary_key": 43,
+    "category": "mockup",
+    "tool_name": "Mockup zone",
+    "pricing": "free,paid",
+    "website": "https://www.mockup.zone/",
+    "description": "Editable browser-based mockup templates.",
+    "extended_description": "Online editor for realistic device, packaging, and print mockups—works directly with Artboard Studio, Figma, and Adobe Express",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mockup%20zone.avif"
+  },
+  {
+    "primary_key": 44,
+    "category": "mockup",
+    "tool_name": "Mockup Maison",
+    "pricing": "paid",
+    "website": "https://mockup.maison/",
+    "description": "Premium, realistic PSD mockups for brands.",
+    "extended_description": "High-end PSD + video mockups using real photography (no CGI)—covers devices, print, packaging, apparel; premium collections",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mockup%20maison.avif"
+  },
+  {
+    "primary_key": 45,
+    "category": "mockup",
+    "tool_name": "MockupApp",
+    "pricing": "free",
+    "website": "https://mockupapp.ls.graphics/banner/latest-free-mockups",
+    "description": "Customizable online banner mockup editor.",
+    "extended_description": "Device-first mockup tools—realistic phone, tablet, book mockup generators; both free and premium, plus Figma plugin and online editor .",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mockup%20app.avif"
+  },
+  {
+    "primary_key": 46,
+    "category": "mockup",
+    "tool_name": "mockupfree",
+    "pricing": "free",
+    "website": "https://mockupfree.net",
+    "description": "Free PSD mockups for personal and commercial use.",
+    "extended_description": "unlimited, in-house-created PSD mockups (canvas, packaging, print, etc.) free for personal and commercial use",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mockup%20free.avif"
+  },
+  {
+    "primary_key": 47,
+    "category": "mockup",
+    "tool_name": "Mockups for free",
+    "pricing": "free",
+    "website": "https://mockupsforfree.com/",
+    "description": "PSD mockups across categories.",
+    "extended_description": "2K+ free PSD mockups (packaging, apparel, tech, print), with easy online previews",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mockups%20for%20free.avif"
+  },
+  {
+    "primary_key": 48,
+    "category": "mockup",
+    "tool_name": "Mockups Design",
+    "pricing": "free",
+    "website": "https://mockups-design.com/",
+    "description": "Free high-quality PSD mockups.",
+    "extended_description": "premium-grade PSD mockups—branding, packaging, print, urban scenes—hosted under a generous commercial license",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mockups-design.avif"
+  },
+  {
+    "primary_key": 49,
+    "category": "mockup",
+    "tool_name": "Mockuuups Studio",
+    "pricing": "paid",
+    "website": "https://mockuuups.studio/",
+    "description": "editable device mockup generator.",
+    "extended_description": "powerful drag‑and‑drop mockup generator offering over 4,300+ device scenes and backgrounds, available as desktop app and Figma plugin",
+    "og_image_link": "https://assets.mockuuups.com/mo/image/upload/v1732092900/og-artboard_n43lzg.jpg"
+  },
+  {
+    "primary_key": 50,
+    "category": "mockup",
+    "tool_name": "Mr.Mockup",
+    "pricing": "free,paid",
+    "website": "https://mrmockup.com/",
+    "description": "Premium PSD mockups for branding and print.",
+    "extended_description": "high‑quality free and premium PSD mockups—devices, posters, flyers, packaging—all designed with smart objects for easy editing",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mr%20mockups.avif"
+  },
+  {
+    "primary_key": 51,
+    "category": "mockup",
+    "tool_name": "Pixeden Club",
+    "pricing": "free,paid",
+    "website": "https://www.pixeden.com",
+    "description": "Free and premium layered mockup templates.",
+    "extended_description": "professional resource with hundreds of free and premium PSD mockup templates—devices, stationery, packaging—ready for drag-and-drop use",
+    "og_image_link": "https://www.pixeden.com/api/og?slug=hands-holding-paperback-book-cover-design-psd-mockup&slug=imac-and-iphone-pro-showcase-screens-psd-mockup&slug=hands-holding-folded-cover-catalog-magazine-free-psd-mockup&slug=ipad-pro-and-iphone-pro-showcase-screens-free-psd-mockup&title=%20Free%20Graphics"
+  },
+  {
+    "primary_key": 52,
+    "category": "mockup",
+    "tool_name": "Placeit",
+    "pricing": "free,paid",
+    "website": "https://placeit.net",
+    "description": "Online mockup and video maker with templates.",
+    "extended_description": "Web-based mockup and design generator with 150K+ templates covering apparel, digital devices, 3D scenes, videos and logos.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/place%20it.avif"
+  },
+  {
+    "primary_key": 53,
+    "category": "mockup",
+    "tool_name": "Rawpixel",
+    "pricing": "free,paid",
+    "website": "https://www.rawpixel.com/",
+    "description": "Mockups and design assets for commercial use.",
+    "extended_description": "design tool offering free and premium stock photos, PNGs, templates, and editable PSD/PNG mockups across apparel, devices, posters, packaging",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/rawpixel.avif"
+  },
+  {
+    "primary_key": 54,
+    "category": "mockup",
+    "tool_name": "Resource Boy",
+    "pricing": "free",
+    "website": "https://resourceboy.com/mockups/",
+    "description": "editable PSD mockups - devices, print and packaging",
+    "extended_description": "high-quality PSD mockups—including t-shirts, posters, devices, business cards—with smart-object files and commercial use license",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/resource%20boy%20mockup.avif"
+  },
+  {
+    "primary_key": 55,
+    "category": "mockup",
+    "tool_name": "Shots",
+    "pricing": "free",
+    "website": "https://www.shots.so/",
+    "description": "drag‑and‑drop mockup generator",
+    "extended_description": "user-friendly online mockup generator: drag-and-drop screenshots into device frames, adjust lighting etc., then export watermark-free .",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/shots.avif"
+  },
+  {
+    "primary_key": 56,
+    "category": "mockup",
+    "tool_name": "Unblast",
+    "pricing": "free",
+    "website": "https://unblast.com/mockups/",
+    "description": "free mockups by top designers -  branding, print, packaging, UI",
+    "extended_description": "collection of free PSD mockups spanning branding, apparel, packaging, posters, magazines, and more—handpicked for design quality",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/unblast.avif"
+  },
+  {
+    "primary_key": 57,
+    "category": "design_inspiration",
+    "tool_name": "Curated",
+    "pricing": "free",
+    "website": "https://www.curated.design/",
+    "description": "Handpicked web design inspiration.",
+    "extended_description": "polished web design inspiration catalog showcasing outstanding sites, templates, tools, and agencies",
+    "og_image_link": "https://craftwork-products.b-cdn.net/curated/images/63e397fec7605a21a97bb284_Open-Graph-1.png"
+  },
+  {
+    "primary_key": 58,
+    "category": "design_inspiration",
+    "tool_name": "BP&O",
+    "pricing": "free,paid",
+    "website": "https://bpando.org/",
+    "description": "Branding and packaging design blog.",
+    "extended_description": "go-to blog for logo, identity, and packaging design, featuring reviews, inspiration, and news by Richard Baird",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/bpo.avif"
+  },
+  {
+    "primary_key": 59,
+    "category": "design_inspiration",
+    "tool_name": "Design Spells",
+    "pricing": "free",
+    "website": "https://www.designspells.com/",
+    "description": "Micro-interactions and UI",
+    "extended_description": "subtle micro-interactions, easter eggs, animations, and delightful details across web interfaces",
+    "og_image_link": "https://designspells.com/og.png"
+  },
+  {
+    "primary_key": 60,
+    "category": "design_inspiration",
+    "tool_name": "SearchSystem",
+    "pricing": "free",
+    "website": "https://www.searchsystem.co/",
+    "description": "Curated graphic design references.",
+    "extended_description": "growing toolkit and reference library for designers, curated by Julien Van Havere—it covers tools, brand references, typography, and more",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/search%20system.avif"
+  },
+  {
+    "primary_key": 61,
+    "category": "design_inspiration",
+    "tool_name": "Godly",
+    "pricing": "free",
+    "website": "https://godly.website/",
+    "description": "web design inspiration.",
+    "extended_description": "daily-curated feed of the most exceptional web designs across categories like e‑commerce, portfolios, animations",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/godly.avif"
+  },
+  {
+    "primary_key": 62,
+    "category": "design_inspiration",
+    "tool_name": "Refero",
+    "pricing": "free",
+    "website": "https://refero.design/",
+    "description": "Massive UI/UX design library.",
+    "extended_description": "searchable archive of UI and UX screens from web and iOS apps—boasting over 29K web pages and 27K mobile screenshots for design reference",
+    "og_image_link": "https://refero.design/open-graph-4-1200x630.png"
+  },
+  {
+    "primary_key": 63,
+    "category": "design_inspiration",
+    "tool_name": "Pafolios",
+    "pricing": "free",
+    "website": "https://pafolios.com/",
+    "description": "Curated top design portfolios and case studies.",
+    "extended_description": "top-tier design portfolios and case studies for product, UI/UX, and creative designers—updated weekly with detailed insights",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/pafolio.avif"
+  },
+  {
+    "primary_key": 64,
+    "category": "design_inspiration",
+    "tool_name": "Doing Cool Stuff",
+    "pricing": "free",
+    "website": "https://www.doingcoolstuff.xyz/",
+    "description": "directory of brand, motion, and digital studios",
+    "extended_description": "Directory of standout design studios focused on branding, motion, and digital products, spotlighting both established and emerging agencies",
+    "og_image_link": "https://cdn.prod.website-files.com/63893f927a10ea20e3a2510d/63ac725c5f0e59df80f846e5_Open_Graph_Image_1200x630.png"
+  },
+  {
+    "primary_key": 65,
+    "category": "design_inspiration",
+    "tool_name": "The Index",
+    "pricing": "free",
+    "website": "https://theindex.website/",
+    "description": "gallery of top design studios, designers, and type foundries",
+    "extended_description": "gallery of premier design studios, designers, and type foundries worldwide, founded in 2023 to showcase excellence in creative work",
+    "og_image_link": "https://theindex.website/the-index-social-share-general.png"
+  },
+  {
+    "primary_key": 66,
+    "category": "design_inspiration",
+    "tool_name": "Rebrand",
+    "pricing": "free",
+    "website": "https://www.rebrand.gallery/",
+    "description": "Showcase of top visual identity redesigns and rebrand videos",
+    "extended_description": "Showcases stunning new rebrands, identity systems, and brand launch videos—curated for visual and strategic inspiration",
+    "og_image_link": "https://rebrand.gallery/rebrand-og.jpg"
+  },
+  {
+    "primary_key": 67,
+    "category": "design_inspiration",
+    "tool_name": "Awwwards",
+    "pricing": "free",
+    "website": "https://www.awwwards.com/",
+    "description": "Premier awards and inspiration platform for exceptional web design",
+    "extended_description": "Prestigious awards platform recognizing top web designs, developers, and agencies globally—with daily and annual winners, plus educational content and events",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/awwwardss.avif"
+  },
+  {
+    "primary_key": 68,
+    "category": "design_inspiration",
+    "tool_name": "Land book",
+    "pricing": "free",
+    "website": "https://land-book.com/",
+    "description": "gallery of handpicked web design inspirations",
+    "extended_description": "collection of beautifully designed landing pages, product sites, portfolios, and templates—ideal for UI inspiration",
+    "og_image_link": "https://land-book.com/images/og-image.webp"
+  },
+  {
+    "primary_key": 69,
+    "category": "design_inspiration",
+    "tool_name": "Siteinspire",
+    "pricing": "free",
+    "website": "https://www.siteinspire.com/",
+    "description": "showcase of the world’s finest web designs",
+    "extended_description": "showcase of top-tier web design—spanning styles like minimalism, interactive, art direction, and e-commerce—updated daily from fresh global entries",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/siteinspire.avif"
+  },
+  {
+    "primary_key": 70,
+    "category": "design_inspiration",
+    "tool_name": "Mobbin",
+    "pricing": "free",
+    "website": "https://mobbin.com",
+    "description": "UI designs for mobile & web.",
+    "extended_description": "world’s largest library of real-world mobile and web UI/UX screenshots, offering advanced filters to explore design patterns, flows, and layouts",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mobbins.avif"
+  },
+  {
+    "primary_key": 71,
+    "category": "design_inspiration",
+    "tool_name": "Appshots",
+    "pricing": "free,paid",
+    "website": "https://appshots.design",
+    "description": "Real app screenshots for inspiration.",
+    "extended_description": "curated reference tool for designers, providing 70K+ mobile app screenshots and assets to streamline UX research and inspire app store visuals",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/appshots.avif"
+  },
+  {
+    "primary_key": 72,
+    "category": "design_inspiration",
+    "tool_name": "Designspiration",
+    "pricing": "free",
+    "website": "https://www.designspiration.com/",
+    "description": "Visual search for creative ideas.",
+    "extended_description": "powerful image/color search engine to discover and save art, photography, UI, logos, and typography—ideal for mood boarding and creative exploration.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/designspiration.avif"
+  },
+  {
+    "primary_key": 73,
+    "category": "design_inspiration",
+    "tool_name": "Lapa Ninja",
+    "pricing": "free",
+    "website": "https://www.lapa.ninja/",
+    "description": "Landing page design gallery.",
+    "extended_description": "gallery of 6,600+ landing pages, UI templates, and free learning resources for Figma, Sketch, and Framer",
+    "og_image_link": "https://cdn.lapa.ninja/assets/social/og-image.jpg"
+  },
+  {
+    "primary_key": 74,
+    "category": "design_inspiration",
+    "tool_name": "Httpster",
+    "pricing": "free",
+    "website": "https://httpster.net/",
+    "description": "Curated cool web designs.",
+    "extended_description": "collection of creative websites—favoring brutalist, minimalist, and typographic-driven designs—curated since 2012 with a bold, \"no fluff\" attitude",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/httpster.avif"
+  },
+  {
+    "primary_key": 75,
+    "category": "design_inspiration",
+    "tool_name": "Dark Design",
+    "pricing": "free",
+    "website": "https://www.dark.design/",
+    "description": "Dark-themed website inspiration.",
+    "extended_description": "gallery of striking dark-theme websites across genres like software and education",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/dark%20design.avif"
+  },
+  {
+    "primary_key": 76,
+    "category": "design_inspiration",
+    "tool_name": "OGimage gallery",
+    "pricing": "free",
+    "website": "https://www.ogimage.gallery/",
+    "description": "OG image gallery",
+    "extended_description": "gallery showcasing outstanding Open Graph/social preview images, with tips, templates, and best practices",
+    "og_image_link": "https://cdn.prod.website-files.com/6040b8a8176ad35fd8dbf709/606597ba2d86c0c02d518010_og.jpg"
+  },
+  {
+    "primary_key": 77,
+    "category": "design_inspiration",
+    "tool_name": "Seesaw",
+    "pricing": "free",
+    "website": "https://www.seesaw.website/",
+    "description": "web design inspiration.",
+    "extended_description": "gallery of outstanding web design, updated daily across categories like agency, crypto, e‑commerce, and UX",
+    "og_image_link": "https://seesaw.website/img/og.jpg"
+  },
+  {
+    "primary_key": 78,
+    "category": "design_inspiration",
+    "tool_name": "Storefront",
+    "pricing": "free",
+    "website": "https://www.storefront.design/",
+    "description": "top e-commerce site designs",
+    "extended_description": "showcase of beautifully designed e-commerce storefronts—ideal for inspiration and discovery",
+    "og_image_link": "https://cdn.sanity.io/images/jvzt8m05/production/9182a96145a40644fb61f2bc8cd2ef89c730ddb8-1200x630.png"
+  },
+  {
+    "primary_key": 79,
+    "category": "design_inspiration",
+    "tool_name": "Dark Mode Design",
+    "pricing": "free",
+    "website": "https://www.darkmodedesign.com/",
+    "description": "beautifully designed dark-mode websites",
+    "extended_description": "gallery of websites that embrace dark-mode aesthetics—perfect for exploring illuminated experiences in low-light UX",
+    "og_image_link": "https://cdn.prod.website-files.com/5ea7fc450fe2ee12b924f695/63f1a4bc731066c857d55d0b_OpenGraph-min.png"
+  },
+  {
+    "primary_key": 80,
+    "category": "design_inspiration",
+    "tool_name": "H1 Gallery",
+    "pricing": "free",
+    "website": "https://h1gallery.com/",
+    "description": "collection of attention-grabbing marketing headlines",
+    "extended_description": "collection of the best marketing headlines on the web—perfect for finding stand-out H1 copy that uplifts UX",
+    "og_image_link": "https://framerusercontent.com/assets/7N0TsWR1jns2MEnMJuAt3SFxrM.png"
+  },
+  {
+    "primary_key": 81,
+    "category": "design_inspiration",
+    "tool_name": "CTA gallery",
+    "pricing": "free",
+    "website": "https://www.cta.gallery/",
+    "description": "high-converting call‑to‑action designs",
+    "extended_description": "gallery of call-to-action design: thousands of buttons, banners, modals, and pricing CTAs",
+    "og_image_link": "https://framerusercontent.com/images/yXhxFS3RMgsD2U3vLGvsjBaE4Q.jpg"
+  },
+  {
+    "primary_key": 82,
+    "category": "design_inspiration",
+    "tool_name": "404 gallery",
+    "pricing": "free",
+    "website": "https://www.404s.design/",
+    "description": "404-error page designs",
+    "extended_description": "gallery of creative 404-error pages that aim to delight rather than frustrate",
+    "og_image_link": "https://cdn.prod.website-files.com/65ba70a4bb6f912baf009423/65bd08050c4ec1d10cd6b143_413.webp"
+  },
+  {
+    "primary_key": 83,
+    "category": "design_inspiration",
+    "tool_name": "Bento Grids",
+    "pricing": "free",
+    "website": "https://bentogrids.com/",
+    "description": "bento-style grid layouts for design",
+    "extended_description": "collection of “bento-style” web layouts—modular, asymmetrical grids sourced from real-world sites",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/bento%20grids.avif"
+  },
+  {
+    "primary_key": 84,
+    "category": "design_inspiration",
+    "tool_name": "OGFolio",
+    "pricing": "free",
+    "website": "https://ogfolio.com/",
+    "description": "library of high-quality Open Graph preview images",
+    "extended_description": "gallery of Open Graph images—social preview thumbnails organized by theme, color, and industry",
+    "og_image_link": "https://framerusercontent.com/images/2IO3VHGBoDfX608IyNCXNpSA.png"
+  },
+  {
+    "primary_key": 85,
+    "category": "design_inspiration",
+    "tool_name": "Supahero",
+    "pricing": "free",
+    "website": "https://www.supahero.io/",
+    "description": "library of stunning hero section mockups.",
+    "extended_description": "library of eye-catching website hero sections (both free and premium), perfect for sparking creative landing-page ideas.",
+    "og_image_link": "https://framerusercontent.com/images/Pk5Sey2bA2PIWe5Ptnj57F4ms.png"
+  },
+  {
+    "primary_key": 86,
+    "category": "design_inspiration",
+    "tool_name": "Footer",
+    "pricing": "free",
+    "website": "https://www.footer.design/",
+    "description": "best website footer designs and patterns.",
+    "extended_description": "gallery dedicated exclusively to website footers—filter by style, layout type, and animation.",
+    "og_image_link": "https://cdn.prod.website-files.com/64fe0870e6e4f3a42a145c1c/6514c4e3bcde78421b541de9_open-graph.webp"
+  },
+  {
+    "primary_key": 87,
+    "category": "design_inspiration",
+    "tool_name": "Navbar Gallery",
+    "pricing": "free",
+    "website": "https://www.navbar.gallery/",
+    "description": "Collection of website navigation bars.",
+    "extended_description": "designer-focused collection of navigation patterns—static, dropdowns, sidebar, search bars, and more.",
+    "og_image_link": "https://cdn.prod.website-files.com/65676438ff1c480b81cf0085/65d0d08ee366dcfc3c73aa94_ogimage%20(2).webp"
+  },
+  {
+    "primary_key": 88,
+    "category": "design_inspiration",
+    "tool_name": "Good Folios",
+    "pricing": "free",
+    "website": "https://goodfolios.com/",
+    "description": "best portfolio websites",
+    "extended_description": "gallery of stunning portfolio websites—perfect for design inspiration and creative references",
+    "og_image_link": "https://framerusercontent.com/assets/NPNFat0hjGjqOMvFOn0C1RBOUVM.png"
+  },
+  {
+    "primary_key": 89,
+    "category": "design_inspiration",
+    "tool_name": "Logo System",
+    "pricing": "free",
+    "website": "https://logosystem.co/",
+    "description": "library of 1,000+ logo designs for inspiration",
+    "extended_description": "internet’s largest free libraries of logo designs (700+), including animated options and purchasable premade logos.",
+    "og_image_link": "https://framerusercontent.com/images/6zvdWVcFBB5iXRiSj3BoxiEVe24.jpg"
+  },
+  {
+    "primary_key": 90,
+    "category": "design_inspiration",
+    "tool_name": "Muzli",
+    "pricing": "free",
+    "website": "https://muz.li/",
+    "description": "Design inspiration hub delivering new ideas on every tab.",
+    "extended_description": "leading design inspiration hub—browser extension and site providing curated news, visuals, tools, mockups, and color palettes.",
+    "og_image_link": "https://muz.li/og.png"
+  },
+  {
+    "primary_key": 91,
+    "category": "design_inspiration",
+    "tool_name": "Savee",
+    "pricing": "free,paid",
+    "website": "https://savee.it/",
+    "description": "discover, save, and share creative inspiration",
+    "extended_description": "clean, ad-free inspiration board with 1.3M+ users—organize visuals, templates, and collaborate.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/saveeit.avif"
+  },
+  {
+    "primary_key": 92,
+    "category": "design_inspiration",
+    "tool_name": "Cosmos",
+    "pricing": "free",
+    "website": "https://www.cosmos.so/",
+    "description": "AI-powered platform to tag, organize, and share visual inspiration clutter-free",
+    "extended_description": "distraction-free \"digital garden\" for saving and clustering web finds (images, articles, quotes)",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/cosmos.avif"
+  },
+  {
+    "primary_key": 93,
+    "category": "design_inspiration",
+    "tool_name": "Adfolio",
+    "pricing": "free",
+    "website": "https://www.adfolio.design",
+    "description": "B2B Meta & LinkedIn ad designs",
+    "extended_description": "curated collection of high-performing B2B ads on Meta and LinkedIn, complete with design breakdowns and copy analysis",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/adfolio.avif"
+  },
+  {
+    "primary_key": 94,
+    "category": "design_inspiration",
+    "tool_name": "Showcase",
+    "pricing": "free",
+    "website": "https://showcase.supply",
+    "description": "gallery for portfolio and e‑commerce web designs",
+    "extended_description": "gallery of standout portfolio and e‑commerce websites, enabling creatives to find fresh design inspiration",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/showcase.avif"
+  },
+  {
+    "primary_key": 95,
+    "category": "design_inspiration",
+    "tool_name": "60fps",
+    "pricing": "free",
+    "website": "https://60fps.design",
+    "description": "UI/UX animations and interactions from top apps",
+    "extended_description": "UI/UX micro-interactions and animations from leading mobile and web apps",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/60%20fps.avif"
+  },
+  {
+    "primary_key": 96,
+    "category": "design_inspiration",
+    "tool_name": "Logggos",
+    "pricing": "free",
+    "website": "https://www.logggos.club",
+    "description": "logos, themes, typography style, branding color",
+    "extended_description": "well-designed logos in SVG/PNG/JPG formats, sorted by industry, theme, typography, and color",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/logggos.avif"
+  },
+  {
+    "primary_key": 97,
+    "category": "design_inspiration",
+    "tool_name": "Headers",
+    "pricing": "free",
+    "website": "https://headers.club/",
+    "description": "gallery of profile header images",
+    "extended_description": "showcase of top social media header/banner images from platforms like X",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/headers.avif"
+  },
+  {
+    "primary_key": 98,
+    "category": "design_inspiration",
+    "tool_name": "Daily branding",
+    "pricing": "free",
+    "website": "https://www.dailybranding.co/",
+    "description": "gallery of branding designs",
+    "extended_description": "branding inspiration blog featuring identity, packaging, logo, and system designs from studios worldwide",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/daily%20branding.avif"
+  },
+  {
+    "primary_key": 99,
+    "category": "icon",
+    "tool_name": "3dicons",
+    "pricing": "free,paid",
+    "website": "https://3dicons.co",
+    "description": "open-source 3D icons",
+    "extended_description": "CC0-licensed collection of beautifully crafted 3D icons made in Blender, available for free commercial and personal use",
+    "og_image_link": "https://3dicons.co/opengraph-image.jpg"
+  },
+  {
+    "primary_key": 100,
+    "category": "icon",
+    "tool_name": "Atlas Icons",
+    "pricing": "free",
+    "website": "https://atlasicons.vectopus.com/",
+    "description": "2,600+ free line icons",
+    "extended_description": "open-source icon library offering ~2,600 consistent line-style SVG icons, delivered in web font, Figma, React, Vue, and Flutter formats under MIT License",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/atlas%20icons.avif"
+  },
+  {
+    "primary_key": 101,
+    "category": "icon",
+    "tool_name": "Bootstrap Icons",
+    "pricing": "free",
+    "website": "https://icons.getbootstrap.com/",
+    "description": "high quality, open source icon library",
+    "extended_description": "official Bootstrap icon set—reliable, open-source SVG icons tailored for seamless integration with Bootstrap projects",
+    "og_image_link": "https://icons.getbootstrap.com/assets/img/bootstrap-icons-social.png"
+  },
+  {
+    "primary_key": 102,
+    "category": "icon",
+    "tool_name": "Box icons",
+    "pricing": "free,paid",
+    "website": "https://boxicons.com/",
+    "description": "Open-source web icon set with 3,000+ free icons",
+    "extended_description": "simple, open-source vector icon set designed for modern web projects, offering both regular and solid styles",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/box%20icons.avif"
+  },
+  {
+    "primary_key": 103,
+    "category": "icon",
+    "tool_name": "Chrom icons",
+    "pricing": "free",
+    "website": "https://lifeomic.github.io/chromicons.com/",
+    "description": "handcrafted icons by LifeOmic",
+    "extended_description": "tiny, functional “chromium-style” icons for web UIs, useful for minimalist interface components",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/chrom%20icons.avif"
+  },
+  {
+    "primary_key": 104,
+    "category": "icon",
+    "tool_name": "Css gg",
+    "pricing": "free",
+    "website": "https://css.gg/",
+    "description": "icon library with 6,000+ glyphs",
+    "extended_description": "open-source collection of 700+ minimalist icons (CSS, SVG, Figma), plus a library of 6,000+ glyphs",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/css%20gg.avif"
+  },
+  {
+    "primary_key": 105,
+    "category": "icon",
+    "tool_name": "Eva Icons",
+    "pricing": "free",
+    "website": "https://akveo.github.io/eva-icons/#/",
+    "description": "beautifully crafted outline and filled UI icons, with animations",
+    "extended_description": "480 beautifully crafted open-source icons in both Outline and Fill styles, available as SVG, PNG, icon font, Sketch and Figma",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/eva%20icons.avif"
+  },
+  {
+    "primary_key": 106,
+    "category": "icon",
+    "tool_name": "Flaticon",
+    "pricing": "free",
+    "website": "https://www.flaticon.com/",
+    "description": "icon and sticker database",
+    "extended_description": "largest icon database online: 18 million+ vector icons and stickers, available in PNG, SVG, EPS, PSD, or CSS",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/flat%20icons.avif"
+  },
+  {
+    "primary_key": 107,
+    "category": "icon",
+    "tool_name": "Free SVG Icons",
+    "pricing": "free",
+    "website": "https://freesvgicons.com/",
+    "description": "250k+ open-source SVG icons from popular libraries",
+    "extended_description": "250,000+ free SVG icons from open-source libraries—customizable in color and size and downloadable as SVG, PNG, JSX, or Base64",
+    "og_image_link": "https://c1.tablecdn.com/iconbuddy/svgicons.png"
+  },
+  {
+    "primary_key": 108,
+    "category": "icon",
+    "tool_name": "Fut icons",
+    "pricing": "free",
+    "website": "https://futicons.com/",
+    "description": "Futuristic icons - AI, VR, blockchain, sustainability",
+    "extended_description": "Figma-designed icon set themed around future-tech - VR, AI, crypto, space, sustainability.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/futicons.avif"
+  },
+  {
+    "primary_key": 109,
+    "category": "icon",
+    "tool_name": "Health icons",
+    "pricing": "free",
+    "website": "https://healthicons.org/",
+    "description": "health icons for personal and commercial use",
+    "extended_description": "open‑source library of 1,700+ health-related icons (SVG, Figma, Sketch, etc.), free for any project",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/health%20icons.avif"
+  },
+  {
+    "primary_key": 110,
+    "category": "icon",
+    "tool_name": "Iconists",
+    "pricing": "paid",
+    "website": "https://iconists.co/central",
+    "description": "1,000+ symbols and numerous variants",
+    "extended_description": "customizable icon system built as a Figma design library: over 1,000 symbols with 30+ variant styles per symbol, offering 30,000+ total icons",
+    "og_image_link": "https://framerusercontent.com/assets/il28Th5smnaCNOWlPYnUBFC9S4I.png"
+  },
+  {
+    "primary_key": 111,
+    "category": "icon",
+    "tool_name": "Iconoir",
+    "pricing": "free",
+    "website": "https://iconoir.com/",
+    "description": "open-source SVG icon library for React, Flutter, Figma",
+    "extended_description": "open-source icon library with ~1,500+ icons, designed on a 24×24 grid with support across SVG, React, React Native, Flutter, Figma, Framer",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/iconoir.avif"
+  },
+  {
+    "primary_key": 112,
+    "category": "icon",
+    "tool_name": "Iconstore",
+    "pricing": "free",
+    "website": "https://iconstore.co/",
+    "description": "SVG icon packs by top designers",
+    "extended_description": "240+ exclusive SVG icon packs (colored, glyph, outline) crafted by top designers—free for personal and commercial use",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/iconstore.avif"
+  },
+  {
+    "primary_key": 113,
+    "category": "icon",
+    "tool_name": "Icoon",
+    "pricing": "free,paid",
+    "website": "https://www.icoon.co/",
+    "description": "3D and illustrated icons",
+    "extended_description": "library of 3D icons, illustrations, and AI-generated assets—ready for websites, apps, and print design",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/icoon.avif"
+  },
+  {
+    "primary_key": 114,
+    "category": "icon",
+    "tool_name": "Isocons",
+    "pricing": "free",
+    "website": "https://www.isocons.app/",
+    "description": "Customizable isometric icons",
+    "extended_description": "isometric icon library delivering high-quality, customizable 3D-style icons for web, apps, and presentations",
+    "og_image_link": "https://isocons.app/og.jpg"
+  },
+  {
+    "primary_key": 115,
+    "category": "icon",
+    "tool_name": "Line icons",
+    "pricing": "free,paid",
+    "website": "https://lineicons.com/",
+    "description": "line-style icons",
+    "extended_description": "26,000+ free line icons (SVG, PNG, React, Figma) with an icon editor",
+    "og_image_link": "https://cdn.pimjo.com/lineicons-5.jpg"
+  },
+  {
+    "primary_key": 116,
+    "category": "icon",
+    "tool_name": "Lord icon",
+    "pricing": "free,paid",
+    "website": "https://lordicon.com/",
+    "description": "static and customizable animated icons",
+    "extended_description": "vibrant library of 32,600+ static and animated icons in multiple formats (Lottie, SVG, GIF, MP4), with 8,000+ free icons and premium upgrades",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/lord%20icon.avif"
+  },
+  {
+    "primary_key": 117,
+    "category": "icon",
+    "tool_name": "Lucide",
+    "pricing": "free",
+    "website": "https://lucide.dev/",
+    "description": "open-source SVG icons",
+    "extended_description": "community-driven fork of Feather Icons—lightweight, tree-shakable SVG toolkit with 1,000+ icons and cross-platform support",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/lucide%20animated.avif"
+  },
+  {
+    "primary_key": 118,
+    "category": "icon",
+    "tool_name": "Nucleoapp",
+    "pricing": "paid",
+    "website": "https://nucleoapp.com",
+    "description": "customizable SVG icons & patterns",
+    "extended_description": "powerful icon organizer for Mac and Windows offering 30,000+ icons, smart search, team-sync, and export features",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/nucleo%20icons.avif"
+  },
+  {
+    "primary_key": 119,
+    "category": "icon",
+    "tool_name": "Orion",
+    "pricing": "free,paid",
+    "website": "https://www.orioniconlibrary.com",
+    "description": "SVG vector icons",
+    "extended_description": "6,014 free SVG & PNG icons across various themed packs, with web app support for search, editing, and collections",
+    "og_image_link": "https://orioniconlibrary.com/orion_share.jpg"
+  },
+  {
+    "primary_key": 120,
+    "category": "icon",
+    "tool_name": "Phosphor Icons",
+    "pricing": "free",
+    "website": "https://phosphoricons.com",
+    "description": "flexible icon family for interfaces, diagrams, presentations",
+    "extended_description": "MIT‑licensed icon family with 1,248+ icons,optimized for interfaces, diagrams, and presentations",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/phosphor%20icons.avif"
+  },
+  {
+    "primary_key": 121,
+    "category": "icon",
+    "tool_name": "Lucide Animated",
+    "pricing": "free",
+    "website": "https://lucide-animated.com/",
+    "description": "beautifully crafted animated icons",
+    "extended_description": "growing collection of beautifully animated icons (over 240+) built with Framer Motion and Lucide—free, open‑source, MIT‑licensed",
+    "og_image_link": "https://icons.pqoqubbw.dev/_next/static/media/og.19d1954d.png"
+  },
+  {
+    "primary_key": 122,
+    "category": "icon",
+    "tool_name": "React Symbols",
+    "pricing": "free",
+    "website": "https://react-symbols.vercel.app/",
+    "description": "Beautifull File & Folder Icons",
+    "extended_description": "component library offering clean SVG icons themed around files and folders",
+    "og_image_link": "https://react-symbols.vercel.app/images/og.png"
+  },
+  {
+    "primary_key": 123,
+    "category": "icon",
+    "tool_name": "Streamline Icons",
+    "pricing": "free,paid",
+    "website": "https://home.streamlinehq.com/",
+    "description": "professionally designed icon system",
+    "extended_description": "comprehensive icon system: 100K+ free PNG/SVG icons, and 170K+ in total, available via Figma, Framer, VS Code, and API",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/streamline%20icons.avif"
+  },
+  {
+    "primary_key": 124,
+    "category": "icon",
+    "tool_name": "SVG Repo",
+    "pricing": "free",
+    "website": "https://www.svgrepo.com/",
+    "description": "300K+ editable SVG icons and vectors",
+    "extended_description": "500K+ open‑licensed SVG icons and vectors, searchable, editable online, and royalty‑free for commercial use",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/svg%20repo.avif"
+  },
+  {
+    "primary_key": 125,
+    "category": "icon",
+    "tool_name": "Svgl",
+    "pricing": "free",
+    "website": "https://svgl.app/",
+    "description": "collection of SVG logos for tech tools, and brands",
+    "extended_description": "sleek, searchable directory of optimized SVG logos—browse hundreds of high-quality brand icons",
+    "og_image_link": "https://svgl.app/images/screenshot.png"
+  },
+  {
+    "primary_key": 126,
+    "category": "icon",
+    "tool_name": "System UIcons",
+    "pricing": "free",
+    "website": "https://www.systemuicons.com/",
+    "description": "400+ system focused SVG icon",
+    "extended_description": "minimalist SVG icon set (420+) crafted for systems and UI,",
+    "og_image_link": "https://systemuicons.com/images/ogp/systemuicons_banner.png"
+  },
+  {
+    "primary_key": 127,
+    "category": "icon",
+    "tool_name": "Tabler Icons",
+    "pricing": "free",
+    "website": "https://tabler.io/icons",
+    "description": "5,900+ open-source SVG icons for web projects",
+    "extended_description": "5,900+ high‑quality, MIT‑licensed SVG icons on a 24×24 grid. Offers versions for React, Vue, SolidJS, Svelte, and more, with flexible formats (PNG, webfont)",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/tabler%20icons.avif"
+  },
+  {
+    "primary_key": 128,
+    "category": "icon",
+    "tool_name": "Teenyicons",
+    "pricing": "free",
+    "website": "https://teenyicons.com/",
+    "description": "Minimalist 1px stroke icon set",
+    "extended_description": "collection of 1px minimal icons (around 1,200) designed on a 15×15 grid—perfect for clean, compact interfaces.",
+    "og_image_link": "https://teenyicons.com/og.png"
+  },
+  {
+    "primary_key": 129,
+    "category": "icon",
+    "tool_name": "Useanimations",
+    "pricing": "free",
+    "website": "https://useanimations.com",
+    "description": "lightweight animated icons for web and mobile",
+    "extended_description": "lightweight, responsive animated icons built as Lottie/SVG micro-interactions—ideal for buttons, loaders, and UI feedback",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/useanimation.avif"
+  },
+  {
+    "primary_key": 130,
+    "category": "icon",
+    "tool_name": "Craftwork icons",
+    "pricing": "free",
+    "website": "https://icons.craftwork.design/",
+    "description": "fill-and-stroke UI icons,",
+    "extended_description": "500+ fill & stroke icons across diverse categories; scalable and customizable in Figma or SVG",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/craftwork%20design.avif"
+  },
+  {
+    "primary_key": 131,
+    "category": "icon",
+    "tool_name": "Iconmonstr",
+    "pricing": "free",
+    "website": "https://iconmonstr.com/",
+    "description": "source of simple icons",
+    "extended_description": "library of simple, pixel-perfect icons (SVG/PNG), available in fill and outline styles—designed on a 24‑pixel grid and optimized for the web",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/iconmonstr%20icons.avif"
+  },
+  {
+    "primary_key": 132,
+    "category": "icon",
+    "tool_name": "Remix Icons",
+    "pricing": "free",
+    "website": "https://remixicon.com/",
+    "description": "Open-source neutral-style system icons",
+    "extended_description": "open-source system icon library with 3,000+ elaborately crafted, readable icons in both outline and filled versions on a 24×24 grid",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/remix%20icons.avif"
+  },
+  {
+    "primary_key": 133,
+    "category": "icon",
+    "tool_name": "Google icons",
+    "pricing": "free",
+    "website": "https://fonts.google.com/icons",
+    "description": "material design icons by Google",
+    "extended_description": "official Material Icons collection from Google—available in multiple themes (outlined, rounded, sharp, two-tone), easy to integrate via Google Fonts",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/google%20fonts%20icons.avif"
+  },
+  {
+    "primary_key": 134,
+    "category": "icon",
+    "tool_name": "Hugeicons",
+    "pricing": "free,paid",
+    "website": "https://hugeicons.com/",
+    "description": "free, stroke-rounded icons",
+    "extended_description": "searchable database of over 500,000 royalty-free SVG graphics and icons—editable online and ideal for rapid design iteration.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/hugeicons.avif"
+  },
+  {
+    "primary_key": 135,
+    "category": "icon",
+    "tool_name": "Iconhub",
+    "pricing": "free",
+    "website": "https://iconhub.io/",
+    "description": "Central repository of free and premium icons",
+    "extended_description": "configurable icon platform offering line, glyph, flat, multi-color icons in multiple sizes",
+    "og_image_link": "https://iconhub.io/img/hero.jpeg"
+  },
+  {
+    "primary_key": 136,
+    "category": "icon",
+    "tool_name": "Openmoji",
+    "pricing": "free",
+    "website": "https://openmoji.org",
+    "description": "Open source emojis for designers, developers",
+    "extended_description": "community-driven, CC-licensed open-source emoji-style icon library with over 3,700 icons—ideal for expressive, web-friendly designs.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/openmoji.avif"
+  },
+  {
+    "primary_key": 137,
+    "category": "icon",
+    "tool_name": "Icons8",
+    "pricing": "free,paid",
+    "website": "https://icons8.com/icons",
+    "description": "Large icon packs of over 10k icons",
+    "extended_description": "versatile icon provider offering thousands of free and premium icons, with in-browser editing and vector formats (SVG/PNG), plus other design assets.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/icons8.avif"
+  },
+  {
+    "primary_key": 138,
+    "category": "icon",
+    "tool_name": "Thiings",
+    "pricing": "free",
+    "website": "https://www.thiings.co",
+    "description": "wide variety of 3d icons",
+    "extended_description": "curated design asset marketplace that includes icons, mockups, UI kits, and more to supercharge creative workflows.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/thiiings.avif"
+  },
+  {
+    "primary_key": 139,
+    "category": "icon",
+    "tool_name": "Creattie",
+    "pricing": "free,paid",
+    "website": "https://creattie.com/lottie-animated-icons/all",
+    "description": "Lottie animations and icons",
+    "extended_description": "library of 50,000+ premium Lottie animations, animated icons, and illustrations",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/creattie.avif"
+  },
+  {
+    "primary_key": 140,
+    "category": "illustration",
+    "tool_name": "3D icons",
+    "pricing": "free,paid",
+    "website": "https://www.3dicons.com/",
+    "description": "3D icon pack with 1,400+ Blender-crafted icons",
+    "extended_description": "open-source collection of 1,400+ free 3D-rendered icons under CC0",
+    "og_image_link": "https://www.3dicons.com/img/landing-assets/tresde-icons/metav2.png"
+  },
+  {
+    "primary_key": 141,
+    "category": "illustration",
+    "tool_name": "Avatartion",
+    "pricing": "free",
+    "website": "https://www.avatartion.com/",
+    "description": "Notion-style avatar generator with endless customizations",
+    "extended_description": "open-source, Notion-style avatar generator allowing customization of facial features, hairstyles, accessories",
+    "og_image_link": "https://avatartion.com/avatartion_og.png"
+  },
+  {
+    "primary_key": 142,
+    "category": "illustration",
+    "tool_name": "Bean Heads",
+    "pricing": "free",
+    "website": "https://beanheads.robertbroersma.com/",
+    "description": "avatar builder with billions of character combinations.",
+    "extended_description": "fun avatar maker generating “beanhead” characters—mix and match expressions, clothing, hairstyles to create billions of unique avatars.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/beanheads.avif"
+  },
+  {
+    "primary_key": 143,
+    "category": "illustration",
+    "tool_name": "Blush",
+    "pricing": "free,paid",
+    "website": "https://blush.design/",
+    "description": "Customizable illustrations by artists",
+    "extended_description": "user-friendly platform offering thousands of customizable vector illustrations from global artists.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/blush.avif"
+  },
+  {
+    "primary_key": 144,
+    "category": "illustration",
+    "tool_name": "Characterz",
+    "pricing": "paid",
+    "website": "https://characterz.design",
+    "description": "3D character library with 2B+ combinations for games, AR, and more.",
+    "extended_description": "High-quality 3D character packs with diverse poses and styles, ideal for websites, apps, and marketing.",
+    "og_image_link": "https://characterz.design/assets/images/share.jpg?v=1a5bbca5"
+  },
+  {
+    "primary_key": 145,
+    "category": "illustration",
+    "tool_name": "Creattie",
+    "pricing": "free,paid",
+    "website": "https://creattie.com/",
+    "description": "Marketplace for animated Lottie assets",
+    "extended_description": "high-quality 2D/3D illustrations, animations, and icons—customizable and ready for personal or commercial use.",
+    "og_image_link": "https://d1jj76g3lut4fe.cloudfront.net/pages/659Ofw6NoEDqOd67D9.png"
+  },
+  {
+    "primary_key": 146,
+    "category": "illustration",
+    "tool_name": "Desi Log",
+    "pricing": "free",
+    "website": "https://desilog.in/",
+    "description": "Indian character pack",
+    "extended_description": "mix‑and‑match illustration pack featuring diverse indian characters in both color and B&W—ideal for inclusive, culturally rich designs",
+    "og_image_link": "https://framerusercontent.com/images/KgwDDrS4Psvlz82iw8Mjkb4GBIo.png"
+  },
+  {
+    "primary_key": 147,
+    "category": "illustration",
+    "tool_name": "Doodle Ipsum",
+    "pricing": "free",
+    "website": "https://doodleipsum.com/",
+    "description": "customizable doodle placeholders for web and prototypes",
+    "extended_description": "“The lorem ipsum of illustrations”: customizable placeholder doodles you embed via a line of code—perfect for rapid web or prototype styling",
+    "og_image_link": "https://doodleipsum.com/1000x750/flat?bg=e3f5f8&i=23243fc71ac1a810a5873bde01e17f07"
+  },
+  {
+    "primary_key": 148,
+    "category": "illustration",
+    "tool_name": "Durves",
+    "pricing": "free",
+    "website": "https://www.durves.com",
+    "description": "customizable dot pattern generator",
+    "extended_description": "tool to generate and export dot‑matrix patterns (SVG/PNG), with adjustable size, color, and wave spread—great for visual backgrounds and branding",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/durves.avif"
+  },
+  {
+    "primary_key": 149,
+    "category": "illustration",
+    "tool_name": "Free illustrations",
+    "pricing": "free",
+    "website": "https://freeillustrations.xyz/",
+    "description": "free illustrations in diverse styles and themes",
+    "extended_description": "hub of free PNG & SVG illustration packs—ranging from abstract art and avatars to onboarding and themes",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/free%20illustration.avif"
+  },
+  {
+    "primary_key": 150,
+    "category": "illustration",
+    "tool_name": "Fresh Folk",
+    "pricing": "free",
+    "website": "https://fresh-folk.com",
+    "description": "character library: diverse poses, outfits, objects for scenes",
+    "extended_description": "Mix‑and‑match character scenes: a library of diverse people and objects, with multiple poses, outfits, and skin tones",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/freshfolk.avif"
+  },
+  {
+    "primary_key": 151,
+    "category": "illustration",
+    "tool_name": "Getillustrations",
+    "pricing": "free,paid",
+    "website": "https://www.getillustrations.com/",
+    "description": "vector packs for web/apps",
+    "extended_description": "Premium illustration packs (32K+ assets) for web/apps with commercial license—editable vectors in styles like flat, outline, sketch",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/get%20illustrations.avif"
+  },
+  {
+    "primary_key": 152,
+    "category": "illustration",
+    "tool_name": "Haikei",
+    "pricing": "free,paid",
+    "website": "https://haikei.app",
+    "description": "generative SVG tool - blobs, waves, patterns",
+    "extended_description": "web-based tool to generate unique SVG background shapes, blobs, gradients, and patterns for design projects.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/haikei.avif"
+  },
+  {
+    "primary_key": 153,
+    "category": "illustration",
+    "tool_name": "Handz",
+    "pricing": "free,paid",
+    "website": "https://www.handz.design/",
+    "description": "3D hand-gesture library",
+    "extended_description": "3D hands library with customizable poses, skin tones, and styles—perfect for UI mockups and product shots.",
+    "og_image_link": "https://www.handz.design/assets/images/share.jpg?v=bac0b150"
+  },
+  {
+    "primary_key": 154,
+    "category": "illustration",
+    "tool_name": "Humanities Illustration Library",
+    "pricing": "free",
+    "website": "https://levinunnink.gumroad.com/l/humanities-illustrations",
+    "description": "hand‑drawn illustration library",
+    "extended_description": "whimsical, hand‑drawn collection of 35 quirky character illustrations in transparent PNGs",
+    "og_image_link": "https://public-files.gumroad.com/ekz0nosywif2t5n024fc6yc0cl26"
+  },
+  {
+    "primary_key": 155,
+    "category": "illustration",
+    "tool_name": "Humans 3.0",
+    "pricing": "free,paid",
+    "website": "https://humans.wannathis.one/",
+    "description": "3D human characters",
+    "extended_description": "3D character pack with customizable people in playful, modern styles. Great for making websites and apps feel more lively and human-centered.",
+    "og_image_link": "https://d2pas86kykpvmq.cloudfront.net/twitter/humans-3.0.png"
+  },
+  {
+    "primary_key": 156,
+    "category": "illustration",
+    "tool_name": "3d humans",
+    "pricing": "free,paid",
+    "website": "https://icons8.com/l/3d",
+    "description": "3D icon & illustration library",
+    "extended_description": "variety of free and premium 3D illustrations, characters, and icons with adjustable camera angles.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/icons8%203d.avif"
+  },
+  {
+    "primary_key": 157,
+    "category": "illustration",
+    "tool_name": "Illustrations",
+    "pricing": "free",
+    "website": "https://illlustrations.co/",
+    "description": "Open source illustrations kit",
+    "extended_description": "collection of modern, flat-style illustrations available in SVG and PNG formats.",
+    "og_image_link": "https://illlustrations.co/preview.jpg"
+  },
+  {
+    "primary_key": 158,
+    "category": "illustration",
+    "tool_name": "Illustration Kit",
+    "pricing": "free",
+    "website": "https://illustrationkit.com/",
+    "description": "Premium handcrafted illustrations",
+    "extended_description": "premium illustration pack offering hundreds of clean, professional scenes designed for SaaS, web apps, and startups.",
+    "og_image_link": "https://illustrationkit.com/og-image.png"
+  },
+  {
+    "primary_key": 159,
+    "category": "illustration",
+    "tool_name": "IRA Design",
+    "pricing": "free",
+    "website": "https://iradesign.io/gallery/illustrations",
+    "description": "hand drawn sketch illustrations",
+    "extended_description": "colorful set of gradient-based illustrations from Creative Tim with modular components and human characters.",
+    "og_image_link": "https://raw.githack.com/ira-design/ira-design.github.io/master/assets/img/iradesign.jpg"
+  },
+  {
+    "primary_key": 160,
+    "category": "illustration",
+    "tool_name": "Lukasz Adam",
+    "pricing": "free,paid",
+    "website": "https://lukaszadam.com/illustrations",
+    "description": "Free SVG illustrations",
+    "extended_description": "collection of hand-drawn, minimalist SVG illustrations and icons.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/lucasz%20adam.avif"
+  },
+  {
+    "primary_key": 161,
+    "category": "illustration",
+    "tool_name": "ManyPixels",
+    "pricing": "free",
+    "website": "https://www.manypixels.co/gallery",
+    "description": "Free illustrations to power up your designs",
+    "extended_description": "collection of royalty-free vector illustrations in categories like business, tech, and education etc",
+    "og_image_link": "https://cdn.prod.website-files.com/63a9cb71c629474d4ae334b9/64b7a89aa9b24259d1d94981_GALLERY.jpg"
+  },
+  {
+    "primary_key": 162,
+    "category": "illustration",
+    "tool_name": "Need3D",
+    "pricing": "free",
+    "website": "https://need3d.ru/en",
+    "description": "3D illustrations across themes like tech, abstract, and blockchain.",
+    "extended_description": "free, downloadable collection of stylized PNG 3D illustrations and abstract objects, ideal for branding and web use",
+    "og_image_link": "https://static.tildacdn.com/tild3635-6261-4232-b337-343261643835/Frame_137.jpg"
+  },
+  {
+    "primary_key": 163,
+    "category": "illustration",
+    "tool_name": "Nivo",
+    "pricing": "free",
+    "website": "https://nivo.rocks/",
+    "description": "interactive React charts powered by D3",
+    "extended_description": "React + D3 charting library offering a suite of fully customizable, animated data visualizations (line, bar, pie, heatmap, maps, and more)",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/nivo.avif"
+  },
+  {
+    "primary_key": 164,
+    "category": "illustration",
+    "tool_name": "Notioly",
+    "pricing": "free,paid",
+    "website": "https://notioly.com/",
+    "description": "Notion-style illustrations—clean and minimal",
+    "extended_description": "collection of SVG illustrations in the Notion aesthetic—customizable, updated monthly, with free and premium options",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/notioly.avif"
+  },
+  {
+    "primary_key": 165,
+    "category": "illustration",
+    "tool_name": "Notion Avatar Maker",
+    "pricing": "free",
+    "website": "https://notion-avatar.vercel.app/",
+    "description": "Minimal Notion avatar builder",
+    "extended_description": "Generates clean, Notion-style avatars with adjustable features (face, hair, accessories). Free to use and customizable via web interface",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/notion-avatar.avif"
+  },
+  {
+    "primary_key": 166,
+    "category": "illustration",
+    "tool_name": "Notion Avatar Maker",
+    "pricing": "free",
+    "website": "https://demo.cvbox.org/",
+    "description": "Notion Style Avatar Maker",
+    "extended_description": "An online passport photo and avatar maker offering properly sized ID photos and customizable Notion-style avatars",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/demo.avif"
+  },
+  {
+    "primary_key": 167,
+    "category": "illustration",
+    "tool_name": "Open Stickers",
+    "pricing": "free,paid",
+    "website": "https://openstickers.craftwork.design/",
+    "description": "free sticker pack by craftwork",
+    "extended_description": "80+ playful SVG/PNG sticker illustrations (tech, nature, lifestyle)",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/open%20stickers.avif"
+  },
+  {
+    "primary_key": 168,
+    "category": "illustration",
+    "tool_name": "Opendoodles",
+    "pricing": "free",
+    "website": "https://www.opendoodles.com",
+    "description": "sketchy hand-drawn person illustrations",
+    "extended_description": "collection of whimsical, hand-drawn SVG/PNG/GIF doodles released under CC0",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/open%20doodles.avif"
+  },
+  {
+    "primary_key": 169,
+    "category": "illustration",
+    "tool_name": "Ouch",
+    "pricing": "free,paid",
+    "website": "https://icons8.com/illustrations",
+    "description": "flat, 3D, and GIF illustrations",
+    "extended_description": "library of themed vector & PNG illustrations, plus matching icon sets",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/ouch.avif"
+  },
+  {
+    "primary_key": 170,
+    "category": "illustration",
+    "tool_name": "Overflow Design",
+    "pricing": "free,paid",
+    "website": "https://www.overflow.design/index.html",
+    "description": "Notion-style illustrations, icons, and wallpapers",
+    "extended_description": "1350 free and premium Notion-style Illustrations, 3300+ Notion Icons and Notion Wallpapers.",
+    "og_image_link": "https://overflow.design/src/assets/img/od-preview.jpg"
+  },
+  {
+    "primary_key": 171,
+    "category": "illustration",
+    "tool_name": "Peeps",
+    "pricing": "free",
+    "website": "https://peeps.ui8.net/",
+    "description": "3D avatar builder",
+    "extended_description": "3D avatar builder offering interactive, customizable characters (expressions, styling)",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/peeps.avif"
+  },
+  {
+    "primary_key": 172,
+    "category": "illustration",
+    "tool_name": "Pixeltrue",
+    "pricing": "paid",
+    "website": "https://www.pixeltrue.com/packs",
+    "description": "high-quality 2D illustrations and animated packs",
+    "extended_description": "massive collection (100K+ images) of ray-traced 3D illustration packs (PNG/PNG),",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/pixeltrue.avif"
+  },
+  {
+    "primary_key": 173,
+    "category": "illustration",
+    "tool_name": "Sapiens",
+    "pricing": "free",
+    "website": "https://sapiens.ui8.net/6f3c3c4",
+    "description": "customizable human vector illustrations",
+    "extended_description": "character illustration library with fully customizable body parts, backdrops, and poses—enabling the creation of hundreds of unique characters",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/sapiens.avif"
+  },
+  {
+    "primary_key": 174,
+    "category": "illustration",
+    "tool_name": "Shapefest",
+    "pricing": "free,paid",
+    "website": "https://www.shapefest.com/",
+    "description": "100k+ ray-traced 3D shapes",
+    "extended_description": "beautifully ray-traced 3D shapes—over 100,000 high-resolution PNGs ideal for presentations, websites, and UI/motion design",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/shapefest.avif"
+  },
+  {
+    "primary_key": 175,
+    "category": "illustration",
+    "tool_name": "Shapes",
+    "pricing": "free",
+    "website": "https://shapes.framer.website",
+    "description": "unique and cool svg shapes",
+    "extended_description": "set of 120+ copy‑paste SVG shapes, designed for easy use in Framer projects, enhancing workflow and visual variety",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/shapes.avif"
+  },
+  {
+    "primary_key": 176,
+    "category": "illustration",
+    "tool_name": "Spectrum",
+    "pricing": "free",
+    "website": "https://spectrums.framer.website/",
+    "description": "premium vector shape",
+    "extended_description": "vault of over 100 premium vector shapes—designed to spark creativity in modern design project",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/spectrum.avif"
+  },
+  {
+    "primary_key": 177,
+    "category": "illustration",
+    "tool_name": "Storyset",
+    "pricing": "free",
+    "website": "https://storyset.com/",
+    "description": "Customizable, animatable illustrations",
+    "extended_description": "customizable, and animatable vector illustrations—covering themes like business, education, technology, health, and more.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/storyset.avif"
+  },
+  {
+    "primary_key": 178,
+    "category": "illustration",
+    "tool_name": "Transhumans",
+    "pricing": "free",
+    "website": "https://www.transhumans.xyz/",
+    "description": "brush‑stroke illustrations by Pablo Stanley",
+    "extended_description": "striking black-and-white illustration series exploring themes of punk, transhumanism, and minimalist Japanese art",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/transhumans.avif"
+  },
+  {
+    "primary_key": 179,
+    "category": "illustration",
+    "tool_name": "UnDraw",
+    "pricing": "free",
+    "website": "https://undraw.co/",
+    "description": "Extensive open-source illustration library",
+    "extended_description": "open-source library of thousands of customizable SVG illustrations—usable for websites, apps, presentations, with no attribution needed",
+    "og_image_link": "https://cdn.undraw.co/static/ud24ogimage.png"
+  },
+  {
+    "primary_key": 180,
+    "category": "illustration",
+    "tool_name": "Userpics",
+    "pricing": "free",
+    "website": "https://userpics.craftwork.design",
+    "description": "100 free vector avatars in circle and square formats",
+    "extended_description": "100 free vector avatars in various styles (flat, 3D, hand-drawn), offered in both circle and square formats",
+    "og_image_link": "https://userpics.craftwork.design/images/Open-Graph-1.png"
+  },
+  {
+    "primary_key": 181,
+    "category": "illustration",
+    "tool_name": "Wannathis",
+    "pricing": "free,paid",
+    "website": "https://wannathis.one/3d-characters",
+    "description": "3D avatar/character packs",
+    "extended_description": "high-quality 3D character assets—emojis, space-themed, humans, superheroes, and more—available for Figma/Blender with multiple outfits and poses",
+    "og_image_link": "https://d2pas86kykpvmq.cloudfront.net/twitter/type-3d-characters.png"
+  },
+  {
+    "primary_key": 182,
+    "category": "illustration",
+    "tool_name": "Streamline Illustrations",
+    "pricing": "free,paid",
+    "website": "https://www.streamlinehq.com/illustrations",
+    "description": "vector art",
+    "extended_description": "One of the world's largest illustration libraries with over 30,000 vector illustrations and 35,000 icons—available in SVG, PNG, and Figma",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/streamline%20illustrations.avif"
+  },
+  {
+    "primary_key": 183,
+    "category": "illustration",
+    "tool_name": "Storytale",
+    "pricing": "free,paid",
+    "website": "https://storytale.io/",
+    "description": "6,000+ graphics, illustrations, and assets",
+    "extended_description": "750+ free vector packs (2D and 3D), with regularly updated design assets and optional custom illustration services",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/storytale.avif"
+  },
+  {
+    "primary_key": 184,
+    "category": "illustration",
+    "tool_name": "3d hands",
+    "pricing": "free,paid",
+    "website": "https://icons8.com/l/3d-hands/",
+    "description": "Fun 3D hand gestures",
+    "extended_description": "adorable, customizable 3D hand icons (PNGs, SVGs) available in two visual styles—ideal for UI walkthroughs and engaging graphics",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/3d%20hands.avif"
+  },
+  {
+    "primary_key": 185,
+    "category": "illustration",
+    "tool_name": "3d christmas",
+    "pricing": "free,paid",
+    "website": "https://icons8.com/l/christmas-3d/",
+    "description": "Festive 3D holiday icons & scenes.",
+    "extended_description": "3D holiday-themed icons and PNG/SVG illustrations with recoloring support",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/3d%20christmas.avif"
+  },
+  {
+    "primary_key": 186,
+    "category": "font",
+    "tool_name": "Type Department",
+    "pricing": "paid",
+    "website": "https://type-department.com/",
+    "description": "Modern font marketplace with pro licensing.",
+    "extended_description": "boutique foundry offering a curated catalog of contemporary typefaces",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/type-department.avif"
+  },
+  {
+    "primary_key": 187,
+    "category": "design_inspiration",
+    "tool_name": "Fonts In Use",
+    "pricing": "free",
+    "website": "https://fontsinuse.com/",
+    "description": "Real-world font inspiration and case studies.",
+    "extended_description": "archive showcasing real-world typographic usage across industries—searchable by font, format, and application for design inspiration",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/fonts%20in%20use.avif"
+  },
+  {
+    "primary_key": 188,
+    "category": "font",
+    "tool_name": "Fontshare",
+    "pricing": "free",
+    "website": "https://www.fontshare.com/",
+    "description": "Free, high-quality fonts for any project.",
+    "extended_description": "font service from Indian Type Foundry, offering high-quality, multilingual typefaces free for personal and commercial projects",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/fontshare.avif"
+  },
+  {
+    "primary_key": 189,
+    "category": "font",
+    "tool_name": "Pangram Pangram",
+    "pricing": "paid",
+    "website": "https://pangrampangram.com/",
+    "description": "Trendy, free-to-try modern typefaces.",
+    "extended_description": "type foundry offering contemporary, expressive fonts for print, digital, and brand use",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/panagrampanagram.avif"
+  },
+  {
+    "primary_key": 190,
+    "category": "font",
+    "tool_name": "Velvetyne",
+    "pricing": "free",
+    "website": "https://velvetyne.fr/",
+    "description": "Open-source, experimental & bold fonts.",
+    "extended_description": "Paris-based collective crafting open-source fonts (linear, display, variable), all freely available under permissive licenses",
+    "og_image_link": "https://velvetyne.fr/site/templates/img/og.gif"
+  },
+  {
+    "primary_key": 191,
+    "category": "font",
+    "tool_name": "VJ Type",
+    "pricing": "paid",
+    "website": "https://vj-type.com/",
+    "description": "Bold, artistic fonts by Violaine & Jérémy.",
+    "extended_description": "Independent Parisian foundry by Violaine & Jérémy, known for bold, distinctive typefaces like Dahlia, Kobe, Voyage—available in multiple style",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/vj.avif"
+  },
+  {
+    "primary_key": 192,
+    "category": "font",
+    "tool_name": "The League of Moveable Type",
+    "pricing": "free",
+    "website": "https://www.theleagueofmoveabletype.com/",
+    "description": "First open-source font foundry—clean, classic fonts.",
+    "extended_description": "open-source foundry offering quality fonts (e.g., League Gothic, Junction) under the Open Font License, ideal for learning and using free typography",
+    "og_image_link": "https://www.theleagueofmoveabletype.com/opengraph-image?352406f8afac03ca"
+  },
+  {
+    "primary_key": 193,
+    "category": "font",
+    "tool_name": "Open Foundry",
+    "pricing": "free",
+    "website": "https://open-foundry.com/fonts",
+    "description": "Curated, beautiful open-source typefaces.",
+    "extended_description": "minimal, noise‑free platform curating high-quality open-source fonts—showcases classics like Inter and Junicode",
+    "og_image_link": "http://open-foundry.com/img/of-cover-preview.jpg"
+  },
+  {
+    "primary_key": 194,
+    "category": "font",
+    "tool_name": "Use & Modify",
+    "pricing": "free",
+    "website": "https://usemodify.com/",
+    "description": "Stylish, weird, modifiable open-source fonts.",
+    "extended_description": "personal, lovingly curated collection of eclectic open-source typefaces—free to use and tweak under open licenses",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/use%20and%20modify.avif"
+  },
+  {
+    "primary_key": 195,
+    "category": "font",
+    "tool_name": "TypeType",
+    "pricing": "paid",
+    "website": "https://typetype.org",
+    "description": "Pro-quality commercial fonts—serif, sans, variable.",
+    "extended_description": "Award-winning commercial type foundry with 75+ high-quality font families, including variable fonts; offers font previews, styles, and web integration",
+    "og_image_link": "https://typetype.org/wp-content/uploads/website_for_search_free_fonts_en.png"
+  },
+  {
+    "primary_key": 196,
+    "category": "font",
+    "tool_name": "Fontfabric",
+    "pricing": "paid",
+    "website": "https://www.fontfabric.com/",
+    "description": "Modern, premium + free fonts for brands.",
+    "extended_description": "digital foundry crafting retail and custom fonts (sans, serif, display, script), also offering several free, commercial-use font families",
+    "og_image_link": "https://www.fontfabric.com/wp-content/uploads/2024/12/Homepage-Fontfabric-We-Design-Fonts-Inverted.png"
+  },
+  {
+    "primary_key": 197,
+    "category": "font",
+    "tool_name": "Uncut",
+    "pricing": "free",
+    "website": "https://uncut.wtf/",
+    "description": "Edgy, open-source typefaces—free & experimental.",
+    "extended_description": "catalogue spotlighting 163 contemporary, commercial‑use fonts (sans, serif, monospace, display), with clean UI",
+    "og_image_link": "https://uncut.wtf/assets/images/og_image.jpg"
+  },
+  {
+    "primary_key": 198,
+    "category": "font",
+    "tool_name": "Tunera Type Foundry",
+    "pricing": "free",
+    "website": "https://www.tunera.xyz/",
+    "description": "Fresh, original open-source fonts",
+    "extended_description": "transnational foundry (Paris-based) creating sharp, character-rich fonts (e.g., Nyght, Teranoptia, Paysage) under open license",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/tunera.avif"
+  },
+  {
+    "primary_key": 199,
+    "category": "font",
+    "tool_name": "Libre fonts",
+    "pricing": "free",
+    "website": "https://www.design-research.be/by-womxn/",
+    "description": "Libre open-source fonts designed by womxn",
+    "extended_description": "collection celebrating libre/open-source fonts designed by womxn—spotlighting underrepresented voices in typography",
+    "og_image_link": "https://www.design-research.be/by-womxn/by-women-screenshot.png"
+  },
+  {
+    "primary_key": 200,
+    "category": "font",
+    "tool_name": "Anrt nancy",
+    "pricing": "free",
+    "website": "https://anrt-nancy.fr/fr/fonts",
+    "description": "Research-driven French digital fonts",
+    "extended_description": "France’s elite postgraduate typographic research institute (est.1985) offering experimental type projects like Chaumont Script",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/anrt.avif"
+  },
+  {
+    "primary_key": 201,
+    "category": "font",
+    "tool_name": "Atipo foundry",
+    "pricing": "free,paid",
+    "website": "https://www.atipofoundry.com/",
+    "description": "Independent Spanish foundry offering retail fonts",
+    "extended_description": "Spain-based independent digital foundry offering retail and variable fonts (like Numerals-focused n27, Abridge),",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/atipo.avif"
+  },
+  {
+    "primary_key": 202,
+    "category": "font",
+    "tool_name": "Fontesk",
+    "pricing": "free",
+    "website": "https://fontesk.com/",
+    "description": "collection of 12k+ high-quality free & open-source fonts",
+    "extended_description": "12,000+ free fonts, categorized by style and licensing; includes daily updates, calligraphy and commercial-use sections",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/fontdesk.avif"
+  },
+  {
+    "primary_key": 203,
+    "category": "font",
+    "tool_name": "Font Brief",
+    "pricing": "free",
+    "website": "https://www.fontbrief.com/home",
+    "description": "font discovery—browse by mood, style, and project",
+    "extended_description": "personality‑driven font discovery tool: choose traits like “friendly” or “organic” to get curated font recommendations—designed for professional briefs",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/fontbreif.avif"
+  },
+  {
+    "primary_key": 204,
+    "category": "font",
+    "tool_name": "Free Fonts",
+    "pricing": "free",
+    "website": "https://www.fontspace.com/",
+    "description": "Massive font library, with previews and commercial-use filters",
+    "extended_description": "font repository hosting 140,000+ fonts, including commercial-use options, style filtering, trending/new collections",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/fontspace.avif"
+  },
+  {
+    "primary_key": 205,
+    "category": "font",
+    "tool_name": "FreeTypography",
+    "pricing": "free",
+    "website": "https://freetypography.com/",
+    "description": "Typographic blog featuring curated free font downloads",
+    "extended_description": "typography blog showcasing top free fonts and typeface selections—download high-quality fonts directly and explore curated picks like “Renesnip‑Sans” and “Victorian Decade”",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/free%20typography.avif"
+  },
+  {
+    "primary_key": 206,
+    "category": "font",
+    "tool_name": "FontGet",
+    "pricing": "free",
+    "website": "https://www.fontget.com/",
+    "description": "Extensive free font archive with generators",
+    "extended_description": "font directory with an integrated font generator—browse categories like sans-serif, calligraphy, gaming fonts, and download for desktop or web",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/fontget.avif"
+  },
+  {
+    "primary_key": 207,
+    "category": "font",
+    "tool_name": "1001 Free Fonts",
+    "pricing": "free",
+    "website": "https://www.1001freefonts.com/",
+    "description": "Vast free font catalog featuring diverse styles",
+    "extended_description": "massive archive offering 118,000+ free fonts across 63,000+ families—updated daily, with categories from calligraphy to 3D",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/1001%20fonts.avif"
+  },
+  {
+    "primary_key": 208,
+    "category": "font",
+    "tool_name": "Abstract Fonts",
+    "pricing": "free",
+    "website": "https://www.abstractfonts.com/",
+    "description": "Large font directory offering a broad mix of free styles",
+    "extended_description": "long-standing site (20+ years) with over 10,000 free fonts—featuring unique categories like horror, futuristic, and cartoon styles",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/abstract%20fonts.avif"
+  },
+  {
+    "primary_key": 209,
+    "category": "font",
+    "tool_name": "Fonts Ninja",
+    "pricing": "paid",
+    "website": "https://fonts.ninja",
+    "description": "Browser extension to identify, bookmark, and organize fonts",
+    "extended_description": "browser extension and app that identifies fonts on any website, provides font metadata, bookmarks your favorites, and recommends similar styles",
+    "og_image_link": "https://fonts.ninja/images/social.png"
+  },
+  {
+    "primary_key": 210,
+    "category": "font",
+    "tool_name": "X Cicéro",
+    "pricing": "free",
+    "website": "https://xcicero.esad-gv.net",
+    "description": "Student-run workshop that digitizes French woodtype, offering open-licensed fonts",
+    "extended_description": "typographic workshop from ESAD Valence, preserving and digitizing antique wooden types into Open Font License releases like “Affigere” and “Thestral Neue”",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/x%20ciero.avif"
+  },
+  {
+    "primary_key": 211,
+    "category": "font",
+    "tool_name": "Google fonts",
+    "pricing": "free",
+    "website": "https://fonts.google.com/",
+    "description": "Extensive open-source font library",
+    "extended_description": "open-source font library by Google offering over 1,600 free fonts including serif, sans-serif, display, handwriting, and monospace families.",
+    "og_image_link": "https://www.gstatic.com/images/icons/material/apps/fonts/1x/catalog/v5/opengraph_color.png"
+  },
+  {
+    "primary_key": 212,
+    "category": "mockup",
+    "tool_name": "Mockup online",
+    "pricing": "paid",
+    "website": "https://mockup-online.wannathis.one/",
+    "description": "Web-based mockup generator",
+    "extended_description": "browser-based tool with premium-quality mockups (phones, laptops, desktops, print) in realistic scenes",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mockup%20online.avif"
+  },
+  {
+    "primary_key": 213,
+    "category": "font",
+    "tool_name": "Future Fonts",
+    "pricing": "paid",
+    "website": "https://www.futurefonts.com/fonts",
+    "description": "type designers selling fonts in progress",
+    "extended_description": "showcasing fonts that are currently being developed by independent type designers.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/future%20fonts.avif"
+  },
+  {
+    "primary_key": 214,
+    "category": "font",
+    "tool_name": "Ohno Type",
+    "pricing": "paid",
+    "website": "https://ohnotype.co",
+    "description": "Playful type foundry offering unique fonts",
+    "extended_description": "retail and custom typefaces with the intent of making graphic design fun for everyone",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/ohno%20type.avif"
+  },
+  {
+    "primary_key": 215,
+    "category": "mockup",
+    "tool_name": "Pixel Buddha",
+    "pricing": "free,paid",
+    "website": "https://pixelbuddha.net/mockups",
+    "description": " free & premium resources for the professional community",
+    "extended_description": "mockups,fonts,effects,textures,graphics and design resources for professionals",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/pixelbuddha.avif"
+  },
+  {
+    "primary_key": 216,
+    "category": "font",
+    "tool_name": "Pixel Buddha",
+    "pricing": "free,paid",
+    "website": "https://pixelbuddha.net/fonts",
+    "description": " free & premium resources for the professional community",
+    "extended_description": "mockups,fonts,effects,textures,graphics and design resources for professionals",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/pixelbuddha.avif"
+  },
+  {
+    "primary_key": 217,
+    "category": "font",
+    "tool_name": "Studio2am",
+    "pricing": "paid",
+    "website": "https://studio2am.co/collections/fonts",
+    "description": "Real tools from real designers.",
+    "extended_description": "We cut through the noise to bring you high-quality fonts, mockups, graphics, textures, and more — so you can create faster with the best tools at your fingertips. ",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/studio2%20am.avif"
+  },
+  {
+    "primary_key": 218,
+    "category": "mockup",
+    "tool_name": "Studio2am",
+    "pricing": "paid",
+    "website": "https://studio2am.co/collections/mockups",
+    "description": "Real tools from real designers.",
+    "extended_description": "We cut through the noise to bring you high-quality fonts, mockups, graphics, textures, and more — so you can create faster with the best tools at your fingertips. ",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/studio2%20am.avif"
+  },
+  {
+    "primary_key": 219,
+    "category": "font",
+    "tool_name": "Power Type",
+    "pricing": "paid",
+    "website": "https://power-type.com/",
+    "description": "independent foundry creating high-quality fonts",
+    "extended_description": "crafting top-quality fonts that not only possess visual appeal but also offer versatility and functionality.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/power%20type.avif"
+  },
+  {
+    "primary_key": 220,
+    "category": "font",
+    "tool_name": "Good Type",
+    "pricing": "paid",
+    "website": "https://goodtypefoundry.com/",
+    "description": "",
+    "extended_description": "Good Type is a type foundry that specializes in creating high-quality, unique typefaces for designers and creatives.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/good%20type.avif"
+  },
+  {
+    "primary_key": 221,
+    "category": "mockup",
+    "tool_name": "Supply",
+    "pricing": "paid",
+    "website": "https://supply.family/product-category/mockups/",
+    "description": "premium mockups, fonts, and design assets",
+    "extended_description": "curated digital marketplace offering premium mockups, fonts, graphics, and creative assets for designers.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/supply.avif"
+  },
+  {
+    "primary_key": 222,
+    "category": "font",
+    "tool_name": "Supply",
+    "pricing": "paid",
+    "website": "https://supply.family/product-category/fonts/",
+    "description": "premium mockups, fonts, and design assets",
+    "extended_description": "curated digital marketplace offering premium mockups, fonts, graphics, and creative assets for designers.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/supply.avif"
+  },
+  {
+    "primary_key": 223,
+    "category": "mockup",
+    "tool_name": "Mockuplab",
+    "pricing": "paid",
+    "website": "https://mockuplab.shop/",
+    "description": "premium, high-quality Photoshop mockups",
+    "extended_description": "creative resource platform specializing in high-quality, realistic Photoshop mockups tailored for designers, brands, and agencies",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mockup%20lab.avif"
+  },
+  {
+    "primary_key": 224,
+    "category": "colour",
+    "tool_name": "Super Color Palette",
+    "pricing": "free",
+    "website": "https://supercolorpalette.com/",
+    "description": "generate and export custom color palettes for free",
+    "extended_description": "generate, save, and export color palettes by shifting hue, saturation, lightness, and more",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/supercolorpalettte.avif"
+  },
+  {
+    "primary_key": 225,
+    "category": "mockup",
+    "tool_name": "Mocku",
+    "pricing": "free,paid",
+    "website": "https://www.hellomocku.com/",
+    "description": "handcrafted, realistic mockups for designers",
+    "extended_description": "handcrafted, realistic mockups—packaging, posters, apparel, and more—crafted by designers for designers.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mocku.avif"
+  },
+  {
+    "primary_key": 226,
+    "category": "mockup",
+    "tool_name": "Scene number mockup",
+    "pricing": "paid",
+    "website": "https://scenenumbermockup.com/",
+    "description": "cinematic, high-quality design mockups.",
+    "extended_description": "cinematic, high-quality mockups that transform your designs into immersive real-world scenes.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/colormind.avif"
+  },
+  {
+    "primary_key": 227,
+    "category": "mockup",
+    "tool_name": "Showcase",
+    "pricing": "paid",
+    "website": "https://www.showcasebh.com/",
+    "description": "premium mockups for striking design presentations.",
+    "extended_description": "high-quality, contemporary mockups designed to help designers create a strong visual presence.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/showcase.avif"
+  },
+  {
+    "primary_key": 228,
+    "category": "mockup",
+    "tool_name": "Colortime",
+    "pricing": "free,paid",
+    "website": "https://colortime.shop/?v=85d1a9c488d7",
+    "description": "290+ premium mockups and digital assets with lifetime access",
+    "extended_description": "290+ premium mockups and digital assets for designers, with a one-time purchase granting lifetime access to all current and future releases",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/coolors.avif"
+  },
+  {
+    "primary_key": 229,
+    "category": "mockup",
+    "tool_name": "Akoya mockups",
+    "pricing": "free",
+    "website": "https://akoyamockups.com/",
+    "description": "250+ photo-realistic mockups to elevate your design presentations",
+    "extended_description": "collection of 250+ high-resolution, photo-realistic mockups designed to help creatives present their work in a polished, professional, and visually compelling way.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/akoya.avif"
+  },
+  {
+    "primary_key": 230,
+    "category": "mockup",
+    "tool_name": "Orbyt studio",
+    "pricing": "paid",
+    "website": "https://orbyt.studio/",
+    "description": "190+ premium mockups and graphics for stunning design showcases",
+    "extended_description": "visual design library offering 190+ high-quality mockups and graphics — ideal for showcasing branding, print, tech, packaging, and more",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/orbyt.avif"
+  },
+  {
+    "primary_key": 231,
+    "category": "mockup",
+    "tool_name": "Darkroom",
+    "pricing": "paid",
+    "website": "https://www.darkroom.au/",
+    "description": "sleek, minimal, dark-mode mockups for high-end designerss",
+    "extended_description": "premium dark-mode mockups, crafted for designers who want to present their work in a sleek, minimal, and modern aesthetic.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/darkroom.avif"
+  },
+  {
+    "primary_key": 232,
+    "category": "mockup",
+    "tool_name": "Ply",
+    "pricing": "paid",
+    "website": "https://www.ply.supply/",
+    "description": "premium, detail-rich mockups for designers",
+    "extended_description": "mockup store dedicated to high-quality design assets — from devices to scenes — where every detail matters.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/ply.avif"
+  },
+  {
+    "primary_key": 233,
+    "category": "mockup",
+    "tool_name": "layers",
+    "pricing": "paid",
+    "website": "https://layers.design/",
+    "description": "curated library of digital design assets",
+    "extended_description": "visual agency and digital asset shop that helps designers showcase their work with high-quality mockups, graphics, and in-context visuals",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/layers.avif"
+  },
+  {
+    "primary_key": 234,
+    "category": "font",
+    "tool_name": "Superior Type",
+    "pricing": "paid",
+    "website": "https://www.superiortype.com/",
+    "description": "custom and retail fonts for branding, visual identity etc",
+    "extended_description": "custom and retail fonts for branding, visual identity etc",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/superior%20type.avif"
+  },
+  {
+    "primary_key": 235,
+    "category": "colour",
+    "tool_name": "Photogradient",
+    "pricing": "free",
+    "website": "https://photogradient.com/",
+    "description": "create unique mesh gradients from your photos",
+    "extended_description": "upload an image, and the tool will generate a gradient that can be downloaded or copied as CSS code for use in various design projects",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/photogradient-1.avif"
+  },
+  {
+    "primary_key": 236,
+    "category": "mockup",
+    "tool_name": "Mocku",
+    "pricing": "paid",
+    "website": "https://mocku.co/",
+    "description": "Instantly create device and video mockups.",
+    "extended_description": "AI-powered tool to instantly convert screenshots or URLs into high-quality device mockups and video mockups",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mocku2.avif"
+  },
+  {
+    "primary_key": 237,
+    "category": "mockup",
+    "tool_name": "Sedshop",
+    "pricing": "paid",
+    "website": "https://sedshop.co/",
+    "description": "premium, handcrafted PSD mockups for designers",
+    "extended_description": "premium, handcrafted PSD mockups—posters, screens, packaging, and more—for designers.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/sedshop.avif"
+  },
+  {
+    "primary_key": 238,
+    "category": "mockup",
+    "tool_name": "Hardrender",
+    "pricing": "free,paid",
+    "website": "https://www.hardrender.app/",
+    "description": "create, preview, and export high quality mockups in seconds",
+    "extended_description": "browser-based mockup and visual storytelling tool for designers and teams. It allows you to create, preview, and export mockups",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/hardrender.avif"
+  },
+  {
+    "primary_key": 239,
+    "category": "mockup",
+    "tool_name": "Mockup Directory",
+    "pricing": "paid",
+    "website": "https://mockups.directory",
+    "description": "Mockups crafted to elevate your designs and help clients trust your creative vision",
+    "extended_description": "extensive collection of free, high-quality, photo-realistic mockups for various design projects.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/mockups%20directory.avif"
+  },
+  {
+    "primary_key": 240,
+    "category": "illustration",
+    "tool_name": "Atipo Illustrations",
+    "pricing": "free,paid",
+    "website": "https://atipoillustrations.com/",
+    "description": "meticulously crafted in-house illustrations,",
+    "extended_description": "Bespoke, hand-tuned artwork blending organic textures and deliberate details to create a unique, cohesive, and premium brand visual identity.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/atipo%20illustration.avif"
+  },
+  {
+    "primary_key": 241,
+    "category": "illustration",
+    "tool_name": "Graphic Stash",
+    "pricing": "free,paid",
+    "website": "https://graphicstash.com",
+    "description": "elevated design assets for digital creators",
+    "extended_description": "Sophisticated, high-quality templates and graphics that empower creators to produce professional, polished content with effortless style and distinctive visual impact",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/grafik%20stash.avif"
+  },
+  {
+    "primary_key": 242,
+    "category": "font",
+    "tool_name": "Typographer",
+    "pricing": "paid",
+    "website": "https://typographer.com/",
+    "description": "find sync and try fonts for free",
+    "extended_description": "Seamlessly discover and synchronize typefaces, enabling you to preview fonts instantly across applications for an effortless and efficient design workflow.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/typographer.avif"
+  },
+  {
+    "primary_key": 243,
+    "category": "illustration",
+    "tool_name": "Absurd Design",
+    "pricing": "paid",
+    "website": "https://absurd.designs",
+    "description": "absurd illustrations that make sense",
+    "extended_description": "Surreal, playful visuals that clarify complex ideas, blending bizarre imagery with sharp logic for instant, memorable understanding",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/absurd%20design.avif"
+  },
+  {
+    "primary_key": 244,
+    "category": "design_inspiration",
+    "tool_name": "Absurd Design",
+    "pricing": "free,paid",
+    "website": "https://saaspo.com",
+    "description": "best saas web design inspiration",
+    "extended_description": "curated collection of the best SaaS landing pages on the web. Quickly find the design inspiration you’re looking for with our filters.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/saaspo.avif"
+  },
+  {
+    "primary_key": 245,
+    "category": "font",
+    "tool_name": "Silver Stag",
+    "pricing": "free,paid",
+    "website": "https://silverstagtype.com/",
+    "description": "premium fonts for designers & creatives",
+    "extended_description": "Spanish type foundry crafting premium fonts for designers & creatives who demand the finest typography for their projects",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/silver%20stag.avif"
+  },
+  {
+    "primary_key": 246,
+    "category": "icon",
+    "tool_name": "Majestic Icons",
+    "pricing": "free,paid",
+    "website": "https://www.majesticons.com",
+    "description": "beautiful icons make stunning designs",
+    "extended_description": "Expertly crafted symbols that instantly elevate interfaces, adding polish and clarity to turn simple layouts into professional, stunning designs",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/majestic%20icons.avif"
+  },
+  {
+    "primary_key": 247,
+    "category": "mockup",
+    "tool_name": "Brand New Mockups",
+    "pricing": "free,paid",
+    "website": "https://brandnewmockup.com/",
+    "description": "professional mockups for designers",
+    "extended_description": "Professional mockups empowering designers to craft harmonious, high-quality brand visuals that elevate aesthetics.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/brand%20new%20mockup.avif"
+  },
+  {
+    "primary_key": 248,
+    "category": "font",
+    "tool_name": "best free fonts",
+    "pricing": "free",
+    "website": "https://bestfreefonts.com",
+    "description": "curated collection of versatile, high-quality fonts",
+    "extended_description": "curated collection of versatile, high-quality fonts that empower designers to create stunning, professional projects with ease.",
+    "og_image_link": "https://pub-c51f3dea40b34c5f8f4cd14637f22cdc.r2.dev/bestfreefonts.avif"
+  }
+]
