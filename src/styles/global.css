@@ -48,6 +48,10 @@
   .font-departure {
     font-family: var(--font-departure);
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @theme inline {
@@ -133,6 +137,10 @@
   }
   body {
     @apply bg-background text-foreground;
+    -ms-overflow-style: none;
+  }
+  body::-webkit-scrollbar {
+    display: none;
   }
   html {
     @apply font-sans;
