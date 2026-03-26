@@ -48,6 +48,9 @@ export default defineConfig({
   integrations: [react(), sitemap()],
   adapter: vercel(),
 
+  build: {
+    inlineStylesheets: 'always'
+  },
   vite: {
     plugins: [tailwindcss()]
   }
