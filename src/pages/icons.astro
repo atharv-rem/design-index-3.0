@@ -3,7 +3,7 @@ import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
 ---
 
-<HomescreenLayout title="Icon Libraries for UI and Product Design | Design Index" description="Explore curated icon libraries with line, solid, duotone, and animated icon styles for digital products." keywords="icons, icon libraries, UI icons, product icons, animated icons, SVG icons" backgroundVariant="slate">
+<HomescreenLayout title="Icon Libraries for UI and Product Design | Design Index" description="Explore curated icon libraries with line, solid, duotone, and animated icon styles for digital products." keywords="icons, icon libraries, UI icons, product icons, animated icons, SVG icons" backgroundVariant="slate" floatingNavbarMode="search">
 	<main class="mt-[50px] px-[20px]">
 		<section>
 			<div>
@@ -11,7 +11,7 @@ import ToolsGrid from "../components/tools-grid";
 				<p class="mt-4 rounded-lg bg-[#181818] px-[10px] py-[5px] font-departure text-sm leading-[20px] text-zinc-300 md:text-base">
 					A versatile collection of icon libraries covering diverse styles, categories, and use cases. Whether you need minimal line icons, bold glyphs, playful or animated icons, this section helps you communicate ideas clearly and enhance user interaction with visual clarity.
 				</p>
-				<ToolsGrid client:load category="icons" />
+				<ToolsGrid client:only="react" category="icons" />
 			</div>
 		</section>
 	</main>

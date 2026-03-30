@@ -19,25 +19,11 @@ const socialLinks = [
 	title="Design Index | Best Design Tools, Resources, and Inspiration"
 	description="Browse the best curated design tools, mockups, icon sets, fonts, color resources, and design inspiration links in one place."
 	keywords="design tools, design resources, UI tools, mockups, icons, fonts, color palettes, design inspiration"
+	showDefaultSidebarTrigger={false}
+	floatingNavbarSocialLinks={socialLinks}
 >
 	<div class="relative min-h-screen w-full">
-		<div class="absolute top-4 right-4 z-40 flex items-center gap-2">
-			{
-				socialLinks.map((social) => (
-					<a
-						href={social.href}
-						target="_blank"
-						rel="noreferrer"
-						aria-label={social.label}
-						class="rounded-md p-1.5 transition-transform duration-200 ease-out hover:-translate-y-0.5 hover:bg-white/10"
-					>
-						<img src={social.icon} alt={social.label} class="size-4 brightness-0 invert" />
-					</a>
-				))
-			}
-		</div>
-
-		<main class="pointer-events-none absolute inset-0 z-30 flex items-center justify-center px-6">
+		<main class="pointer-events-none absolute inset-0 z-30 flex items-center justify-center px-6 pt-20">
 			<div class="flex h-auto w-full flex-col items-center justify-center">
 				<h1 class="font-kal text-left md:text-center text-[50px] leading-[45px] md:leading-0 font-kal font-semibold text-white md:text-[40px] [text-shadow:0_205px_57px_rgba(0,0,0,0.01),0_131px_52px_rgba(0,0,0,0.09),0_74px_44px_rgba(0,0,0,0.30),0_33px_33px_rgba(0,0,0,0.51),0_8px_18px_rgba(0,0,0,0.59)]">
 					Find any design tool you need

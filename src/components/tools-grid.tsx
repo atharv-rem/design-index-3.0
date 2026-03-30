@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { mockTools } from "@/data/mock-tools";
 import { slugifyToolName } from "@/lib/tool-slug";
+import { TOOLS_SEARCH_EVENT } from "@/lib/tools-search-event";
 
 type PricingFilter = "free" | "paid" | "freemium" | "all";
 
@@ -22,24 +23,50 @@ const badgeStyles = {
 
 export default function ToolsGrid({ category }: ToolsGridProps) {
   const [items, setItems] = useState<PricingFilter>("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const handleSearch = (event: Event) => {
+      const customEvent = event as CustomEvent<string>;
+      setSearchQuery(customEvent.detail ?? "");
+    };
+
+    window.addEventListener(TOOLS_SEARCH_EVENT, handleSearch as EventListener);
+
+    return () => {
+      window.removeEventListener(TOOLS_SEARCH_EVENT, handleSearch as EventListener);
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     const byCategory = category === "tools" ? mockTools : mockTools.filter((item) => item.category === category);
 
+    let byPricing = byCategory;
+
     if (items === "free") {
-      return byCategory.filter((item) => item.pricing === "free");
+      byPricing = byCategory.filter((item) => item.pricing === "free");
     }
 
     if (items === "paid") {
-      return byCategory.filter((item) => item.pricing === "paid");
+      byPricing = byCategory.filter((item) => item.pricing === "paid");
     }
 
     if (items === "freemium") {
-      return byCategory.filter((item) => item.pricing === "free,paid");
+      byPricing = byCategory.filter((item) => item.pricing === "free,paid");
     }
 
-    return byCategory;
-  }, [category, items]);
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+    if (!normalizedQuery) {
+      return byPricing;
+    }
+
+    return byPricing.filter((item) => {
+      return (
+        item.tool_name.toLowerCase().includes(normalizedQuery) ||
+        item.description.toLowerCase().includes(normalizedQuery)
+      );
+    });
+  }, [category, items, searchQuery]);
 
   return (
     <section className="mt-5 w-full">
@@ -89,7 +116,7 @@ export default function ToolsGrid({ category }: ToolsGridProps) {
       ) : (
         <div className="mt-8 flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/2 px-4 text-center">
           <span className="font-departure text-xl text-zinc-100 md:text-2xl">No tools match this filter</span>
-          <span className="mt-2 text-sm text-zinc-400 md:text-base">Try using the other filters</span>
+          <span className="mt-2 text-sm text-zinc-400 md:text-base">Try another search or pricing filter</span>
         </div>
       )}
     </section>

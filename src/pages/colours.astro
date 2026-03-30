@@ -3,8 +3,8 @@ import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
 ---
 
-<HomescreenLayout title="Colour Tools and Palettes | Design Index" description="Explore curated colour palettes, gradients, and colour tools for web, UI, and brand design workflows." keywords="colour palettes, color tools, gradients, color inspiration, UI colors, design color resources" backgroundVariant="slate">
-	<main class="mt-[50px] px-[20px] ">
+<HomescreenLayout title="Colour Tools and Palettes | Design Index" description="Explore curated colour palettes, gradients, and colour tools for web, UI, and brand design workflows." keywords="colour palettes, color tools, gradients, color inspiration, UI colors, design color resources" backgroundVariant="slate" floatingNavbarMode="search">
+	<main class="mt-[90px] md:mt-[60px] px-[10px] md:px-[20px]">
 		<section>
 			<div>
 				<h1 class="mt-3 font-departure font-regular text-4xl leading-none text-white md:text-[40px]">COLOURS</h1>
@@ -14,7 +14,7 @@ import ToolsGrid from "../components/tools-grid";
 				<p class="block md:hidden mt-4 font-departure text-sm text-zinc-300 md:text-base bg-[#181818] px-[10px] py-[5px] leading-[20px] rounded-lg">
 					A curated collection of colour palettes, gradients, and backgrounds to inspire your design process. Explore bold to subtle hues that help build consistent and visually appealing design systems.
 				</p>
-				<ToolsGrid client:load category="colours" />
+				<ToolsGrid client:only="react" category="colours" />
 			</div>
 		</section>
 	</main>

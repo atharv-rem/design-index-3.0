@@ -1,6 +1,11 @@
 import heart from "@/assets/love.png?url"
+import instagramIcon from "@/assets/instagram.svg?url"
+import githubIcon from "@/assets/github.svg?url"
+import threadsIcon from "@/assets/threads.svg?url"
+import twitterIcon from "@/assets/twitter.svg?url"
 import type { ReactNode } from "react"
 import { motion } from "motion/react"
+import TopFloatingNavbar from "@/components/top-floating-navbar"
 import {
   Sidebar,
   SidebarContent,
@@ -47,6 +52,13 @@ const linkGroups = [
       { label: "Feedback", href: "/feedback" },
     ],
   },
+]
+
+const defaultSocialLinks = [
+  { label: "Instagram", href: "https://instagram.com", icon: instagramIcon },
+  { label: "GitHub", href: "https://github.com", icon: githubIcon },
+  { label: "Threads", href: "https://threads.net", icon: threadsIcon },
+  { label: "Twitter", href: "https://x.com", icon: twitterIcon },
 ]
 
 function HomeSidebarContent() {
@@ -130,12 +142,33 @@ function HomeSidebarContent() {
 
 type HomeSidebarProps = {
   children?: ReactNode
+  showDefaultTrigger?: boolean
+  floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>
+  floatingNavbarMode?: "brand" | "search"
+  floatingNavbarSearchPlaceholder?: string
 }
 
-export default function HomeSidebar({ children }: HomeSidebarProps) {
+export default function HomeSidebar({
+  children,
+  showDefaultTrigger = true,
+  floatingNavbarSocialLinks = [],
+  floatingNavbarMode = "brand",
+  floatingNavbarSearchPlaceholder = "Search design tools...",
+}: HomeSidebarProps) {
+  const resolvedFloatingNavbarSocialLinks =
+    floatingNavbarSocialLinks.length > 0 ? floatingNavbarSocialLinks : defaultSocialLinks
+
   return (
     <SidebarProvider defaultOpen={false} className="min-h-svh w-full">
-      <SidebarTrigger className="fixed top-4 left-4 z-40 rounded-md bg-black/80 p-2 text-white transition-colors hover:bg-white/10" />
+      <TopFloatingNavbar
+        socialLinks={resolvedFloatingNavbarSocialLinks}
+        mode={floatingNavbarMode}
+        searchPlaceholder={floatingNavbarSearchPlaceholder}
+      />
+
+      {showDefaultTrigger ? (
+        <SidebarTrigger className="fixed top-4 left-4 z-40 rounded-md bg-black/80 p-2 text-white transition-colors hover:bg-white/10" />
+      ) : null}
 
       <Sidebar
         collapsible="offcanvas"

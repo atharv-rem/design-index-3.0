@@ -12,6 +12,10 @@ type Props = {
     noindex?: boolean;
     ogType?: 'website' | 'article';
     backgroundVariant?: 'image' | 'slate';
+    showDefaultSidebarTrigger?: boolean;
+    floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>;
+    floatingNavbarMode?: 'brand' | 'search';
+    floatingNavbarSearchPlaceholder?: string;
 };
 
 const {
@@ -21,6 +25,10 @@ const {
     noindex = false,
     ogType = 'website',
     backgroundVariant = 'image',
+    showDefaultSidebarTrigger = false,
+    floatingNavbarSocialLinks = [],
+    floatingNavbarMode = 'brand',
+    floatingNavbarSearchPlaceholder = 'Search design tools...',
 } = Astro.props;
 
 const canonicalUrl = Astro.url.href;
@@ -87,7 +95,13 @@ const ogImage = new URL('/favicon.svg', Astro.url).href;
                 <div class="fixed inset-0 -z-10 bg-[#0B0B0B]" />
             )
         }
-        <HomeSidebar client:load>
+        <HomeSidebar
+            client:load
+            showDefaultTrigger={showDefaultSidebarTrigger}
+            floatingNavbarSocialLinks={floatingNavbarSocialLinks}
+            floatingNavbarMode={floatingNavbarMode}
+            floatingNavbarSearchPlaceholder={floatingNavbarSearchPlaceholder}
+        >
             <slot />
         </HomeSidebar>
     </body>
