@@ -1,6 +1,8 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
+import { supabase } from "@/lib/supabase";
+const { data: tools, error } = await supabase.from("design_index").select("*").eq("category", "font");
 ---
 
 <HomescreenLayout title="Font Resources for Designers | Design Index" description="Explore curated font resources including serif, sans-serif, display, and variable fonts for modern design systems." keywords="fonts, typefaces, variable fonts, typography resources, serif fonts, sans serif fonts" backgroundVariant="slate" floatingNavbarMode="search">
@@ -11,7 +13,7 @@ import ToolsGrid from "../components/tools-grid";
 				<p class="mt-4 rounded-lg bg-[#181818] px-[10px] py-[5px] font-departure text-sm leading-[20px] text-zinc-300 md:text-base">
 					A handpicked selection of font libraries to bring personality and clarity to your typography. Whether you're looking for elegant serifs, modern sans-serifs, or expressive display fonts, this section helps you find the perfect typeface to elevate your design language and reinforce brand identity.
 				</p>
-				<ToolsGrid client:only="react" category="fonts" />
+				<ToolsGrid client:only="react" category="fonts" tools={tools ?? []} />
 			</div>
 		</section>
 	</main>

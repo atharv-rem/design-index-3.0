@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { mockTools } from "@/data/mock-tools";
 import { slugifyToolName } from "@/lib/tool-slug";
 import { TOOLS_SEARCH_EVENT } from "@/lib/tools-search-event";
+import { normalizeTools, type SupabaseToolRow } from "@/lib/tools";
 
 type PricingFilter = "free" | "paid" | "freemium" | "all";
 
 type ToolsGridProps = {
   category: string;
+  tools?: SupabaseToolRow[];
 };
 
 const filters: { value: PricingFilter; label: string }[] = [
@@ -21,9 +22,11 @@ const badgeStyles = {
   paid: "border-rose-400/30 bg-rose-400/15 text-rose-200",
 } as const;
 
-export default function ToolsGrid({ category }: ToolsGridProps) {
+export default function ToolsGrid({ category, tools = [] }: ToolsGridProps) {
   const [items, setItems] = useState<PricingFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const normalizedTools = useMemo(() => normalizeTools(tools), [tools]);
 
   useEffect(() => {
     const handleSearch = (event: Event) => {
@@ -39,7 +42,10 @@ export default function ToolsGrid({ category }: ToolsGridProps) {
   }, []);
 
   const filtered = useMemo(() => {
-    const byCategory = category === "tools" ? mockTools : mockTools.filter((item) => item.category === category);
+    const byCategory =
+      category === "tools"
+        ? normalizedTools
+        : normalizedTools.filter((item) => item.category === category);
 
     let byPricing = byCategory;
 
@@ -66,7 +72,7 @@ export default function ToolsGrid({ category }: ToolsGridProps) {
         item.description.toLowerCase().includes(normalizedQuery)
       );
     });
-  }, [category, items, searchQuery]);
+  }, [category, items, normalizedTools, searchQuery]);
 
   return (
     <section className="mt-5 w-full">
