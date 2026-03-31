@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { slugifyToolName } from "@/lib/tool-slug";
 import { TOOLS_SEARCH_EVENT } from "@/lib/tools-search-event";
 import { normalizeTools, type SupabaseToolRow } from "@/lib/tools";
 
@@ -7,7 +6,7 @@ type PricingFilter = "free" | "paid" | "freemium" | "all";
 
 type ToolsGridProps = {
   category: string;
-  tools?: SupabaseToolRow[];
+  initialTools?: SupabaseToolRow[];
 };
 
 const filters: { value: PricingFilter; label: string }[] = [
@@ -17,16 +16,12 @@ const filters: { value: PricingFilter; label: string }[] = [
   { value: "all", label: "ALL" },
 ];
 
-const badgeStyles = {
-  free: "border-emerald-400/30 bg-emerald-400/15 text-emerald-200",
-  paid: "border-rose-400/30 bg-rose-400/15 text-rose-200",
-} as const;
 
-export default function ToolsGrid({ category, tools = [] }: ToolsGridProps) {
+export default function ToolsGrid({ category, initialTools = [] }: ToolsGridProps) {
   const [items, setItems] = useState<PricingFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const normalizedTools = useMemo(() => normalizeTools(tools), [tools]);
+  const normalizedTools = useMemo(() => normalizeTools(initialTools), [initialTools]);
 
   useEffect(() => {
     const handleSearch = (event: Event) => {
@@ -42,10 +37,7 @@ export default function ToolsGrid({ category, tools = [] }: ToolsGridProps) {
   }, []);
 
   const filtered = useMemo(() => {
-    const byCategory =
-      category === "tools"
-        ? normalizedTools
-        : normalizedTools.filter((item) => item.category === category);
+    const byCategory = normalizedTools;
 
     let byPricing = byCategory;
 
@@ -103,7 +95,7 @@ export default function ToolsGrid({ category, tools = [] }: ToolsGridProps) {
           {filtered.map((item) => (
             <a
               key={item.id}
-              href={`/${slugifyToolName(item.tool_name)}`}
+              href={`/${encodeURIComponent(item.tool_name)}`}
               className="group overflow-hidden rounded-[8px] border border-white/10 bg-[#111111]/80 backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-white/20"
             >
               <img
