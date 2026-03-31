@@ -16,7 +16,11 @@ type TopFloatingNavbarProps = {
   searchPlaceholder?: string
 }
 
-export default function TopFloatingNavbar({socialLinks = [], mode = "brand",}: TopFloatingNavbarProps) {
+export default function TopFloatingNavbar({
+  socialLinks = [],
+  mode = "brand",
+  searchPlaceholder = "Search design tools...",
+}: TopFloatingNavbarProps) {
   const [searchValue, setSearchValue] = useState("")
   const [isMounted, setIsMounted] = useState(false)
 
@@ -24,8 +28,8 @@ export default function TopFloatingNavbar({socialLinks = [], mode = "brand",}: T
     setIsMounted(true)
   }, [])
 
-  const emitSearch = () => {
-    window.dispatchEvent(new CustomEvent(TOOLS_SEARCH_EVENT, { detail: searchValue.trim().toLowerCase() }))
+  const emitSearch = (value: string) => {
+    window.dispatchEvent(new CustomEvent(TOOLS_SEARCH_EVENT, { detail: value.trim().toLowerCase() }))
   }
 
   if (!isMounted) {
@@ -63,13 +67,17 @@ export default function TopFloatingNavbar({socialLinks = [], mode = "brand",}: T
           <Input
             type="search"
             aria-label="Search"
-            placeholder= "search tools"
+            placeholder={searchPlaceholder}
             value={searchValue}
-            onChange={(event) => setSearchValue(event.target.value)}
+            onChange={(event) => {
+              const nextValue = event.target.value
+              setSearchValue(nextValue)
+              emitSearch(nextValue)
+            }}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault()
-                emitSearch()
+                emitSearch(searchValue)
               }
             }}
             className="h-7 border-white/20 bg-white/6 font-departure text-xs text-white placeholder:text-zinc-400 !rounded-[5px] items-center justify-center"
@@ -77,7 +85,7 @@ export default function TopFloatingNavbar({socialLinks = [], mode = "brand",}: T
           <button
             type="button"
             aria-label="Search"
-            onClick={emitSearch}
+            onClick={() => emitSearch(searchValue)}
             className="h-7 shrink-0 rounded-lg border border-white/20 px-2 font-departure text-[10px] uppercase tracking-[0.1em] text-zinc-100 transition-colors hover:bg-white/15 md:px-2.5"
           >
             Search

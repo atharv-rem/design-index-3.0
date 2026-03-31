@@ -4,7 +4,6 @@ import ToolsGrid from "../components/tools-grid";
 import { supabase } from "@/lib/supabase";
 
 const { data: tools } = await supabase.from("design_index").select("*").eq("category", "colour");
-console.log("Fetched colour tools:", tools);
 ---
 
 <HomescreenLayout title="Colour Tools and Palettes | Design Index" description="Explore curated colour palettes, gradients, and colour tools for web, UI, and brand design workflows." keywords="colour palettes, color tools, gradients, color inspiration, UI colors, design color resources" backgroundVariant="slate" floatingNavbarMode="search">

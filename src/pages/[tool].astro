@@ -31,7 +31,7 @@ const { data: suggestedRows } = await supabase
   .from("design_index")
   .select("*")
   .neq("tool_name", tool.tool_name)
-  .limit(12);
+  .limit(6);
 
 const suggestedTools = normalizeTools(suggestedRows ?? [])
   .sort(() => Math.random() - 0.5)
