@@ -96,8 +96,7 @@ export default function TopFloatingNavbar({
           <div className="flex min-w-0 items-center gap-2 md:gap-2.5">
             <SidebarTrigger className="h-7 w-7 rounded-lg p-0 text-white transition-colors hover:bg-white/15" />
             <a href="/" className="flex min-w-0 items-center gap-1.5 md:gap-2 text-white">
-              <img src="/favicon.svg" alt="Design Index logo" className="h-5 w-5 shrink-0" />
-              <span className="truncate font-kal font-semibold text-[11px] tracking-[0.1em] md:text-xs md:tracking-[0.14em] md:text-white">Design Index</span>
+              <span className="truncate font-kal font-semibold text-[11px] md:text-[15px] md:tracking-[0.05em] md:text-white">Design Index</span>
             </a>
           </div>
 

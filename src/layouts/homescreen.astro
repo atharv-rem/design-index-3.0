@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import HomeSidebar from '../components/home-sidebar';
+import SiteFooter from '../components/site-footer.astro';
 import { Font, Picture } from 'astro:assets';
 import backgroundImage from '../images/background.jpg';
 import mobileBackgroundImage from '../images/background mobile.png';
@@ -105,6 +106,7 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
             floatingNavbarSearchPlaceholder={floatingNavbarSearchPlaceholder}
         >
             <slot />
+            <SiteFooter />
         </HomeSidebar>
     </body>
 </html>

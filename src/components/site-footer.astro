@@ -1,0 +1,86 @@
+---
+const year = new Date().getFullYear();
+import instagramIcon from "../assets/instagram.svg?url";
+import githubIcon from "../assets/github.svg?url";
+import threadsIcon from "../assets/threads.svg?url";
+import twitterIcon from "../assets/twitter.svg?url";
+import loveIcon from "../assets/love.png?url";
+---
+
+<footer class="relative z-30 mt-8 border-t border-white/10 bg-[#050505]/95 backdrop-blur-sm">
+	<div class="mx-auto w-full max-w-7xl justify-between gap-8">
+		<div class="flex flex-col justify-between gap-8 md:flex-row md:items-start">
+			<div class="w-full md:max-w-sm md:pr-10">
+				<div class="p-6 md:p-8">
+				<a href="/" class="font-kal text-3xl font-semibold text-white transition-opacity hover:opacity-90">Design Index</a>
+				<p class="mt-4 font-departure text-sm leading-6 text-[#9d9d9d]">Curated design tools, resources, and inspiration.</p>
+
+				<div class="mt-7 flex items-center gap-4">
+					<a href="https://github.com" aria-label="GitHub" class="opacity-75 transition-opacity hover:opacity-100">
+						<img src={githubIcon} alt="" class="h-5 w-5" />
+					</a>
+					<a href="https://x.com" aria-label="Twitter" class="opacity-75 transition-opacity hover:opacity-100">
+						<img src={twitterIcon} alt="" class="h-5 w-5" />
+					</a>
+					<a href="https://instagram.com" aria-label="Instagram" class="opacity-75 transition-opacity hover:opacity-100">
+						<img src={instagramIcon} alt="" class="h-5 w-5" />
+					</a>
+					<a href="https://threads.net" aria-label="Threads" class="opacity-75 transition-opacity hover:opacity-100">
+						<img src={threadsIcon} alt="" class="h-5 w-5" />
+					</a>
+				</div>
+
+				<p class="mt-8 inline-flex items-center gap-2 font-departure text-sm text-[#d8d8d8]">
+					<span class="inline-block h-2.5 w-2.5 rounded-full bg-[#9ee38f]"></span>
+					All Systems Normal
+				</p>
+				</div>
+			</div>
+
+			<div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 md:max-w-4xl md:grid-cols-3">
+				<div class="p-6 md:p-8">
+                    <p class="font-kal text-3xl font-semibold text-white/95 md:text-2xl">Company</p>
+                    <nav aria-label="Company" class="mt-4 flex flex-col gap-2.5 font-departure text-sm text-[#c8c8c8]">
+                        <a class="transition-colors hover:text-white" href="/">Home</a>
+                        <a class="transition-colors hover:text-white" href="/about">About</a>
+                        <a class="transition-colors hover:text-white" href="/submit-tool">Submit Tool</a>
+                        <a class="transition-colors hover:text-white" href="/feedback">Feedback</a>
+                    </nav>
+                </div>
+
+				<div class="p-6 md:p-8">
+                    <p class="font-kal text-3xl font-semibold text-white/95 md:text-2xl">Explore</p>
+                    <nav aria-label="Explore" class="mt-4 flex flex-col gap-2.5 font-departure text-sm text-[#c8c8c8]">
+                        <a class="transition-colors hover:text-white" href="/tools">Tools</a>
+                        <a class="transition-colors hover:text-white" href="/colours">Colours</a>
+                        <a class="transition-colors hover:text-white" href="/mockups">Mockups</a>
+                        <a class="transition-colors hover:text-white" href="/illustrations">Illustrations</a>
+                        <a class="transition-colors hover:text-white" href="/icons">Icons</a>
+                        <a class="transition-colors hover:text-white" href="/fonts">Fonts</a>
+                        <a class="transition-colors hover:text-white" href="/design-inspo">Design Inspiration</a>
+                    </nav>
+                </div>
+
+				<div class="p-6 md:p-8">
+                    <p class="font-kal text-3xl font-semibold text-white/95 md:text-2xl">Support</p>
+                    <nav aria-label="Support" class="mt-4 flex flex-col gap-2.5 font-departure text-sm text-[#c8c8c8]">
+                        <a class="transition-colors hover:text-white" href="/terms">Terms</a>
+                        <a class="transition-colors hover:text-white" href="/feedback">Help Topics</a>
+                        <a class="transition-colors hover:text-white" href="/submit-tool">Getting Started</a>
+                    </nav>
+                </div>
+            </div>
+		</div>
+
+		<div class="mt-5 flex flex-col gap-3 px-4 md:flex-row md:items-end md:justify-between md:py-6">
+			<p class="font-departure text-sm text-[#9f9f9f]">
+				© {year} Design Index. All rights reserved. 
+			</p>
+			<p class="inline-flex items-center gap-2 font-departure text-sm text-[#9f9f9f]">
+				Built with
+				<img src={loveIcon} alt="love" class="h-4 w-4" />
+				by Atharv
+			</p>
+		</div>
+	</div>
+</footer>
