@@ -133,7 +133,15 @@ function HomeSidebarContent() {
         >
           <div className="flex items-center justify-center font-departure text-[15px] text-white md:text-[10px]">
             <span>Made with</span>
-            <img src={heart} alt="heart icon" className="mx-1 inline h-4 w-4" />
+            <img
+              src={heart}
+              alt="heart icon"
+              loading="lazy"
+              decoding="async"
+              width={16}
+              height={16}
+              className="mx-1 inline h-4 w-4"
+            />
             <span> by Atharv</span>
           </div>
         </motion.div>

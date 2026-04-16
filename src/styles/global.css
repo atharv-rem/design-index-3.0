@@ -6,6 +6,7 @@
 :root {
   --font-kal: var(--font-kalamayka), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-departure: var(--departure), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --shadow-everywhere: inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.1), 0 4px 4px rgba(0, 0, 0, 0.1), 0 8px 8px rgba(0, 0, 0, 0.1);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -46,6 +47,10 @@
 
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+
+  .shadow-everywhere {
+    box-shadow: var(--shadow-everywhere);
   }
 }
 

@@ -17,6 +17,7 @@ type Props = {
     floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>;
     floatingNavbarMode?: 'brand' | 'search';
     floatingNavbarSearchPlaceholder?: string;
+    showFooter?: boolean;
 };
 
 const {
@@ -30,6 +31,7 @@ const {
     floatingNavbarSocialLinks = [],
     floatingNavbarMode = 'brand',
     floatingNavbarSearchPlaceholder = 'Search design tools...',
+    showFooter = true,
 } = Astro.props;
 
 const canonicalUrl = Astro.url.href;
@@ -106,7 +108,7 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
             floatingNavbarSearchPlaceholder={floatingNavbarSearchPlaceholder}
         >
             <slot />
-            <SiteFooter />
+            {showFooter && <SiteFooter />}
         </HomeSidebar>
     </body>
 </html>

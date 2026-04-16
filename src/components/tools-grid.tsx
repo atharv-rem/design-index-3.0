@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { TOOLS_SEARCH_EVENT } from "@/lib/tools-search-event";
 import { normalizeTools, type SupabaseToolRow } from "@/lib/tools";
+import { slugifyToolName } from "@/lib/tool-slug";
 
 type PricingFilter = "free" | "paid" | "freemium" | "all";
 
@@ -95,12 +96,17 @@ export default function ToolsGrid({ category, initialTools = [] }: ToolsGridProp
           {filtered.map((item) => (
             <a
               key={item.id}
-              href={`/${encodeURIComponent(item.tool_name)}`}
+              href={`/${slugifyToolName(item.tool_name)}`}
               className="group overflow-hidden rounded-[8px] border border-white/10 bg-[#111111]/80 backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-white/20"
             >
               <img
                 alt={item.description.toLowerCase()}
                 loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+                referrerPolicy="no-referrer"
+                width={1200}
+                height={675}
                 src={item.og_image_link}
                 className="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"
               />

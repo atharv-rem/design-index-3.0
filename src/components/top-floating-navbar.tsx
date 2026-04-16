@@ -34,7 +34,7 @@ export default function TopFloatingNavbar({
 
   if (!isMounted) {
     return (
-      <header className="fixed top-4 left-1/2 z-40 w-[calc(100%-1.25rem)] max-w-[500px] -translate-x-1/2 rounded-[10px] md:rounded-2xl border border-white/15 bg-black/55 px-2.5 py-1 shadow-[0_10px_35px_rgba(0,0,0,0.45)] backdrop-blur-md md:w-[calc(100%-2rem)] md:px-[10px] md:py-[5px]">
+      <header className="shadow-everywhere fixed top-4 left-1/2 z-40 w-[calc(100%-1.25rem)] max-w-[500px] -translate-x-1/2 rounded-[10px] md:rounded-2xl border border-white/15 bg-black/55 px-2.5 py-1 backdrop-blur-md md:w-[calc(100%-2rem)] md:px-[10px] md:py-[5px]">
         {mode === "search" ? (
           <div className="flex items-center gap-1.5 md:gap-2">
             <Skeleton className="h-7 w-7 rounded-lg bg-zinc-800" />
@@ -60,7 +60,7 @@ export default function TopFloatingNavbar({
   }
 
   return (
-    <header className="fixed top-4 left-1/2 z-40 w-[calc(100%-1.25rem)] max-w-[500px] -translate-x-1/2 rounded-[10px] border border-white/15 bg-black/55 px-2.5 py-1 text-white shadow-[0_10px_35px_rgba(0,0,0,0.45)] backdrop-blur-md md:w-[calc(100%-2rem)] md:px-[5px] md:py-[5px]">
+    <header className="shadow-everywhere fixed top-4 left-1/2 z-40 w-[calc(100%-1.25rem)] max-w-[500px] -translate-x-1/2 rounded-[10px] border border-white/15 bg-black/55 px-[10px] py-1 text-white backdrop-blur-md md:w-[calc(100%-2rem)] md:px-[5px] md:py-[5px]">
       {mode === "search" ? (
         <div className="flex items-center gap-1.5 md:gap-2">
           <SidebarTrigger className="h-7 w-7 shrink-0 rounded-lg p-0 text-white transition-colors hover:bg-white/15" />
@@ -91,7 +91,9 @@ export default function TopFloatingNavbar({
             Search
           </button>
         </div>
-      ) : (
+      ) 
+      : 
+      (
         <div className="flex items-center justify-between gap-2 md:gap-3">
           <div className="flex min-w-0 items-center gap-2 md:gap-2.5">
             <SidebarTrigger className="h-7 w-7 rounded-lg p-0 text-white transition-colors hover:bg-white/15" />
@@ -100,7 +102,7 @@ export default function TopFloatingNavbar({
             </a>
           </div>
 
-          <nav aria-label="Social links" className="flex items-center gap-1.5 md:gap-4">
+          <nav aria-label="Social links" className="flex items-center gap-1.5 md:gap-4 pr-[5px] md:px-[10px]">
             {socialLinks.map((social) => (
               <a
                 key={social.label}
@@ -110,7 +112,15 @@ export default function TopFloatingNavbar({
                 aria-label={social.label}
                 className="rounded-lg transition-colors hover:bg-white/15"
               >
-                <img src={social.icon} alt={social.label} className="size-3.5 brightness-0 invert md:size-4" />
+                <img
+                  src={social.icon}
+                  alt={social.label}
+                  loading="eager"
+                  decoding="async"
+                  width={16}
+                  height={16}
+                  className="size-3.5 brightness-0 invert md:size-4"
+                />
               </a>
             ))}
           </nav>
