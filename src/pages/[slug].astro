@@ -1,15 +1,21 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
-import { supabase } from "@/lib/supabase";
-import { normalizeTools } from "@/lib/tools";
+import type { ToolItem } from "@/lib/tools";
 import { slugifyToolName } from "@/lib/tool-slug";
 
 export const prerender = false;
 
 const toolSlug = Astro.params.slug ?? "";
-const { data } = await supabase.from("design_index").select("*");
-const allTools = normalizeTools(data);
-const tool = allTools.find((item) => slugifyToolName(item.tool_name) === toolSlug);
+const apiResponse = await fetch(new URL(`/api/tools/${toolSlug}`, Astro.url));
+
+if (!apiResponse.ok) {
+  return Astro.redirect("/tools");
+}
+
+const { tool, suggestedTools } = (await apiResponse.json()) as {
+  tool: ToolItem;
+  suggestedTools: ToolItem[];
+};
 
 if (!tool) {
   return Astro.redirect("/tools");
@@ -17,11 +23,6 @@ if (!tool) {
 
 const pageTitle = `${tool.tool_name} | Design Index`;
 const pageDescription = `Discover ${tool.tool_name}. Explore details and preview the tool site directly from Design Index.`;
-
-const suggestedTools = allTools
-  .filter((item) => item.id !== tool.id)
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 3);
 ---
 
 <HomescreenLayout
@@ -34,7 +35,7 @@ const suggestedTools = allTools
   <main class="mt-12.5 px-[15px] pb-4 lg:h-[calc(100vh-4rem)] lg:pb-0">
     <section class="grid grid-cols-1 gap-4 lg:h-full lg:grid-cols-2 lg:items-stretch lg:overflow-hidden">
       <aside class="rounded-xl md:p-2 mt-[20px] lg:h-full lg:overflow-hidden">
-        <div class="no-scrollbar lg:h-full lg:overflow-y-auto lg:pr-1">
+        <div class="no-scrollbar lg:h-full lg:overflow-y-auto lg:pr-1 pb-[20px]">
           <p class="font-departure text-[11px] uppercase tracking-[0.16em] text-zinc-500">Tool details</p>
           <h1 class="mt-2 font-departure text-2xl leading-tight text-zinc-100 md:text-3xl">{tool.tool_name}</h1>
 

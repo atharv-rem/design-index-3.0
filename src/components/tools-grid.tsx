@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { TOOLS_SEARCH_EVENT } from "@/lib/tools-search-event";
-import { normalizeTools, type SupabaseToolRow } from "@/lib/tools";
+import type { ToolItem } from "@/lib/tools";
 import { slugifyToolName } from "@/lib/tool-slug";
+import ToolsGridSkeleton from "@/components/tools-grid-skeleton";
 
 type PricingFilter = "free" | "paid" | "freemium" | "all";
 
 type ToolsGridProps = {
   category: string;
-  initialTools?: SupabaseToolRow[];
 };
 
 const filters: { value: PricingFilter; label: string }[] = [
@@ -17,12 +17,40 @@ const filters: { value: PricingFilter; label: string }[] = [
   { value: "all", label: "ALL" },
 ];
 
+const fetchToolsByCategory = async (category: string): Promise<ToolItem[]> => {
+  const response = await fetch(`/api/tools?category=${encodeURIComponent(category)}`);
 
-export default function ToolsGrid({ category, initialTools = [] }: ToolsGridProps) {
+  if (!response.ok) {
+    throw new Error("Unable to fetch tools.");
+  }
+
+  return response.json();
+};
+
+export default function ToolsGrid({ category }: ToolsGridProps) {
   const [items, setItems] = useState<PricingFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [tools, setTools] = useState<ToolItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
-  const normalizedTools = useMemo(() => normalizeTools(initialTools), [initialTools]);
+  const loadTools = async () => {
+    setIsError(false);
+
+    try {
+      const data = await fetchToolsByCategory(category);
+      setTools(data);
+    } catch {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    void loadTools();
+  }, [category]);
 
   useEffect(() => {
     const handleSearch = (event: Event) => {
@@ -38,7 +66,7 @@ export default function ToolsGrid({ category, initialTools = [] }: ToolsGridProp
   }, []);
 
   const filtered = useMemo(() => {
-    const byCategory = normalizedTools;
+    const byCategory = tools;
 
     let byPricing = byCategory;
 
@@ -65,7 +93,29 @@ export default function ToolsGrid({ category, initialTools = [] }: ToolsGridProp
         item.description.toLowerCase().includes(normalizedQuery)
       );
     });
-  }, [category, items, normalizedTools, searchQuery]);
+  }, [category, items, tools, searchQuery]);
+
+  if (isLoading) {
+    return <ToolsGridSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <section className="mt-8 flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/2 px-4 text-center">
+        <span className="font-departure text-xl text-zinc-100 md:text-2xl">Could not load tools</span>
+        <button
+          type="button"
+          onClick={() => {
+            setIsLoading(true);
+            void loadTools();
+          }}
+          className="mt-4 rounded-[10px] border border-zinc-700 bg-[#111111] px-3 py-1.5 font-departure text-xs text-zinc-300 transition-colors hover:border-zinc-500 hover:text-white"
+        >
+          Retry
+        </button>
+      </section>
+    );
+  }
 
   return (
     <section className="mt-5 w-full">
