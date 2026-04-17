@@ -44,3 +44,16 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Redis Cache (Upstash)
+
+API routes in `src/pages/api/tools.ts` and `src/pages/api/tools/[slug].ts` support Redis caching through Upstash.
+
+Add these environment variables:
+
+```env
+UPSTASH_REDIS_REST_URL=your_upstash_redis_rest_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_rest_token
+```
+
+When variables are not set, APIs continue to work without cache.
