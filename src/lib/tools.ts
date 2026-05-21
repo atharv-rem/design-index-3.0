@@ -64,3 +64,17 @@ export const normalizeTools = (rows: SupabaseToolRow[] | null | undefined): Tool
 
   return rows.map(normalizeTool);
 };
+
+export async function getToolsByCategory(
+	category: string,
+): Promise<ToolItem[]> {
+	const response = await fetch(
+		`${import.meta.env.SITE}/api/tools?category=${encodeURIComponent(category)}`
+	);
+
+	if (!response.ok) {
+		throw new Error("Failed to fetch tools");
+	}
+
+	return response.json();
+}

@@ -1,9 +1,19 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
+import { getToolsByCategory } from "@/lib/get-tool-by-category";
+
+const tools = await getToolsByCategory("tool");
+
+if (Astro.cache.enabled) {
+	Astro.cache.set({
+		maxAge: 3600,
+		tags: ["tools-page"],
+	});
+}
 ---
 
-<HomescreenLayout title="Design Tools Directory | Design Index" description="Explore curated design tools for prototyping, collaboration, handoff, asset generation, and productivity workflows." keywords="design tools, prototyping tools, handoff tools, design collaboration, design workflow tools" backgroundVariant="slate" floatingNavbarMode="search">
+<HomescreenLayout title="Design Tools Directory | Design Index" description="Explore curated design tools for prototyping, collaboration, handoff, asset generation, and productivity workflows." keywords="design tools, prototyping tools, handoff tools, design collaboration, design workflow tools" backgroundVariant="slate">
 	<main class="mt-[50px] px-[20px]">
 		<section>
 			<div>
@@ -11,7 +21,7 @@ import ToolsGrid from "../components/tools-grid";
 				<p class="mt-4 rounded-lg bg-[#181818] px-[10px] py-[5px] font-departure text-sm leading-[20px] text-zinc-300 md:text-base">
 					A curated collection of practical design tools for workflows like prototyping, handoff, collaboration, asset generation, and productivity. Discover utilities that reduce friction, speed up iteration, and help you ship cleaner work with confidence.
 				</p>
-				<ToolsGrid client:load category="tools" />
+				<ToolsGrid client:load category="tool" initialTools={tools} />
 			</div>
 		</section>
 	</main>

@@ -1,20 +1,35 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
+import { getToolsByCategory } from "@/lib/get-tool-by-category";
+
+const tools = await getToolsByCategory("colour");
+if (Astro.cache.enabled) {
+	Astro.cache.set({
+		maxAge: 3600,
+		swr:3600,
+		tags: ["colours-page"],
+	});
+}
 ---
 
-<HomescreenLayout title="Colour Tools and Palettes | Design Index" description="Explore curated colour palettes, gradients, and colour tools for web, UI, and brand design workflows." keywords="colour palettes, color tools, gradients, color inspiration, UI colors, design color resources" backgroundVariant="slate" floatingNavbarMode="search">
+<HomescreenLayout
+	title="Colour Tools and Palettes | Design Index"
+	description="Explore curated colour palettes..."
+	backgroundVariant="slate"
+>
 	<main class="mt-[90px] md:mt-[60px] px-[20px]">
 		<section>
 			<div>
-				<h1 class="mt-3 font-departure font-regular text-4xl leading-none text-white md:text-[40px]">COLOURS</h1>
-				<p class="hidden md:block mt-4 font-departure text-sm text-zinc-300 md:text-base bg-[#181818] px-[10px] py-[5px] leading-[20px] rounded-lg">
-					A curated collection of colour palettes, hues, gradients and backgrounds to inspire and streamline your design process. From bold primaries to subtle pastels, this section offers a versatile range of colour resources to help you build consistent, visually appealing, and emotionally resonant design systems.
-				</p>
-				<p class="block md:hidden mt-4 font-departure text-sm text-zinc-300 md:text-base bg-[#181818] px-[10px] py-[5px] leading-[20px] rounded-lg">
-					A curated collection of colour palettes, gradients, and backgrounds to inspire your design process. Explore bold to subtle hues that help build consistent and visually appealing design systems.
-				</p>
-				<ToolsGrid client:load category="colours" />
+				<h1 class="mt-3 font-departure font-regular text-4xl leading-none text-white md:text-[40px]">
+					COLOURS
+				</h1>
+
+				<ToolsGrid
+					client:load
+					category="colour"
+					initialTools={tools}
+				/>
 			</div>
 		</section>
 	</main>

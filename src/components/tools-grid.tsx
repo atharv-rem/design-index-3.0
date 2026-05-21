@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { TOOLS_SEARCH_EVENT } from "@/lib/tools-search-event";
+import { useMemo, useState } from "react";
 import type { ToolItem } from "@/lib/tools";
-import { slugifyToolName } from "@/lib/tool-slug";
-import ToolsGridSkeleton from "@/components/tools-grid-skeleton";
+
 
 type PricingFilter = "free" | "paid" | "freemium" | "all";
 
 type ToolsGridProps = {
   category: string;
+  initialTools: ToolItem[];
 };
 
 const filters: { value: PricingFilter; label: string }[] = [
@@ -17,53 +16,10 @@ const filters: { value: PricingFilter; label: string }[] = [
   { value: "all", label: "ALL" },
 ];
 
-const fetchToolsByCategory = async (category: string): Promise<ToolItem[]> => {
-  const response = await fetch(`/api/tools?category=${encodeURIComponent(category)}`);
 
-  if (!response.ok) {
-    throw new Error("Unable to fetch tools.");
-  }
-
-  return response.json();
-};
-
-export default function ToolsGrid({ category }: ToolsGridProps) {
+export default function ToolsGrid({ category, initialTools }: ToolsGridProps) {
   const [items, setItems] = useState<PricingFilter>("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [tools, setTools] = useState<ToolItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-
-  const loadTools = async () => {
-    setIsError(false);
-
-    try {
-      const data = await fetchToolsByCategory(category);
-      setTools(data);
-    } catch {
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    setIsLoading(true);
-    void loadTools();
-  }, [category]);
-
-  useEffect(() => {
-    const handleSearch = (event: Event) => {
-      const customEvent = event as CustomEvent<string>;
-      setSearchQuery(customEvent.detail ?? "");
-    };
-
-    window.addEventListener(TOOLS_SEARCH_EVENT, handleSearch as EventListener);
-
-    return () => {
-      window.removeEventListener(TOOLS_SEARCH_EVENT, handleSearch as EventListener);
-    };
-  }, []);
+  const tools = initialTools;
 
   const filtered = useMemo(() => {
     const byCategory = tools;
@@ -82,40 +38,8 @@ export default function ToolsGrid({ category }: ToolsGridProps) {
       byPricing = byCategory.filter((item) => item.pricing === "free,paid");
     }
 
-    const normalizedQuery = searchQuery.trim().toLowerCase();
-    if (!normalizedQuery) {
-      return byPricing;
-    }
-
-    return byPricing.filter((item) => {
-      return (
-        item.tool_name.toLowerCase().includes(normalizedQuery) ||
-        item.description.toLowerCase().includes(normalizedQuery)
-      );
-    });
-  }, [category, items, tools, searchQuery]);
-
-  if (isLoading) {
-    return <ToolsGridSkeleton />;
-  }
-
-  if (isError) {
-    return (
-      <section className="mt-8 flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/2 px-4 text-center">
-        <span className="font-departure text-xl text-zinc-100 md:text-2xl">Could not load tools</span>
-        <button
-          type="button"
-          onClick={() => {
-            setIsLoading(true);
-            void loadTools();
-          }}
-          className="mt-4 rounded-[10px] border border-zinc-700 bg-[#111111] px-3 py-1.5 font-departure text-xs text-zinc-300 transition-colors hover:border-zinc-500 hover:text-white"
-        >
-          Retry
-        </button>
-      </section>
-    );
-  }
+    return byPricing;
+  }, [category, items, tools]);
 
   return (
     <section className="mt-5 w-full">
@@ -146,7 +70,7 @@ export default function ToolsGrid({ category }: ToolsGridProps) {
           {filtered.map((item) => (
             <a
               key={item.id}
-              href={`/${slugifyToolName(item.tool_name)}`}
+              href={`/${encodeURIComponent(item.tool_name)}?id=${item.id}`}
               className="group overflow-hidden rounded-[8px] border border-white/10 bg-[#111111]/80 backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-white/20"
             >
               <img
@@ -170,7 +94,7 @@ export default function ToolsGrid({ category }: ToolsGridProps) {
       ) : (
         <div className="mt-8 flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/2 px-4 text-center">
           <span className="font-departure text-xl text-zinc-100 md:text-2xl">No tools match this filter</span>
-          <span className="mt-2 text-sm text-zinc-400 md:text-base">Try another search or pricing filter</span>
+          <span className="mt-2 text-sm text-zinc-400 md:text-base">Try another pricing filter</span>
         </div>
       )}
     </section>

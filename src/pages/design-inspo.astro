@@ -1,9 +1,19 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
+import { getToolsByCategory } from "@/lib/get-tool-by-category";
+
+const tools = await getToolsByCategory("design_inspiration");
+
+if (Astro.cache.enabled) {
+	Astro.cache.set({
+		maxAge: 3600,
+		tags: ["design-inspo-page"],
+	});
+}
 ---
 
-<HomescreenLayout title="Design Inspiration Websites and Galleries | Design Index" description="Explore curated design inspiration websites and galleries for UI, branding, layouts, and visual direction." keywords="design inspiration, UI inspiration, web design galleries, creative inspiration, visual design references" backgroundVariant="slate" floatingNavbarMode="search">
+<HomescreenLayout title="Design Inspiration Websites and Galleries | Design Index" description="Explore curated design inspiration websites and galleries for UI, branding, layouts, and visual direction." keywords="design inspiration, UI inspiration, web design galleries, creative inspiration, visual design references" backgroundVariant="slate">
 	<main class="mt-[50px] px-[20px]">
 		<section>
 			<div>
@@ -11,7 +21,7 @@ import ToolsGrid from "../components/tools-grid";
 				<p class="mt-4 rounded-lg bg-[#181818] px-[10px] py-[5px] font-departure text-sm leading-[20px] text-zinc-300 md:text-base">
 					Thoughtfully assembled gallery of visual inspiration across web, mobile, print, and branding. Discover cutting-edge layouts, creative UI patterns, and standout visuals to spark ideas, refine your style, and fuel your creative momentum.
 				</p>
-				<ToolsGrid client:load category="design-inspo" />
+				<ToolsGrid client:load category="design_inspiration" initialTools={tools} />
 			</div>
 		</section>
 	</main>

@@ -1,7 +1,5 @@
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
-import { TOOLS_SEARCH_EVENT } from "@/lib/tools-search-event"
 import { useEffect, useState } from "react"
 
 type SocialLink = {
@@ -12,36 +10,20 @@ type SocialLink = {
 
 type TopFloatingNavbarProps = {
   socialLinks?: SocialLink[]
-  mode?: "brand" | "search"
-  searchPlaceholder?: string
 }
 
 export default function TopFloatingNavbar({
   socialLinks = [],
-  mode = "brand",
-  searchPlaceholder = "Search design tools...",
 }: TopFloatingNavbarProps) {
-  const [searchValue, setSearchValue] = useState("")
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
-  const emitSearch = (value: string) => {
-    window.dispatchEvent(new CustomEvent(TOOLS_SEARCH_EVENT, { detail: value.trim().toLowerCase() }))
-  }
-
   if (!isMounted) {
     return (
       <header className="shadow-everywhere fixed top-4 left-1/2 z-40 w-[calc(100%-1.25rem)] max-w-[500px] -translate-x-1/2 rounded-[10px] md:rounded-2xl border border-white/15 bg-black/55 px-2.5 py-1 backdrop-blur-md md:w-[calc(100%-2rem)] md:px-[10px] md:py-[5px]">
-        {mode === "search" ? (
-          <div className="flex items-center gap-1.5 md:gap-2">
-            <Skeleton className="h-7 w-7 rounded-lg bg-zinc-800" />
-            <Skeleton className="h-7 flex-1 rounded-lg bg-zinc-800" />
-            <Skeleton className="h-7 w-14 rounded-lg bg-zinc-800" />
-          </div>
-        ) : (
           <div className="flex items-center justify-between gap-2 md:gap-3">
             <div className="flex min-w-0 items-center gap-2 md:gap-2.5">
               <Skeleton className="h-7 w-7 rounded-lg bg-zinc-800" />
@@ -54,46 +36,12 @@ export default function TopFloatingNavbar({
               <Skeleton className="h-3.5 w-3.5 rounded bg-zinc-800 md:h-4 md:w-4" />
             </div>
           </div>
-        )}
       </header>
     )
   }
 
   return (
     <header className="shadow-everywhere fixed top-4 left-1/2 z-40 w-[calc(100%-1.25rem)] max-w-[500px] -translate-x-1/2 rounded-[10px] border border-white/15 bg-black/55 px-[10px] py-1 text-white backdrop-blur-md md:w-[calc(100%-2rem)] md:px-[5px] md:py-[5px]">
-      {mode === "search" ? (
-        <div className="flex items-center gap-1.5 md:gap-2">
-          <SidebarTrigger className="h-7 w-7 shrink-0 rounded-lg p-0 text-white transition-colors hover:bg-white/15" />
-          <Input
-            type="search"
-            aria-label="Search"
-            placeholder={searchPlaceholder}
-            value={searchValue}
-            onChange={(event) => {
-              const nextValue = event.target.value
-              setSearchValue(nextValue)
-              emitSearch(nextValue)
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault()
-                emitSearch(searchValue)
-              }
-            }}
-            className="h-7 border-white/20 bg-white/6 font-departure text-xs text-white placeholder:text-zinc-400 !rounded-[5px] items-center justify-center"
-          />
-          <button
-            type="button"
-            aria-label="Search"
-            onClick={() => emitSearch(searchValue)}
-            className="h-7 shrink-0 rounded-lg border border-white/20 px-2 font-departure text-[10px] uppercase tracking-[0.1em] text-zinc-100 transition-colors hover:bg-white/15 md:px-2.5"
-          >
-            Search
-          </button>
-        </div>
-      ) 
-      : 
-      (
         <div className="flex items-center justify-between gap-2 md:gap-3">
           <div className="flex min-w-0 items-center gap-2 md:gap-2.5">
             <SidebarTrigger className="h-7 w-7 rounded-lg p-0 text-white transition-colors hover:bg-white/15" />
@@ -125,7 +73,6 @@ export default function TopFloatingNavbar({
             ))}
           </nav>
         </div>
-      )}
     </header>
   )
 }

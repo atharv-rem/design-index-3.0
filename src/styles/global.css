@@ -45,6 +45,10 @@
     font-family: var(--font-departure);
   }
 
+  .font-os{
+    font-family: var(--font-open);
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }

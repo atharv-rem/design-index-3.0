@@ -15,8 +15,6 @@ type Props = {
     backgroundVariant?: 'image' | 'slate';
     showDefaultSidebarTrigger?: boolean;
     floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>;
-    floatingNavbarMode?: 'brand' | 'search';
-    floatingNavbarSearchPlaceholder?: string;
     showFooter?: boolean;
 };
 
@@ -29,8 +27,6 @@ const {
     backgroundVariant = 'image',
     showDefaultSidebarTrigger = false,
     floatingNavbarSocialLinks = [],
-    floatingNavbarMode = 'brand',
-    floatingNavbarSearchPlaceholder = 'Search design tools...',
     showFooter = true,
 } = Astro.props;
 
@@ -104,8 +100,6 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
             client:load
             showDefaultTrigger={showDefaultSidebarTrigger}
             floatingNavbarSocialLinks={floatingNavbarSocialLinks}
-            floatingNavbarMode={floatingNavbarMode}
-            floatingNavbarSearchPlaceholder={floatingNavbarSearchPlaceholder}
         >
             <slot />
             {showFooter && <SiteFooter />}

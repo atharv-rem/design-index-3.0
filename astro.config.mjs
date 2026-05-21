@@ -1,19 +1,15 @@
 // @ts-check
-import { defineConfig, fontProviders } from 'astro/config';
-
+import { defineConfig, fontProviders,memoryCache } from 'astro/config';
 import react from '@astrojs/react';
-
 import vercel from '@astrojs/vercel';
-
 import sitemap from '@astrojs/sitemap';
-
 import tailwindcss from '@tailwindcss/vite';
 
 const site = process.env.SITE_URL ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined);
 
 // https://astro.build/config
 export default defineConfig({
-  output:"server",
+  output: "server",
   site,
   fonts: [
     {
@@ -43,13 +39,31 @@ export default defineConfig({
           }
         ]
       }
+    },
+    {
+      provider: fontProviders.local(),
+      name: 'Open Sans',
+      cssVariable: '--open',
+      options: {
+        variants: [
+          {
+            src: ['./src/assets/fonts/OpenSauce.otf'],
+            weight: '400',
+            style: 'normal'
+          }
+        ]
+      }
     }
   ],
   integrations: [react(), sitemap()],
   adapter: vercel(),
-
   build: {
     inlineStylesheets: 'always'
+  },
+  experimental: {
+    cache: {
+      provider: memoryCache(),
+    },
   },
   vite: {
     plugins: [tailwindcss()]

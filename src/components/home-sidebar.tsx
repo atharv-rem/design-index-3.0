@@ -186,16 +186,12 @@ type HomeSidebarProps = {
   children?: ReactNode
   showDefaultTrigger?: boolean
   floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>
-  floatingNavbarMode?: "brand" | "search"
-  floatingNavbarSearchPlaceholder?: string
 }
 
 export default function HomeSidebar({
   children,
   showDefaultTrigger = true,
   floatingNavbarSocialLinks = [],
-  floatingNavbarMode = "brand",
-  floatingNavbarSearchPlaceholder = "Search design tools...",
 }: HomeSidebarProps) {
   const [isMounted, setIsMounted] = useState(false)
 
@@ -210,8 +206,6 @@ export default function HomeSidebar({
     <SidebarProvider defaultOpen={false} className="min-h-svh w-full">
       <TopFloatingNavbar
         socialLinks={resolvedFloatingNavbarSocialLinks}
-        mode={floatingNavbarMode}
-        searchPlaceholder={floatingNavbarSearchPlaceholder}
       />
 
       {showDefaultTrigger ? (
