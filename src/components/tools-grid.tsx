@@ -81,7 +81,7 @@ export default function ToolsGrid({ category, initialTools }: ToolsGridProps) {
                 referrerPolicy="no-referrer"
                 width={1200}
                 height={675}
-                src={item.og_image_link}
+                src={item.og_image_link || null}
                 className="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"
               />
               <div className="space-y-3 p-4">
