@@ -3,8 +3,10 @@ import '../styles/global.css';
 import HomeSidebar from '../components/home-sidebar';
 import SiteFooter from '../components/site-footer.astro';
 import { Font, Picture } from 'astro:assets';
-import backgroundImage from '../images/background.jpg';
-import mobileBackgroundImage from '../images/background mobile.png';
+import backgroundImage from '../images/background_dark.jpg';
+import mobileBackgroundImage from '../images/background_dark_mobile.png';
+import backgroundLightImage from '../images/background_light.png';
+import mobileBackgroundLightImage from '../images/background_light_mobile.png';
 
 type Props = {
     title?: string;
@@ -64,13 +66,49 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={ogImage} />
         <meta name="twitter:image:alt" content="Design Index" />
+        <script is:inline>
+            (() => {
+                const storageKey = 'design-index-theme';
+                const root = document.documentElement;
+                const storedTheme = localStorage.getItem(storageKey);
+                const isDark = storedTheme ? storedTheme === 'dark' : true;
+
+                root.classList.toggle('dark', isDark);
+                root.dataset.theme = isDark ? 'dark' : 'light';
+
+                const metaTheme = document.querySelector('meta[name="theme-color"]');
+                if (metaTheme) {
+                    metaTheme.setAttribute('content', isDark ? '#000000' : '#f4ede3');
+                }
+            })();
+        </script>
         <Font cssVariable="--font-kalamayka" />
         <Font cssVariable="--departure" />
     </head>
-    <body class={`relative min-h-screen font-kal ${backgroundVariant === 'slate' ? 'bg-[#0B0B0B]' : 'bg-black'}`}>
+    <body class={`theme-body-bg relative min-h-screen font-kal ${backgroundVariant === 'slate' ? 'theme-solid-bg' : ''}`}>
         {
             backgroundVariant === 'image' ? (
                 <div class="fixed inset-0 -z-10">
+                    <Picture
+                        src={mobileBackgroundLightImage}
+                        formats={['avif', 'webp']}
+                        alt=""
+                        quality={55}
+                        widths={[360, 480, 640, 768]}
+                        sizes="100vw"
+                        loading="eager"
+                        class="theme-light-image h-full w-full object-cover object-center md:hidden"
+                    />
+                    <Picture
+                        src={backgroundLightImage}
+                        formats={['avif', 'webp']}
+                        alt=""
+                        quality={55}
+                        widths={[640, 960, 1280, 1600]}
+                        sizes="100vw"
+                        loading="eager"
+                        class="theme-light-image hidden h-full w-full object-cover object-[60%_center] md:block md:object-center"
+                    />
                     <Picture
                         src={mobileBackgroundImage}
                         formats={['avif', 'webp']}
@@ -79,7 +117,7 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
                         widths={[360, 480, 640, 768]}
                         sizes="100vw"
                         loading="eager"
-                        class="h-full w-full object-cover object-center md:hidden"
+                        class="theme-dark-image h-full w-full object-cover object-center md:hidden"
                     />
                     <Picture
                         src={backgroundImage}
@@ -89,11 +127,11 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
                         widths={[640, 960, 1280, 1600]}
                         sizes="100vw"
                         loading="eager"
-                        class="hidden h-full w-full object-cover object-[60%_center] md:block md:object-center"
+                        class="theme-dark-image hidden h-full w-full object-cover object-[60%_center] md:block md:object-center"
                     />
                 </div>
             ) : (
-                <div class="fixed inset-0 -z-10 bg-[#0B0B0B]" />
+                <div class="theme-solid-bg fixed inset-0 -z-10" />
             )
         }
         <HomeSidebar

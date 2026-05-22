@@ -1,40 +1,58 @@
-import { CACHE_TTL_SECONDS, getCachedJson, setCachedJson } from "@/lib/cache";
+import {
+  CACHE_TTL_SECONDS,
+  getCachedJson,
+  setCachedJson,
+} from "@/lib/cache";
+
 import { supabase } from "@/lib/supabase";
-import { normalizeTools, type ToolItem } from "@/lib/tools";
+
+import {
+  normalizeToolCards,
+  type ToolCard,
+} from "@/lib/tools";
 
 export async function getToolsByCategory(
-	category: string,
-): Promise<ToolItem[]> {
-	const cacheKey = `design-index:tools:${category}`;
+  category: string,
+): Promise<ToolCard[]> {
+  const cacheKey =
+    `design-index:tools:${category}`;
 
-	// Redis HIT
-	const cached = await getCachedJson<ToolItem[]>(cacheKey);
+  const cached = await getCachedJson<ToolCard[]>(  cacheKey, );
 
-	if (cached) {
-		console.log("cache hit");
-		return cached;
-	}
+  if (cached) {
+    console.log("cache hit");
 
-	// Supabase query
-	const { data, error } = await supabase
-		.from("design_index")
-		.select("primary_key, tool_name, pricing, website, description, og_image_link, category, extended_description")
-		.eq("category", category);
+    return cached;
+  }
 
-	if (error) {
-		throw new Error("Failed to fetch tools");
-	}
+  const { data, error } = await supabase
+    .from("design_index")
+    .select(
+      `
+      primary_key,
+      tool_name,
+      description,
+      og_image_link
+      `,
+    )
+    .eq("category", category);
 
-	const tools = normalizeTools(data);
+  if (error) {
+    throw new Error(
+      "Failed to fetch tools",
+    );
+  }
 
-	// Redis SET
-	await setCachedJson(
-		cacheKey,
-		tools,
-		CACHE_TTL_SECONDS,
-	);
+  const tools =
+    normalizeToolCards(data);
 
-	console.log("cache miss");
+  void setCachedJson(
+    cacheKey,
+    tools,
+    CACHE_TTL_SECONDS,
+  );
 
-	return tools;
+  console.log("cache miss");
+
+  return tools;
 }

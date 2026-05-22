@@ -7,6 +7,28 @@
   --font-kal: var(--font-kalamayka), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-departure: var(--departure), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --shadow-everywhere: inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.1), 0 4px 4px rgba(0, 0, 0, 0.1), 0 8px 8px rgba(0, 0, 0, 0.1);
+  --app-bg: #f4ede3;
+  --app-solid-bg: #efe6da;
+  --app-surface: rgba(255, 250, 243, 0.74);
+  --app-surface-strong: rgba(255, 252, 247, 0.9);
+  --app-surface-soft: rgba(255, 250, 243, 0.62);
+  --app-panel-contrast: rgba(255, 255, 255, 0.96);
+  --app-text: #241d15;
+  --app-text-muted: #6b6155;
+  --app-text-soft: #897d6f;
+  --app-border: rgba(60, 44, 26, 0.14);
+  --app-border-strong: rgba(60, 44, 26, 0.22);
+  --app-overlay: rgba(255, 247, 238, 0.42);
+  --app-navbar: rgba(255, 250, 243, 0.66);
+  --app-footer-bg: rgba(249, 242, 233, 0.92);
+  --app-sidebar: #f8f1e8;
+  --app-sidebar-foreground: #241d15;
+  --app-sidebar-accent: rgba(82, 61, 37, 0.08);
+  --app-sidebar-accent-foreground: #241d15;
+  --app-sidebar-border: rgba(60, 44, 26, 0.14);
+  --app-sidebar-ring: rgba(82, 61, 37, 0.26);
+  --app-social-icon-filter: none;
+  --app-hero-shadow: none;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -56,6 +78,144 @@
   .shadow-everywhere {
     box-shadow: var(--shadow-everywhere);
   }
+
+  .theme-body-bg {
+    background-color: var(--app-bg);
+  }
+
+  .theme-solid-bg {
+    background-color: var(--app-solid-bg);
+  }
+
+  .theme-text-primary {
+    color: var(--app-text);
+  }
+
+  .theme-text-muted {
+    color: var(--app-text-muted);
+  }
+
+  .theme-text-soft {
+    color: var(--app-text-soft);
+  }
+
+  .theme-overlay {
+    background-color: var(--app-overlay);
+  }
+
+  .theme-panel {
+    border: 1px solid var(--app-border);
+    background: var(--app-surface);
+    backdrop-filter: blur(16px);
+  }
+
+  .theme-panel-strong {
+    border: 1px solid var(--app-border-strong);
+    background: var(--app-surface-strong);
+    backdrop-filter: blur(18px);
+  }
+
+  .theme-panel-soft {
+    border: 1px solid var(--app-border);
+    background: var(--app-surface-soft);
+    backdrop-filter: blur(14px);
+  }
+
+  .theme-card {
+    border: 1px solid var(--app-border);
+    background: var(--app-surface);
+    backdrop-filter: blur(14px);
+  }
+
+  .theme-card-hover {
+    transition: transform 200ms ease, border-color 200ms ease, background-color 200ms ease;
+  }
+
+  .theme-card-hover:hover {
+    border-color: var(--app-border-strong);
+  }
+
+  .theme-button {
+    border: 1px solid var(--app-border-strong);
+    background: var(--app-surface-soft);
+    color: var(--app-text);
+    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+
+  .theme-button:hover {
+    border-color: var(--app-border-strong);
+    background: var(--app-surface-strong);
+  }
+
+  .theme-input-surface {
+    border: 1px solid var(--app-border);
+    background: var(--app-panel-contrast);
+    color: var(--app-text);
+  }
+
+  .theme-input-surface::placeholder {
+    color: var(--app-text-soft);
+  }
+
+  .theme-input-surface:focus {
+    border-color: var(--app-border-strong);
+    outline: none;
+  }
+
+  .theme-nav-shell {
+    border-color: var(--app-border-strong);
+    background: var(--app-navbar);
+    color: var(--app-text);
+  }
+
+  .theme-nav-control {
+    color: var(--app-text);
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  .theme-nav-control:hover {
+    background: var(--app-sidebar-accent);
+  }
+
+  .theme-social-icon {
+    filter: var(--app-social-icon-filter);
+  }
+
+  .theme-hero-title {
+    color: var(--app-text);
+    text-shadow: var(--app-hero-shadow);
+  }
+
+  .theme-sidebar-shell {
+    --sidebar: var(--app-sidebar);
+    --sidebar-foreground: var(--app-sidebar-foreground);
+    --sidebar-accent: var(--app-sidebar-accent);
+    --sidebar-accent-foreground: var(--app-sidebar-accent-foreground);
+    --sidebar-border: var(--app-sidebar-border);
+    --sidebar-ring: var(--app-sidebar-ring);
+  }
+
+  .theme-footer-shell {
+    border-top: 1px solid var(--app-border);
+    background: var(--app-footer-bg);
+    backdrop-filter: blur(14px);
+  }
+
+  .theme-light-image {
+    display: block;
+  }
+
+  .theme-dark-image {
+    display: none;
+  }
+
+  .dark .theme-light-image {
+    display: none;
+  }
+
+  .dark .theme-dark-image {
+    display: block;
+  }
 }
 
 @theme inline {
@@ -97,6 +257,28 @@
 }
 
 .dark {
+  --app-bg: #050505;
+  --app-solid-bg: #0b0b0b;
+  --app-surface: rgba(11, 11, 11, 0.72);
+  --app-surface-strong: rgba(17, 17, 17, 0.9);
+  --app-surface-soft: rgba(11, 11, 11, 0.55);
+  --app-panel-contrast: rgba(18, 18, 18, 0.96);
+  --app-text: #f5f5f5;
+  --app-text-muted: #d3d3d3;
+  --app-text-soft: #8f8f8f;
+  --app-border: rgba(255, 255, 255, 0.1);
+  --app-border-strong: rgba(255, 255, 255, 0.18);
+  --app-overlay: rgba(0, 0, 0, 0.5);
+  --app-navbar: rgba(0, 0, 0, 0.55);
+  --app-footer-bg: rgba(5, 5, 5, 0.95);
+  --app-sidebar: #000000;
+  --app-sidebar-foreground: #ffffff;
+  --app-sidebar-accent: #151515;
+  --app-sidebar-accent-foreground: #ffffff;
+  --app-sidebar-border: #2a2a2a;
+  --app-sidebar-ring: rgba(255, 255, 255, 0.22);
+  --app-social-icon-filter: brightness(0) invert(1);
+  --app-hero-shadow: 0 205px 57px rgba(0, 0, 0, 0.01), 0 131px 52px rgba(0, 0, 0, 0.09), 0 74px 44px rgba(0, 0, 0, 0.3), 0 33px 33px rgba(0, 0, 0, 0.51), 0 8px 18px rgba(0, 0, 0, 0.59);
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);

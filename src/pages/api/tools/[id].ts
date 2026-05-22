@@ -1,28 +1,47 @@
 import type { APIRoute } from "astro";
-import { CACHE_TTL_SECONDS, getCachedJson, setCachedJson } from "@/lib/cache";
-import { supabase } from "@/lib/supabase";
 import {
-  normalizeTool,
-  normalizeTools,
+  CACHE_TTL_SECONDS,
+  getCachedJson,
+  setCachedJson,
+} from "@/lib/cache";
+
+import { supabase } from "@/lib/supabase";
+
+import {
+  normalizeToolDetail,
+  normalizeToolCards,
   type SupabaseToolRow,
-  type ToolItem,
+  type ToolCard,
+  type ToolDetail,
 } from "@/lib/tools";
 
 type ToolDetailPayload = {
-  tool: ToolItem;
-  suggestedTools: ToolItem[];
+  tool: ToolDetail;
+  suggestedTools: ToolCard[];
 };
 
-export const GET: APIRoute = async ({ params }) => {
+export const GET: APIRoute = async ({
+  params,
+  cache,
+}) => {
   const idParam = (params.id ?? "").trim();
+
   const toolId = Number(idParam);
 
   if (!idParam || Number.isNaN(toolId)) {
-    return Response.json({ error: "Missing tool id." }, { status: 400 });
+    return Response.json(
+      { error: "Missing tool id." },
+      { status: 400 },
+    );
   }
 
-  const cacheKey = `design-index:tools:detail:id:${toolId}`;
-  const cachedPayload = await getCachedJson<ToolDetailPayload>(cacheKey);
+  const cacheKey =
+    `design-index:tools:detail:id:${toolId}`;
+
+  const cachedPayload =
+    await getCachedJson<ToolDetailPayload>(
+      cacheKey,
+    );
 
   if (cachedPayload) {
     return Response.json(cachedPayload, {
@@ -32,73 +51,63 @@ export const GET: APIRoute = async ({ params }) => {
     });
   }
 
-  const { data: toolData, error: toolError } = await supabase
+  const { data, error } = await supabase
     .from("design_index")
-    .select(
-      "primary_key, tool_name, pricing, extended_description, og_image_link, website",
+    .select(`primary_key, tool_name, pricing, extended_description, og_image_link, website, description`,
     )
-    .eq("primary_key", toolId)
-    .single<SupabaseToolRow>();
+    .gte("primary_key", toolId - 2)
+    .lte("primary_key", toolId + 2)
+    .order("primary_key", {
+      ascending: true,
+    });
 
-  if (toolError || !toolData) {
+  if (error || !data?.length) {
     return Response.json(
       { error: "Tool not found." },
       { status: 404 },
     );
   }
 
-  const normalizedTool = normalizeTool(toolData);
+  const toolRow = data.find(
+    (item) => item.primary_key === toolId,
+  );
 
-  const { data: nextToolsData, error: nextToolsError } = await supabase
-    .from("design_index")
-    .select("primary_key, tool_name, category, pricing, og_image_link, description, website")
-    .gt("primary_key", toolId)
-    .order("primary_key", { ascending: true })
-    .limit(3);
-
-  if (nextToolsError) {
+  if (!toolRow) {
     return Response.json(
-      { error: "Unable to fetch suggested tools." },
-      { status: 500 },
+      { error: "Tool not found." },
+      { status: 404 },
     );
   }
 
-  let suggestedTools = normalizeTools(nextToolsData);
-
-  if (suggestedTools.length < 3) {
-    const remaining = 3 - suggestedTools.length;
-    const excludedIds = [normalizedTool.id, ...suggestedTools.map((item) => item.id)];
-
-    const { data: fallbackToolsData, error: fallbackToolsError } = await supabase
-      .from("design_index")
-      .select("primary_key, tool_name, category, pricing, og_image_link, description, website")
-      .lte("primary_key", toolId)
-      .order("primary_key", { ascending: true })
-      .limit(remaining + 1);
-
-    if (fallbackToolsError) {
-      return Response.json(
-        { error: "Unable to fetch suggested tools." },
-        { status: 500 },
-      );
-    }
-
-    const fallbackTools = normalizeTools(fallbackToolsData).filter(
-      (item) => !excludedIds.includes(item.id),
-    );
-
-    suggestedTools = [...suggestedTools, ...fallbackTools].slice(0, 3);
-  }
+  const suggestionRows = data
+    .filter(
+      (item) =>
+        item.primary_key !== toolId,
+    )
+    .slice(0, 3);
 
   const payload: ToolDetailPayload = {
-    tool: normalizedTool,
-    suggestedTools,
+    tool: normalizeToolDetail( toolRow as SupabaseToolRow,),
+    suggestedTools: normalizeToolCards(suggestionRows as SupabaseToolRow[],),
   };
 
-  await setCachedJson(cacheKey, payload, CACHE_TTL_SECONDS);
+  if (cache.enabled) {
+    cache.set({
+      maxAge: 3600,
+    });
+  }
+
+  void setCachedJson(
+    cacheKey,
+    payload,
+    CACHE_TTL_SECONDS,
+  );
 
   return Response.json(payload, {
     headers: {
+      "Cache-Control":
+        "public, s-maxage=3600, stale-while-revalidate=86400",
+
       "x-cache": "miss",
     },
   });
