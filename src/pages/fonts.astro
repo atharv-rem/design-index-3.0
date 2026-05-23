@@ -14,11 +14,11 @@ if (Astro.cache.enabled) {
 ---
 
 <HomescreenLayout title="Font Resources for Designers | Design Index" description="Explore curated font resources including serif, sans-serif, display, and variable fonts for modern design systems." keywords="fonts, typefaces, variable fonts, typography resources, serif fonts, sans serif fonts" backgroundVariant="slate">
-	<main class="mt-[50px] px-[20px]">
+	<main class="mt-[40px] md:mt-[30px] px-[20px]">
 		<section>
 			<div>
-				<h1 class="mt-3 font-departure font-regular text-4xl leading-none text-white md:text-[40px]">FONTS</h1>
-				<p class="mt-4 rounded-lg bg-[#181818] px-[10px] py-[5px] font-departure text-sm leading-[20px] text-zinc-300 md:text-base">
+				<h1 class="mt-3 font-departure font-regular text-4xl leading-none theme-text-primary md:text-[40px]">FONTS</h1>
+				<p class="mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
 					A handpicked selection of font libraries to bring personality and clarity to your typography. Whether you're looking for elegant serifs, modern sans-serifs, or expressive display fonts, this section helps you find the perfect typeface to elevate your design language and reinforce brand identity.
 				</p>
 				<ToolsGrid client:load category="font" initialTools={tools} />

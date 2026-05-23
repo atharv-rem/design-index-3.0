@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import winkNLP from "wink-nlp";
 import model from "wink-eng-lite-web-model";
+import HomeFeatures from "./home-features";
+import HomeFaq from "./home-faq";
 
 let nlpInstance: any = null;
 let itsInstance: any = null;
@@ -17,7 +19,6 @@ function getNLP() {
   }
   return { nlp: nlpInstance, its: itsInstance };
 }
-
 
 type ToolResult = {
   id: number;
@@ -160,57 +161,65 @@ export default function SearchBar() {
   const isSearchActive = activeQuery.length > 0 || loading;
 
   return (
-    <div className="pointer-events-auto w-full flex flex-col items-center">
-      {/* Heading — hidden when search results are showing */}
-      <h1
-        className={`font-kal text-left md:text-center text-[50px] leading-[45px] md:leading-none font-semibold text-white md:text-[40px] [text-shadow:0_205px_57px_rgba(0,0,0,0.01),0_131px_52px_rgba(0,0,0,0.09),0_74px_44px_rgba(0,0,0,0.30),0_33px_33px_rgba(0,0,0,0.51),0_8px_18px_rgba(0,0,0,0.59)] transition-all duration-300 ${
-          isSearchActive ? "hidden" : ""
-        }`}
-      >
-        Find any design tool you need
-      </h1>
-      {/* Black box input matching the exact shadow-everywhere and ask anything styles */}
-      <div className="shadow-everywhere mt-5 md:mt-5 h-auto w-full max-w-[430px] bg-black px-2.5 py-2 text-left flex items-center">
-        <textarea
-          ref={inputRef}
-          inputMode="text"
-          enterKeyHint="search"
-          rows={1}
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="ask anything"
-          className="font-kal text-[13px] leading-tight text-white font-semibold placeholder:text-white bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none tracking-[0.05rem]"
-        />
-        {inputValue && (
-          <button
-            type="button"
-            onClick={handleClear}
-            className="ml-2 font-kal text-[13px] text-[#bebebe] hover:text-white transition shrink-0"
+    <div className="w-full flex flex-col">
+      {/* Main search viewport - is dynamic min-h-screen when not searching to center search bar, and collapses to h-auto when active search */}
+      <main className={`pointer-events-none relative z-30 flex items-center justify-center px-6 transition-all duration-300 ${
+        isSearchActive ? "h-auto pt-10 pb-6" : "min-h-screen pt-10 pb-12"
+      }`}>
+        <div className="flex h-auto w-full flex-col items-center justify-center">
+          {/* Heading — hidden when search results are showing */}
+          <h1
+            className={`font-kal text-left md:text-center text-[50px] leading-[45px] md:leading-none font-semibold theme-hero-title md:text-[40px] transition-all duration-300 ${
+              isSearchActive ? "hidden" : ""
+            }`}
           >
-            clear
-          </button>
-        )}
-      </div>
+            Find any design tool you need
+          </h1>
+          {/* Black box input matching the exact shadow-everywhere and ask anything styles */}
+          <div className="shadow-everywhere mt-5 md:mt-5 h-auto w-full max-w-[430px] bg-white dark:bg-black border border-[var(--app-border)] dark:border-white/10 px-2.5 py-2 text-left flex items-center pointer-events-auto">
+            <textarea
+              ref={inputRef}
+              inputMode="text"
+              enterKeyHint="search"
+              rows={1}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="ask anything"
+              style={{ outline: "none", boxShadow: "none" }}
+              className="font-kal text-[13px] leading-tight theme-text-primary font-semibold placeholder:theme-text-soft bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.05rem]"
+            />
+            {inputValue && (
+              <button
+                type="button"
+                onClick={handleClear}
+                className="ml-2 font-kal text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0"
+              >
+                clear
+              </button>
+            )}
+          </div>
+        </div>
+      </main>
 
       {/* Skeletons, Errors, and Search Results below search input */}
-      <div className="w-full max-w-4xl mt-10">
+      <div className="w-full max-w-4xl mx-auto px-6 mt-6 z-30 pointer-events-auto">
         {/* Loading skeleton */}
         {loading && (
           <div className="w-full">
-            <p className="font-departure text-[11px] uppercase tracking-[0.16em] text-white animate-pulse mb-4">
+            <p className="font-departure text-[11px] uppercase tracking-[0.16em] theme-text-primary animate-pulse mb-4">
               Searching...
             </p>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={i}
-                  className="rounded-[8px] border border-white/10 bg-[#111111]/80 p-4 animate-pulse space-y-4 shadow-md"
+                  className="rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface-soft)] p-4 animate-pulse space-y-4 shadow-md"
                 >
-                  <div className="aspect-video w-full rounded bg-zinc-800" />
+                  <div className="aspect-video w-full rounded bg-[var(--app-border-strong)]" />
                   <div className="space-y-2">
-                    <div className="h-4 w-1/2 rounded bg-zinc-800" /> 
-                    <div className="h-3 w-5/6 rounded bg-zinc-800" />
+                    <div className="h-4 w-1/2 rounded bg-[var(--app-border-strong)]" /> 
+                    <div className="h-3 w-5/6 rounded bg-[var(--app-border-strong)]" />
                   </div>
                 </div>
               ))}
@@ -228,14 +237,14 @@ export default function SearchBar() {
         {/* Search Results */}
         {!loading && activeQuery && results.length > 0 && (
           <div className="w-full">
-            <div className="flex items-center justify-between border-b border-white/30 pb-3 mb-6">
-              <p className="font-departure font-semibold text-[11px] uppercase tracking-[0.16em] text-white select-none">
+            <div className="flex items-center justify-between border-b border-[var(--app-border-strong)] pb-3 mb-6">
+              <p className="font-departure font-semibold text-[11px] uppercase tracking-[0.16em] theme-text-primary select-none">
                 Search Results ({results.length})
               </p>
               <button
                 type="button"
                 onClick={handleClear}
-                className="font-departure text-[11px] uppercase tracking-[0.16em] text-zinc-400 hover:text-white transition"
+                className="font-departure text-[11px] uppercase tracking-[0.16em] theme-text-soft hover:theme-text-primary transition"
               >
                 Clear
               </button>
@@ -245,7 +254,7 @@ export default function SearchBar() {
                 <a
                   key={item.id}
                   href={`/${encodeURIComponent(item.tool_name)}?id=${item.id}`}
-                  className="group overflow-hidden rounded-[8px] border border-white/10 bg-[#111111]/80 backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-white/20 shadow-2xl flex flex-col"
+                  className="group overflow-hidden rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-[var(--app-border-strong)] shadow-2xl flex flex-col"
                 >
                   <img
                     alt={item.tool_name}
@@ -259,10 +268,10 @@ export default function SearchBar() {
                     }}
                   />
                   <div className="space-y-3 p-4">
-                    <h3 className="font-departure text-base leading-5 text-zinc-100 md:text-lg">
+                    <h3 className="font-departure text-base leading-5 theme-text-primary md:text-lg">
                       {item.tool_name}
                     </h3>
-                    <p className="text-sm font-departure leading-5 text-zinc-400">
+                    <p className="text-sm font-departure leading-5 theme-text-soft">
                       {item.description}
                     </p>
                   </div>
@@ -274,16 +283,24 @@ export default function SearchBar() {
 
         {/* No results empty state */}
         {!loading && activeQuery && results.length === 0 && (
-          <div className="flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/2 px-4 text-center">
-            <span className="font-departure text-xl text-zinc-100 md:text-2xl">
+          <div className="flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-4 text-center">
+            <span className="font-departure text-xl theme-text-primary md:text-2xl">
               No tools match your search
             </span>
-            <span className="mt-2 text-sm text-zinc-400 md:text-base font-departure">
+            <span className="mt-2 text-sm theme-text-soft md:text-base font-departure">
               Try searching for other terms or categories
             </span>
           </div>
         )}
       </div>
+
+      {/* If search is NOT active, render features and faq as a separate scrollable section below */}
+      {!isSearchActive && (
+        <section className="relative z-30 mx-auto flex w-full flex-col gap-6 pb-24 pt-8 md:pt-16 max-w-4xl px-6 pointer-events-auto">
+          <HomeFeatures />
+          <HomeFaq />
+        </section>
+      )}
     </div>
   );
 }

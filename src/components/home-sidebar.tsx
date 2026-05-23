@@ -6,7 +6,7 @@ import twitterIcon from "@/assets/twitter.svg?url"
 import type { ReactNode } from "react"
 import { useEffect, useState } from "react"
 import { motion } from "motion/react"
-import TopFloatingNavbar from "@/components/top-floating-navbar"
+import BottomFloatingNavbar from "@/components/bottom-floating-navbar"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Sidebar,
@@ -81,12 +81,12 @@ function HomeSidebarContent() {
           transition={{ type: "spring", stiffness: 180, damping: 24, mass: 0.95 }}
         >
           <div className="flex items-center gap-2">
-            <p className="text-md font-semibold tracking-wide text-white">Design Index</p>
+            <p className="text-md font-semibold tracking-wide theme-text-primary">Design Index</p>
             <button
               type="button"
               aria-label="Close sidebar"
               onClick={toggleSidebar}
-              className="ml-auto rounded-md p-1.5 text-white transition-colors hover:bg-white/10"
+              className="ml-auto rounded-md p-1.5 theme-text-primary transition-colors hover:bg-[var(--sidebar-accent)]"
             >
               <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d="M18 6L6 18M6 6l12 12" />
@@ -104,7 +104,7 @@ function HomeSidebarContent() {
             transition={{ type: "spring", stiffness: 170, damping: 24, mass: 0.95, delay: 0.06 + index * 0.05 }}
           >
             <SidebarGroup className="px-0 py-1.5">
-              <SidebarGroupLabel className="px-2 pb-1 font-departure text-[11px] uppercase tracking-[0.16em] text-[#8f8f8f]">
+              <SidebarGroupLabel className="px-2 pb-1 font-departure text-[11px] uppercase tracking-[0.16em] theme-text-soft">
                 {group.title}
               </SidebarGroupLabel>
               <SidebarMenu className="space-y-1 font-departure">
@@ -112,7 +112,7 @@ function HomeSidebarContent() {
                   <SidebarMenuItem key={link.label}>
                     <SidebarMenuButton
                       asChild
-                      className="text-sm text-[#bebebe] hover:bg-white/10 hover:text-white"
+                      className="text-sm theme-text-muted hover:bg-[var(--sidebar-accent)] hover:theme-text-primary"
                     >
                       <a href={link.href} onClick={() => setOpenMobile(false)}>
                         {link.label}
@@ -131,7 +131,7 @@ function HomeSidebarContent() {
           {...mobileMotion}
           transition={{ type: "spring", stiffness: 165, damping: 25, mass: 1, delay: 0.22 }}
         >
-          <div className="flex items-center justify-center font-departure text-[15px] text-white md:text-[10px]">
+          <div className="flex items-center justify-center font-departure text-[15px] theme-text-primary md:text-[10px]">
             <span>Made with</span>
             <img
               src={heart}
@@ -154,18 +154,18 @@ function HomeSidebarSkeletonContent() {
   return (
     <>
       <SidebarHeader className="px-4 py-4">
-        <Skeleton className="h-6 w-28 bg-zinc-800" />
+        <Skeleton className="h-6 w-28 bg-[var(--sidebar-accent)]" />
       </SidebarHeader>
 
       <SidebarContent className="px-2 pb-2">
         {Array.from({ length: 4 }).map((_, index) => (
           <SidebarGroup key={index} className="px-0 py-1.5">
             <div className="px-2 pb-2">
-              <Skeleton className="h-3 w-20 bg-zinc-800" />
+              <Skeleton className="h-3 w-20 bg-[var(--sidebar-accent)]" />
             </div>
             <SidebarMenu className="space-y-1 px-2">
-              <Skeleton className="h-8 w-full bg-zinc-800" />
-              <Skeleton className="h-8 w-5/6 bg-zinc-800" />
+              <Skeleton className="h-8 w-full bg-[var(--sidebar-accent)]" />
+              <Skeleton className="h-8 w-5/6 bg-[var(--sidebar-accent)]" />
             </SidebarMenu>
           </SidebarGroup>
         ))}
@@ -173,9 +173,9 @@ function HomeSidebarSkeletonContent() {
 
       <SidebarFooter className="px-4 py-5">
         <div className="flex items-center justify-center gap-2">
-          <Skeleton className="h-4 w-16 bg-zinc-800" />
-          <Skeleton className="h-4 w-4 rounded-full bg-zinc-800" />
-          <Skeleton className="h-4 w-16 bg-zinc-800" />
+          <Skeleton className="h-4 w-16 bg-[var(--sidebar-accent)]" />
+          <Skeleton className="h-4 w-4 rounded-full bg-[var(--sidebar-accent)]" />
+          <Skeleton className="h-4 w-16 bg-[var(--sidebar-accent)]" />
         </div>
       </SidebarFooter>
     </>
@@ -186,12 +186,16 @@ type HomeSidebarProps = {
   children?: ReactNode
   showDefaultTrigger?: boolean
   floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>
+  visitUrl?: string
+  shareTitle?: string
 }
 
 export default function HomeSidebar({
   children,
   showDefaultTrigger = true,
   floatingNavbarSocialLinks = [],
+  visitUrl,
+  shareTitle,
 }: HomeSidebarProps) {
   const [isMounted, setIsMounted] = useState(false)
 
@@ -204,17 +208,19 @@ export default function HomeSidebar({
 
   return (
     <SidebarProvider defaultOpen={false} className="min-h-svh w-full">
-      <TopFloatingNavbar
+      <BottomFloatingNavbar
         socialLinks={resolvedFloatingNavbarSocialLinks}
+        visitUrl={visitUrl}
+        shareTitle={shareTitle}
       />
 
       {showDefaultTrigger ? (
-        <SidebarTrigger className="fixed top-4 left-4 z-40 rounded-md bg-black/80 p-2 text-white transition-colors hover:bg-white/10" />
+        <SidebarTrigger className="fixed top-4 left-4 z-40 rounded-md bg-[var(--app-navbar)] border border-[var(--app-border-strong)] p-2 theme-text-primary transition-colors hover:bg-[var(--app-sidebar-accent)]" />
       ) : null}
 
       <Sidebar
         collapsible="offcanvas"
-        className="z-50 border-none [--sidebar:#000000] [--sidebar-foreground:#ffffff] [--sidebar-accent:#151515] [--sidebar-accent-foreground:#ffffff] [--sidebar-border:#2a2a2a]"
+        className="z-50 border-none theme-sidebar-shell"
       >
         {isMounted ? <HomeSidebarContent /> : <HomeSidebarSkeletonContent />}
       </Sidebar>

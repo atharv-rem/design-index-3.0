@@ -42,19 +42,19 @@ const faqItems: FaqItem[] = [
 
 export default function HomeFaq() {
   return (
-    <section aria-labelledby="faq-heading" className="w-full bg-black/45 p-5 backdrop-blur-sm md:p-7">
-      <p className="font-departure text-[11px] uppercase tracking-[0.16em] text-[#a7a7a7]">FAQ</p>
-      <h2 id="faq-heading" className="mt-2 font-kal text-3xl font-semibold text-white md:text-4xl">
+    <section aria-labelledby="faq-heading" className="w-full theme-panel p-5 md:p-7 rounded-[10px] md:rounded-2xl">
+      <p className="font-departure text-[11px] uppercase tracking-[0.16em] theme-text-soft">FAQ</p>
+      <h2 id="faq-heading" className="mt-2 font-kal text-3xl font-semibold theme-text-primary md:text-4xl">
         Frequently asked questions
       </h2>
 
       <Accordion defaultValue={[faqItems[0].id]} className="mt-5">
         {faqItems.map((item) => (
-          <AccordionItem key={item.id} value={item.id} className="">
-            <AccordionTrigger className="text-white hover:text-white/90 font-departure">
+          <AccordionItem key={item.id} value={item.id} className="border-b border-[var(--app-border)]">
+            <AccordionTrigger className="theme-text-primary hover:opacity-90 font-departure">
               {item.question}
             </AccordionTrigger>
-            <AccordionContent className="text-[#d3d3d3] font-departure">{item.answer}</AccordionContent>
+            <AccordionContent className="theme-text-muted font-departure">{item.answer}</AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>

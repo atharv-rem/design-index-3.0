@@ -13,11 +13,11 @@ if (Astro.cache.enabled) {
 ---
 
 <HomescreenLayout title="Illustration Libraries and Assets | Design Index" description="Explore curated illustration libraries and assets for websites, apps, branding, and marketing designs." keywords="illustrations, illustration libraries, vector illustrations, 3D illustrations, design assets" backgroundVariant="slate">
-	<main class="mt-[50px] px-[20px]">
+	<main class="mt-[40px] md:mt-[30px] px-[20px]">
 		<section>
 			<div>
-				<h1 class="mt-3 font-departure font-regular text-4xl leading-none text-white md:text-[40px]">ILLUSTRATIONS</h1>
-				<p class="mt-4 rounded-lg bg-[#181818] px-[10px] py-[5px] font-departure text-sm leading-[20px] text-zinc-300 md:text-base">
+				<h1 class="mt-3 font-departure font-regular text-4xl leading-none theme-text-primary md:text-[40px]">ILLUSTRATIONS</h1>
+				<p class="mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
 					A rich archive of illustrations ranging from minimal flat styles to detailed artworks. Use these visual assets to add depth, storytelling, and emotional warmth to your projects, making them more engaging, memorable, and human-centered.
 				</p>
 				<ToolsGrid client:load category="illustration" initialTools={tools} />

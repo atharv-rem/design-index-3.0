@@ -63,7 +63,7 @@ export default function HomeScrollFade({
   return (
     <motion.div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-20 bg-black"
+      className="pointer-events-none fixed inset-0 z-20 theme-body-bg"
       style={{ opacity: prefersReducedMotion ? rawOpacity : smoothOpacity }}
     />
   );

@@ -30,19 +30,19 @@ const featureItems: FeatureItem[] = [
 
 export default function HomeFeatures() {
   return (
-    <section aria-labelledby="features-heading" className="w-full bg-black/45 p-5 backdrop-blur-sm md:p-7">
-      <p className="font-departure text-[11px] uppercase tracking-[0.16em] text-[#a7a7a7]">
+    <section aria-labelledby="features-heading" className="w-full theme-panel p-5 md:p-7 rounded-[10px] md:rounded-2xl">
+      <p className="font-departure text-[11px] uppercase tracking-[0.16em] theme-text-soft">
         Features
       </p>
-      <h2 id="features-heading" className="mt-2 font-kal text-3xl font-semibold text-white md:text-4xl">
+      <h2 id="features-heading" className="mt-2 font-kal text-3xl font-semibold theme-text-primary md:text-4xl">
         What users get here
       </h2>
 
       <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2">
         {featureItems.map((feature) => (
-          <article key={feature.title} className="rounded-lg border border-white/10 bg-black/35 p-4">
-            <h3 className="font-kal text-xl font-semibold text-white">{feature.title}</h3>
-            <p className="mt-2 font-departure text-sm leading-6 text-[#d3d3d3]">{feature.description}</p>
+          <article key={feature.title} className="rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] p-4">
+            <h3 className="font-kal text-xl font-semibold theme-text-primary">{feature.title}</h3>
+            <p className="mt-2 font-departure text-sm leading-6 theme-text-muted">{feature.description}</p>
           </article>
         ))}
       </div>

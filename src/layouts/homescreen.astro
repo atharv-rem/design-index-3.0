@@ -18,6 +18,8 @@ type Props = {
     showDefaultSidebarTrigger?: boolean;
     floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>;
     showFooter?: boolean;
+    visitUrl?: string;
+    shareTitle?: string;
 };
 
 const {
@@ -30,6 +32,8 @@ const {
     showDefaultSidebarTrigger = false,
     floatingNavbarSocialLinks = [],
     showFooter = true,
+    visitUrl,
+    shareTitle,
 } = Astro.props;
 
 const canonicalUrl = Astro.url.href;
@@ -78,7 +82,7 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
 
                 const metaTheme = document.querySelector('meta[name="theme-color"]');
                 if (metaTheme) {
-                    metaTheme.setAttribute('content', isDark ? '#000000' : '#f4ede3');
+                    metaTheme.setAttribute('content', isDark ? '#000000' : '#ffffff');
                 }
             })();
         </script>
@@ -127,7 +131,7 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
                         widths={[640, 960, 1280, 1600]}
                         sizes="100vw"
                         loading="eager"
-                        class="theme-dark-image hidden h-full w-full md:block"
+                        class="theme-dark-image hidden h-full w-full object-cover object-[60%_center] md:block md:object-center"
                     />
                 </div>
             ) : (
@@ -138,6 +142,8 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
             client:load
             showDefaultTrigger={showDefaultSidebarTrigger}
             floatingNavbarSocialLinks={floatingNavbarSocialLinks}
+            visitUrl={visitUrl}
+            shareTitle={shareTitle}
         >
             <slot />
             {showFooter && <SiteFooter />}

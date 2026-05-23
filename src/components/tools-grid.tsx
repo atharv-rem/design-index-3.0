@@ -43,7 +43,7 @@ export default function ToolsGrid({ category, initialTools }: ToolsGridProps) {
 
   return (
     <section className="mt-5 w-full">
-      <p className="mb-2 font-departure text-[11px] uppercase tracking-[0.16em] text-zinc-400">Filter by pricing</p>
+      <p className="mb-2 font-departure text-[11px] uppercase tracking-[0.16em] theme-text-soft">Filter by pricing</p>
       <div className="flex flex-wrap gap-2">
         {filters.map((filter) => {
           const active = items === filter.value;
@@ -55,8 +55,8 @@ export default function ToolsGrid({ category, initialTools }: ToolsGridProps) {
               onClick={() => setItems(filter.value)}
               className={`rounded-[10px] border px-3 py-1.5 font-departure text-xs transition-colors ${
                 active
-                  ? "border-zinc-100 bg-zinc-100 text-black"
-                  : "border-zinc-700 bg-[#111111] text-zinc-300 hover:border-zinc-500 hover:text-white"
+                  ? "border-[var(--app-text)] bg-[var(--app-text)] text-[var(--app-bg)]"
+                  : "border-[var(--app-border)] bg-[var(--app-surface-soft)] theme-text-muted hover:border-[var(--app-border-strong)] hover:theme-text-primary"
               }`}
             >
               {filter.label}
@@ -71,7 +71,7 @@ export default function ToolsGrid({ category, initialTools }: ToolsGridProps) {
             <a
               key={item.id}
               href={`/${encodeURIComponent(item.tool_name)}?id=${item.id}`}
-              className="group overflow-hidden rounded-[8px] border border-white/10 bg-[#111111]/80 backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-white/20"
+              className="group overflow-hidden rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-[var(--app-border-strong)]"
             >
               <img
                 alt={item.description.toLowerCase()}
@@ -85,16 +85,16 @@ export default function ToolsGrid({ category, initialTools }: ToolsGridProps) {
                 className="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"
               />
               <div className="space-y-3 p-4">
-                <h3 className="font-departure text-base leading-5 text-zinc-100 md:text-lg">{item.tool_name}</h3>
-                <p className="text-sm font-departure leading-5 text-zinc-400">{item.description}</p>
+                <h3 className="font-departure text-base leading-5 theme-text-primary md:text-lg">{item.tool_name}</h3>
+                <p className="text-sm font-departure leading-5 theme-text-soft">{item.description}</p>
               </div>
             </a>
           ))}
         </div>
       ) : (
-        <div className="mt-8 flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/2 px-4 text-center">
-          <span className="font-departure text-xl text-zinc-100 md:text-2xl">No tools match this filter</span>
-          <span className="mt-2 text-sm text-zinc-400 md:text-base">Try another pricing filter</span>
+        <div className="mt-8 flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-4 text-center">
+          <span className="font-departure text-xl theme-text-primary md:text-2xl">No tools match this filter</span>
+          <span className="mt-2 text-sm theme-text-soft md:text-base">Try another pricing filter</span>
         </div>
       )}
     </section>

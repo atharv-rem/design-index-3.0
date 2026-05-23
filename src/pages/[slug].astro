@@ -53,10 +53,12 @@ const pageDescription =
   keywords={`${tool.tool_name}, design tool`}
   backgroundVariant="slate"
   showFooter={false}
+  visitUrl={tool.website_url}
+  shareTitle={tool.tool_name}
 >
-  <main class="mt-12.5 px-[15px] pb-4 lg:h-[calc(100vh-4rem)] lg:pb-0">
+  <main class="mt-4 px-[15px] pb-4 lg:h-[calc(100vh-4rem)] lg:pb-0">
     <section class="grid grid-cols-1 gap-4 lg:h-full lg:grid-cols-2 lg:items-stretch lg:overflow-hidden">
-      <aside class="mt-[20px] rounded-xl md:p-2 lg:h-full lg:overflow-hidden">
+      <aside class="rounded-xl md:p-2 lg:h-full lg:overflow-hidden">
         <div class="no-scrollbar pb-[20px] lg:h-full lg:overflow-y-auto lg:pr-1">
           <p class="theme-text-soft font-departure text-[11px] uppercase tracking-[0.16em]">
             Tool details
@@ -71,7 +73,7 @@ const pageDescription =
               tool.pricing.includes(
                 "free",
               ) && (
-                <span class="rounded-md border border-emerald-400/30 bg-emerald-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-200">
+                <span class="rounded-md border border-emerald-400/20 dark:border-emerald-400/30 bg-emerald-400/10 dark:bg-emerald-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-200">
                   Free
                 </span>
               )
@@ -81,7 +83,7 @@ const pageDescription =
               tool.pricing.includes(
                 "paid",
               ) && (
-                <span class="rounded-md border border-rose-400/30 bg-rose-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-rose-200">
+                <span class="rounded-md border border-rose-400/20 dark:border-rose-400/30 bg-rose-400/10 dark:bg-rose-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-rose-700 dark:text-rose-200">
                   Paid
                 </span>
               )
@@ -105,9 +107,6 @@ const pageDescription =
             <button
               type="button"
               data-share-button
-              data-share-url={
-                tool.website_url
-              }
               data-share-title={
                 tool.tool_name
               }
