@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import winkNLP from "wink-nlp";
 import model from "wink-eng-lite-web-model";
 
@@ -42,6 +43,22 @@ export default function SearchBar() {
   const [results, setResults] = useState<ToolResult[]>([]);
   const [keywords, setKeywords] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  const placeholders = [
+    "ask anything",
+    "dark mode portfolio",
+    "minimalist website designs",
+    "an icon library of 3d icons",
+  ];
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+  useEffect(() => {
+    if (inputValue !== "") return;
+    const interval = setInterval(() => {
+      setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [inputValue]);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -235,23 +252,41 @@ export default function SearchBar() {
           </h1>
 
           <div className="shadow-everywhere mt-5 md:mt-5 h-auto w-full max-w-[430px] bg-white dark:bg-black border border-[var(--app-border)] dark:border-white/10 px-2.5 py-2 text-left flex items-center pointer-events-auto">
-            <textarea
-              ref={inputRef}
-              inputMode="text"
-              enterKeyHint="search"
-              rows={1}
-              value={inputValue}
-              onChange={(e) =>
-                setInputValue(e.target.value)
-              }
-              onKeyDown={handleKeyDown}
-              placeholder="ask anything"
-              style={{
-                outline: "none",
-                boxShadow: "none",
-              }}
-              className="font-kal text-[13px] leading-tight theme-text-primary font-semibold placeholder:theme-text-soft bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.05rem]"
-            />
+            <div className="relative w-full flex items-center overflow-hidden min-h-[18px]">
+              <textarea
+                ref={inputRef}
+                inputMode="text"
+                enterKeyHint="search"
+                rows={1}
+                title="Search design tools"
+                aria-label="Search design tools"
+                value={inputValue}
+                onChange={(e) =>
+                  setInputValue(e.target.value)
+                }
+                onKeyDown={handleKeyDown}
+                style={{
+                  outline: "none",
+                  boxShadow: "none",
+                }}
+                className="font-kal text-[13px] leading-tight theme-text-primary font-semibold bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.05rem] z-10"
+              />
+
+              <AnimatePresence mode="wait">
+                {!inputValue && (
+                  <motion.div
+                    key={placeholderIndex}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -10, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="absolute left-0 pointer-events-none font-kal text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.05rem] select-none"
+                  >
+                    {placeholders[placeholderIndex]}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {inputValue && (
               <button

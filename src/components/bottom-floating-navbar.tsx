@@ -69,32 +69,32 @@ export default function BottomFloatingNavbar({
 
   if (!isMounted) {
     return (
-      <div className={`shadow-everywhere fixed bottom-6 left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-full border border-[var(--app-border-strong)] bg-[var(--app-navbar)] px-3 py-1.5 backdrop-blur-md flex items-center justify-between gap-2.5 transition-all duration-300 ${
-        hasVisitActions ? "max-w-[390px]" : "max-w-[270px]"
+      <div className={`shadow-everywhere fixed bottom-6 left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-full border border-[var(--app-border-strong)] bg-[var(--app-navbar)] px-4 py-2.5 backdrop-blur-md flex items-center justify-between gap-3.5 transition-all duration-300 ${
+        hasVisitActions ? "max-w-[420px]" : "max-w-[300px]"
       }`}>
-        <Skeleton className="h-7 w-7 rounded-full bg-zinc-800 shrink-0" />
+        <Skeleton className="h-9 w-9 rounded-full bg-zinc-800 shrink-0" />
         {hasVisitActions && (
           <div className="flex items-center gap-1.5">
-            <Skeleton className="h-7 w-12 rounded-full bg-zinc-800" />
-            <Skeleton className="h-7 w-12 rounded-full bg-zinc-800" />
+            <Skeleton className="h-9 w-16 rounded-full bg-zinc-800" />
+            <Skeleton className="h-9 w-16 rounded-full bg-zinc-800" />
           </div>
         )}
-        <div className="flex items-center gap-1.5">
-          <Skeleton className="h-5 w-5 rounded-full bg-zinc-800" />
-          <Skeleton className="h-5 w-5 rounded-full bg-zinc-800" />
-          <Skeleton className="h-5 w-5 rounded-full bg-zinc-800" />
+        <div className="flex items-center gap-0.5">
+          <Skeleton className="h-7 w-7 rounded-full bg-zinc-800" />
+          <Skeleton className="h-7 w-7 rounded-full bg-zinc-800" />
+          <Skeleton className="h-7 w-7 rounded-full bg-zinc-800" />
         </div>
-        <Skeleton className="h-7 w-7 rounded-full bg-zinc-800 shrink-0" />
+        <Skeleton className="h-9 w-9 rounded-full bg-zinc-800 shrink-0" />
       </div>
     )
   }
 
   return (
-    <div className={`shadow-everywhere fixed bottom-6 left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-full border border-[var(--app-border-strong)] bg-[var(--app-navbar)] px-3.5 py-1.5 backdrop-blur-md flex items-center justify-between gap-3 transition-all duration-300 ${
-      hasVisitActions ? "max-w-[390px]" : "max-w-[270px]"
+    <div className={`shadow-everywhere fixed bottom-6 left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-full border border-[var(--app-border-strong)] bg-[var(--app-navbar)] px-4 py-2.5 backdrop-blur-md flex items-center justify-between gap-3.5 transition-all duration-300 ${
+      hasVisitActions ? "max-w-[420px]" : "max-w-[300px]"
     }`}>
       {/* Sidebar Icon Toggle */}
-      <SidebarTrigger className="h-7 w-7 rounded-full p-0 theme-nav-control transition-colors shrink-0" />
+      <SidebarTrigger className="h-9 w-9 rounded-full p-0 theme-nav-control transition-colors shrink-0" />
 
       {/* Center Actions if visitUrl is present */}
       {hasVisitActions && (
@@ -103,14 +103,14 @@ export default function BottomFloatingNavbar({
             href={visitUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-7 items-center justify-center rounded-full bg-[var(--app-text)] px-3 text-[9px] font-departure font-semibold uppercase tracking-[0.08em] text-[var(--app-bg)] hover:opacity-90 transition shrink-0"
+            className="inline-flex h-9 items-center justify-center rounded-full bg-[var(--app-text)] px-4 text-[11px] font-departure font-semibold uppercase tracking-[0.08em] text-[var(--app-bg)] hover:opacity-90 transition shrink-0"
           >
             Visit
           </a>
           <button
             type="button"
             onClick={handleShare}
-            className="inline-flex h-7 items-center justify-center rounded-full border border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-2.5 text-[9px] font-departure font-semibold uppercase tracking-[0.08em] theme-text-primary hover:bg-[var(--app-sidebar-accent)] transition shrink-0 cursor-pointer"
+            className="inline-flex h-9 items-center justify-center rounded-full border border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-3.5 text-[11px] font-departure font-semibold uppercase tracking-[0.08em] theme-text-primary hover:bg-[var(--app-sidebar-accent)] transition shrink-0 cursor-pointer"
           >
             {shareLabel}
           </button>
@@ -118,7 +118,7 @@ export default function BottomFloatingNavbar({
       )}
 
       {/* Social Icons Link Grid */}
-      <nav aria-label="Social links" className="flex items-center gap-1">
+      <nav aria-label="Social links" className="flex items-center gap-0.5">
         {socialLinks.map((social) => (
           <a
             key={social.label}
@@ -133,9 +133,9 @@ export default function BottomFloatingNavbar({
               alt=""
               loading="lazy"
               decoding="async"
-              width={14}
-              height={14}
-              className="size-3.5 theme-social-icon"
+              width={20}
+              height={20}
+              className="size-5 theme-social-icon"
             />
           </a>
         ))}
@@ -150,9 +150,9 @@ export default function BottomFloatingNavbar({
         className="rounded-full p-1 theme-nav-control theme-text-primary transition-colors flex items-center justify-center cursor-pointer shrink-0"
       >
         {isDark ? (
-          <Sun className="size-3.5 text-[var(--app-text)]" />
+          <Sun className="size-5 text-[var(--app-text)]" />
         ) : (
-          <Moon className="size-3.5 text-[var(--app-text)]" />
+          <Moon className="size-5 text-[var(--app-text)]" />
         )}
       </button>
     </div>
