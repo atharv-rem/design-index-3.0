@@ -18,8 +18,11 @@ if (Astro.cache.enabled) {
 		<section>
 			<div>
 				<h1 class="mt-3 font-departure font-regular text-4xl leading-none theme-text-primary md:text-[40px]">FONTS</h1>
-				<p class="mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
+				<p class="hidden md:block mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
 					A handpicked selection of font libraries to bring personality and clarity to your typography. Whether you're looking for elegant serifs, modern sans-serifs, or expressive display fonts, this section helps you find the perfect typeface to elevate your design language and reinforce brand identity.
+				</p>
+				<p class="block md:hidden mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
+					A handpicked collection of fonts to add personality and clarity to your typography. From elegant serifs to bold display fonts, find the perfect typeface to elevate your design and brand. typeface to elevate your design language and reinforce brand identity.
 				</p>
 				<ToolsGrid client:load category="font" initialTools={tools} />
 			</div>

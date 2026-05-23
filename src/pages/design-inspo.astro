@@ -18,8 +18,11 @@ if (Astro.cache.enabled) {
 		<section>
 			<div>
 				<h1 class="mt-3 font-departure font-regular text-4xl leading-none theme-text-primary md:text-[40px]">DESIGN INSPIRATION</h1>
-				<p class="mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
+				<p class="hidden md:block mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
 					Thoughtfully assembled gallery of visual inspiration across web, mobile, print, and branding. Discover cutting-edge layouts, creative UI patterns, and standout visuals to spark ideas, refine your style, and fuel your creative momentum.
+				</p>
+				<p class="block md:hidden mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
+					A curated gallery of visual inspiration across web, mobile, print, and branding. Explore standout layouts, creative UI patterns, and bold visuals to spark ideas and fuel your creativity
 				</p>
 				<ToolsGrid client:load category="design_inspiration" initialTools={tools} />
 			</div>
