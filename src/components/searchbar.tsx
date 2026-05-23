@@ -227,7 +227,7 @@ export default function SearchBar() {
       >
         <div className="flex h-auto w-full flex-col items-center justify-center">
           <h1
-            className={`font-kal text-left md:text-center text-[50px] leading-[45px] md:leading-none font-semibold theme-hero-title md:text-[40px] transition-all duration-300 ${
+            className={`font-kal tracking-[0.05rem] text-left md:text-center text-[50px] leading-[45px] md:leading-none font-semibold theme-hero-title md:text-[40px] transition-all duration-300 ${
               isSearchActive ? "hidden" : ""
             }`}
           >

@@ -53,7 +53,7 @@ export const GET: APIRoute = async ({
 
   const { data, error } = await supabase
     .from("design_index")
-    .select(`primary_key, tool_name, pricing, extended_description, og_image_link, website, description`,
+    .select(`primary_key, tool_name, pricing, extended_description, og_image_link, website`,
     )
     .gte("primary_key", toolId - 2)
     .lte("primary_key", toolId + 2)

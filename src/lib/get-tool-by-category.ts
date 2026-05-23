@@ -32,7 +32,8 @@ export async function getToolsByCategory(
       primary_key,
       tool_name,
       description,
-      og_image_link
+      og_image_link,
+      pricing
       `,
     )
     .eq("category", category);

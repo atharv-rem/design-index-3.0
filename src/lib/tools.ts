@@ -20,6 +20,7 @@ export type ToolCard = {
   tool_name: string;
   description: string;
   og_image_link: string;
+  pricing: ToolPricing;
 };
 
 export type ToolDetail = {
@@ -76,6 +77,9 @@ export const normalizeToolDetail = (
 export const normalizeToolCard = (
   item: SupabaseToolRow,
 ): ToolCard => {
+  const rawPricing =
+    (item.pricing ?? "free").toLowerCase();
+
   return {
     id: item.primary_key ?? item.id ?? 0,
 
@@ -88,6 +92,10 @@ export const normalizeToolCard = (
 
     og_image_link:
       item.og_image_link || "",
+
+    pricing: isToolPricing(rawPricing)
+      ? rawPricing
+      : "free",
   };
 };
 

@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
-import type { ToolItem } from "@/lib/tools";
+import type { ToolCard } from "@/lib/tools";
 
 
 type PricingFilter = "free" | "paid" | "freemium" | "all";
 
 type ToolsGridProps = {
   category: string;
-  initialTools: ToolItem[];
+  initialTools: ToolCard[];
 };
 
 const filters: { value: PricingFilter; label: string }[] = [
