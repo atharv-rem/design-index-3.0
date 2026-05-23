@@ -5,6 +5,7 @@ import githubIcon from "../assets/github.svg?url";
 import threadsIcon from "../assets/threads.svg?url";
 import twitterIcon from "../assets/twitter.svg?url";
 import HomeScrollFade from "../components/home-scroll-fade";
+import SearchBar from "../components/searchbar";
 import HomeFeatures from "../components/home-features";
 import HomeFaq from "../components/home-faq";
 
@@ -29,12 +30,7 @@ const socialLinks = [
 		<HomeScrollFade client:load />
 		<main class="pointer-events-none relative z-30 flex min-h-screen items-center justify-center px-6 pt-20">
 			<div class="flex h-auto w-full flex-col items-center justify-center">
-				<h1 class="font-kal text-left md:text-center text-[50px] leading-[45px] md:leading-0 font-semibold text-white md:text-[40px] [text-shadow:0_205px_57px_rgba(0,0,0,0.01),0_131px_52px_rgba(0,0,0,0.09),0_74px_44px_rgba(0,0,0,0.30),0_33px_33px_rgba(0,0,0,0.51),0_8px_18px_rgba(0,0,0,0.59)]">
-					Find any design tool you need
-				</h1>
-				<div class="shadow-everywhere mt-[20px] md:mt-[40px] h-auto w-full max-w-[400px] bg-black px-2.5 py-1.5 text-left">
-					<span class="font-kal text-[13px] leading-0 text-white font-semibold">ask anything</span>
-				</div>
+				<SearchBar client:load />
 			</div>
 		</main>
 		<section class="relative z-30 mx-auto flex w-full flex-col gap-6 pb-24 pt-8 md:pt-16 max-w-4xl">
@@ -43,3 +39,4 @@ const socialLinks = [
 		</section>
 	</div>
 </HomescreenLayout>
+

@@ -79,6 +79,17 @@
     box-shadow: var(--shadow-everywhere);
   }
 
+  /* Fix: Astro <Picture> renders a <picture> wrapper that is display:inline by default.
+     This causes h-full/w-full on the inner <img> to not resolve against the fixed container.
+     Target all picture elements inside the fixed background container directly. */
+  .bg-fixed-container picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+
   .theme-body-bg {
     background-color: var(--app-bg);
   }

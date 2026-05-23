@@ -88,7 +88,7 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
     <body class={`theme-body-bg relative min-h-screen font-kal ${backgroundVariant === 'slate' ? 'theme-solid-bg' : ''}`}>
         {
             backgroundVariant === 'image' ? (
-                <div class="fixed inset-0 -z-10">
+                <div class="bg-fixed-container fixed inset-0 -z-10">
                     <Picture
                         src={mobileBackgroundLightImage}
                         formats={['avif', 'webp']}
@@ -127,7 +127,7 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
                         widths={[640, 960, 1280, 1600]}
                         sizes="100vw"
                         loading="eager"
-                        class="theme-dark-image hidden h-full w-full object-cover object-[60%_center] md:block md:object-center"
+                        class="theme-dark-image hidden h-full w-full md:block"
                     />
                 </div>
             ) : (
