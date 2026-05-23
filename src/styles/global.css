@@ -6,6 +6,7 @@
 :root {
   --font-kal: var(--font-kalamayka), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-departure: var(--departure), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-open: var(--open), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --shadow-everywhere: inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.1), 0 4px 4px rgba(0, 0, 0, 0.1), 0 8px 8px rgba(0, 0, 0, 0.1);
   --app-bg: #ffffff;
   --app-solid-bg: #f6f6f6;
@@ -13,7 +14,7 @@
   --app-surface-strong: rgba(255, 255, 255, 0.9);
   --app-surface-soft: rgba(255, 255, 255, 0.55);
   --app-panel-contrast: rgba(255, 255, 255, 0.96);
-  --app-text: #050505;
+  --app-text: #000000;
   --app-text-muted: #333333;
   --app-text-soft: #737373;
   --app-border: rgba(0, 0, 0, 0.08);
@@ -60,15 +61,15 @@
 
 @layer utilities {
   .font-kal {
-    font-family: var(--font-kal);
+    @apply font-kal;
   }
 
   .font-departure {
-    font-family: var(--font-departure);
+    @apply font-departure;
   }
 
-  .font-os{
-    font-family: var(--font-open);
+  .font-os {
+    @apply font-os;
   }
 
   .no-scrollbar::-webkit-scrollbar {
@@ -79,9 +80,6 @@
     box-shadow: var(--shadow-everywhere);
   }
 
-  /* Fix: Astro <Picture> renders a <picture> wrapper that is display:inline by default.
-     This causes h-full/w-full on the inner <img> to not resolve against the fixed container.
-     Target all picture elements inside the fixed background container directly. */
   .bg-fixed-container picture {
     display: block;
     width: 100%;
@@ -91,101 +89,71 @@
   }
 
   .theme-body-bg {
-    background-color: var(--app-bg);
+    @apply bg-app-bg;
   }
 
   .theme-solid-bg {
-    background-color: var(--app-solid-bg);
+    @apply bg-app-solid-bg;
   }
 
   .theme-text-primary {
-    color: var(--app-text);
+    @apply text-app-text;
   }
 
   .theme-text-muted {
-    color: var(--app-text-muted);
+    @apply text-app-text-muted;
   }
 
   .theme-text-soft {
-    color: var(--app-text-soft);
+    @apply text-app-text-soft;
   }
 
   .theme-overlay {
-    background-color: var(--app-overlay);
+    @apply bg-app-overlay;
   }
 
   .theme-panel {
-    border: 1px solid var(--app-border);
-    background: var(--app-surface);
-    backdrop-filter: blur(16px);
+    @apply border border-app-border bg-app-surface backdrop-blur-[16px];
   }
 
   .theme-panel-strong {
-    border: 1px solid var(--app-border-strong);
-    background: var(--app-surface-strong);
-    backdrop-filter: blur(18px);
+    @apply border border-app-border-strong bg-app-surface-strong backdrop-blur-[18px];
   }
 
   .theme-panel-soft {
-    border: 1px solid var(--app-border);
-    background: var(--app-surface-soft);
-    backdrop-filter: blur(14px);
+    @apply border border-app-border bg-app-surface-soft backdrop-blur-[14px];
   }
 
   .theme-card {
-    border: 1px solid var(--app-border);
-    background: var(--app-surface);
-    backdrop-filter: blur(14px);
+    @apply border border-app-border bg-app-surface backdrop-blur-[14px];
   }
 
   .theme-card-hover {
-    transition: transform 200ms ease, border-color 200ms ease, background-color 200ms ease;
+    @apply transition-all duration-200 hover:-translate-y-0.5;
   }
 
   .theme-card-hover:hover {
-    border-color: var(--app-border-strong);
+    @apply border-app-border-strong;
   }
 
   .theme-button {
-    border: 1px solid var(--app-border-strong);
-    background: var(--app-surface-soft);
-    color: var(--app-text);
-    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+    @apply border border-app-border-strong bg-app-surface-soft text-app-text transition-all duration-200;
   }
 
   .theme-button:hover {
-    border-color: var(--app-border-strong);
-    background: var(--app-surface-strong);
+    @apply border-app-border-strong bg-app-surface-strong;
   }
 
   .theme-input-surface {
-    border: 1px solid var(--app-border);
-    background: var(--app-panel-contrast);
-    color: var(--app-text);
-  }
-
-  .theme-input-surface::placeholder {
-    color: var(--app-text-soft);
-  }
-
-  .theme-input-surface:focus {
-    border-color: var(--app-border-strong);
-    outline: none;
+    @apply border border-app-border bg-app-panel-contrast text-app-text focus:border-app-border-strong focus:outline-none placeholder:text-app-text-soft;
   }
 
   .theme-nav-shell {
-    border-color: var(--app-border-strong);
-    background: var(--app-navbar);
-    color: var(--app-text);
+    @apply border-app-border-strong bg-app-navbar text-app-text;
   }
 
   .theme-nav-control {
-    color: var(--app-text);
-    transition: background-color 200ms ease, color 200ms ease;
-  }
-
-  .theme-nav-control:hover {
-    background: var(--app-sidebar-accent);
+    @apply text-app-text transition-all duration-200 hover:bg-app-sidebar-accent;
   }
 
   .theme-social-icon {
@@ -193,7 +161,7 @@
   }
 
   .theme-hero-title {
-    color: var(--app-text);
+    @apply text-app-text;
     text-shadow: var(--app-hero-shadow);
   }
 
@@ -207,9 +175,7 @@
   }
 
   .theme-footer-shell {
-    border-top: 1px solid var(--app-border);
-    background: var(--app-footer-bg);
-    backdrop-filter: blur(14px);
+    @apply border-t border-app-border bg-app-footer-bg backdrop-blur-[14px];
   }
 
   .theme-light-image {
@@ -265,6 +231,32 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Unified App Custom Color/Typography Tokens */
+  --color-app-bg: var(--app-bg);
+  --color-app-solid-bg: var(--app-solid-bg);
+  --color-app-surface: var(--app-surface);
+  --color-app-surface-strong: var(--app-surface-strong);
+  --color-app-surface-soft: var(--app-surface-soft);
+  --color-app-panel-contrast: var(--app-panel-contrast);
+  --color-app-text: var(--app-text);
+  --color-app-text-muted: var(--app-text-muted);
+  --color-app-text-soft: var(--app-text-soft);
+  --color-app-border: var(--app-border);
+  --color-app-border-strong: var(--app-border-strong);
+  --color-app-overlay: var(--app-overlay);
+  --color-app-navbar: var(--app-navbar);
+  --color-app-footer-bg: var(--app-footer-bg);
+  --color-app-sidebar: var(--app-sidebar);
+  --color-app-sidebar-foreground: var(--app-sidebar-foreground);
+  --color-app-sidebar-accent: var(--app-sidebar-accent);
+  --color-app-sidebar-accent-foreground: var(--app-sidebar-accent-foreground);
+  --color-app-sidebar-border: var(--app-sidebar-border);
+  --color-app-sidebar-ring: var(--app-sidebar-ring);
+
+  --font-kal: var(--font-kal);
+  --font-departure: var(--font-departure);
+  --font-os: var(--font-open);
 }
 
 .dark {

@@ -1,5 +1,76 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
+
+export const prerender = false;
+
+let success = Astro.url.searchParams.get("success") === "true";
+let errorMessage = "";
+
+if (Astro.request.method === "POST") {
+  try {
+    const formData = await Astro.request.formData();
+    const name = formData.get("name")?.toString().trim();
+    const email = formData.get("email")?.toString().trim();
+    const feedback = formData.get("feedback")?.toString().trim();
+
+    if (!name || !email || !feedback) {
+      throw new Error("All fields are required.");
+    }
+
+    const resendApiKey = import.meta.env.RESEND_API_KEY;
+    const adminEmail = import.meta.env.ADMIN_EMAIL;
+
+    if (!resendApiKey) {
+      throw new Error("RESEND_API_KEY is not configured in the server environment variables.");
+    }
+    if (!adminEmail) {
+      throw new Error("ADMIN_EMAIL is not configured in the server environment variables.");
+    }
+
+    const emailResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${resendApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "Design Index Feedback <onboarding@resend.dev>",
+        to: adminEmail,
+        subject: `New Feedback from: ${name}`,
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; border: 1px solid #e5e7eb; border-radius: 12px; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+            <h2 style="color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 16px; margin-top: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.025em;">New Feedback Submission</h2>
+            <p style="margin: 16px 0; color: #4b5563; font-size: 16px; line-height: 1.5;">You received a new feedback message from a visitor on Design Index.</p>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-top: 24px;">
+              <tr style="border-bottom: 1px solid #f3f4f6;">
+                <td style="padding: 12px 0; font-weight: 600; width: 140px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Name</td>
+                <td style="padding: 12px 0; color: #111827; font-size: 15px; font-weight: 500;">${name}</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f3f4f6;">
+                <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Email</td>
+                <td style="padding: 12px 0; font-size: 15px;"><a href="mailto:${email}" style="color: #2563eb; text-decoration: underline;">${email}</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: top;">Feedback</td>
+                <td style="padding: 12px 0; color: #374151; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${feedback}</td>
+              </tr>
+            </table>
+          </div>
+        `,
+      }),
+    });
+
+    if (!emailResponse.ok) {
+      const errorText = await emailResponse.text();
+      throw new Error(`Email service returned error: ${errorText}`);
+    }
+
+    return Astro.redirect(`${Astro.url.pathname}?success=true`);
+  } catch (err: any) {
+    errorMessage = err.message;
+  }
+}
 ---
 
 <HomescreenLayout
@@ -8,8 +79,8 @@ import HomescreenLayout from "../layouts/homescreen.astro";
 	keywords="design index feedback, website feedback, design resources feedback"
 	backgroundVariant="slate"
 >
-	<main class="mt-[40px] md:mt-[30px] px-[20px]">
-		<section>
+	<main class="mt-[40px] md:mt-[30px] px-[20px] pb-10">
+		<section class="mx-auto w-full max-w-[500px] rounded-xl">
 			<div>
 				<h1 class="mt-3 font-departure font-regular text-4xl leading-none theme-text-primary md:text-[40px]">FEEDBACK</h1>
 				<p class="mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
@@ -17,47 +88,65 @@ import HomescreenLayout from "../layouts/homescreen.astro";
 				</p>
 			</div>
 
-			<form class="mt-6 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface)] p-4 md:max-w-2xl" action="#" method="post">
-				<div class="grid gap-4 md:grid-cols-2">
-					<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
-						Name
-						<input
-							type="text"
-							name="name"
-							placeholder="Your name"
-							class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-departure text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
-						/>
+			<div class="mt-6 md:max-w-2xl">
+				{success && (
+					<div class="mb-6 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4 font-departure text-sm text-emerald-600 dark:text-emerald-400">
+						<p class="font-bold uppercase tracking-wider">Feedback Sent!</p>
+						<p class="mt-1 normal-case tracking-normal">Thank you for sharing your feedback. We have successfully sent an email notification to the administrator!</p>
+					</div>
+				)}
+
+				{errorMessage && (
+					<div class="mb-6 rounded-lg border border-rose-500/20 bg-rose-500/10 p-4 font-departure text-sm text-rose-600 dark:text-rose-400">
+						<p class="font-bold uppercase tracking-wider">Submission Failed</p>
+						<p class="mt-1 normal-case tracking-normal">{errorMessage}</p>
+					</div>
+				)}
+
+				<form class="rounded-lg border border-[var(--app-border)] bg-[var(--app-surface)] p-4" action="#" method="post">
+					<div class="grid gap-4 md:grid-cols-2">
+						<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
+							Name
+							<input
+								type="text"
+								name="name"
+								placeholder="Your name"
+								required
+								class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-departure text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
+							/>
+						</label>
+
+						<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
+							Email
+							<input
+								type="email"
+								name="email"
+								placeholder="you@example.com"
+								required
+								class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-departure text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
+							/>
+						</label>
+					</div>
+
+					<label class="mt-4 flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
+						Feedback
+						<textarea
+							name="feedback"
+							rows="6"
+							placeholder="Share your thoughts..."
+							required
+							class="rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 py-2 font-departure text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
+						></textarea>
 					</label>
 
-					<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
-						Email
-						<input
-							type="email"
-							name="email"
-							placeholder="you@example.com"
-							class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-departure text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
-						/>
-					</label>
-				</div>
-
-				<label class="mt-4 flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
-					Feedback
-					<textarea
-						name="feedback"
-						rows="6"
-						placeholder="Share your thoughts..."
-						class="rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 py-2 font-departure text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
-					></textarea>
-				</label>
-
-				<button
-					type="submit"
-					class="mt-4 theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-departure text-xs uppercase tracking-[0.12em]"
-				>
-					Send Feedback
-				</button>
-			</form>
-
+					<button
+						type="submit"
+						class="mt-4 theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-departure text-xs uppercase tracking-[0.12em]"
+					>
+						Send Feedback
+					</button>
+				</form>
+			</div>
 		</section>
 	</main>
 </HomescreenLayout>
