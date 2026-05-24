@@ -2,10 +2,7 @@
 import { defineConfig, fontProviders,memoryCache } from 'astro/config';
 import react from '@astrojs/react';
 import vercel from '@astrojs/vercel';
-import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-
-
 
 export default defineConfig({
   output: "server",
@@ -54,7 +51,7 @@ export default defineConfig({
       }
     }
   ],
-  integrations: [react(), sitemap()],
+  integrations: [react()],
   adapter: vercel(),
   build: {
     inlineStylesheets: 'always'
