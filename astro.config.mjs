@@ -6,6 +6,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 
+
 export default defineConfig({
   output: "server",
   site:"https://designindex.xyz",
