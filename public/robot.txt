@@ -1,4 +1,5 @@
 # https://www.robotstxt.org/robotstxt.html
+# Note: The standard filename is robots.txt (plural). This file is provided as a fallback.
 User-agent: *
 Allow: /
 Disallow: /api/

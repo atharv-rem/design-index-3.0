@@ -5,12 +5,10 @@ import vercel from '@astrojs/vercel';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-const site = process.env.SITE_URL ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined);
 
-// https://astro.build/config
 export default defineConfig({
   output: "server",
-  site,
+  site:"https://designindex.xyz",
   fonts: [
     {
       provider: fontProviders.local(),
