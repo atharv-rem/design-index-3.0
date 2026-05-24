@@ -23,13 +23,14 @@ export const GET: APIRoute = async () => {
     // Fetch dynamic tools from Supabase to include in sitemap
     const { data: tools, error } = await supabase
       .from("design_index")
-      .select("primary_key, id, tool_name");
+      .select("primary_key, tool_name")
+      .order("primary_key", { ascending: true });
 
     let dynamicUrls = "";
     if (!error && tools) {
       dynamicUrls = tools
         .map((tool) => {
-          const id = tool.primary_key ?? tool.id ?? 0;
+          const id = tool.primary_key ?? 0;
           const name = tool.tool_name
             ? encodeURIComponent(tool.tool_name.trim())
             : "";
