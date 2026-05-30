@@ -7,6 +7,7 @@ import backgroundImage from '../images/background_dark.jpg';
 import mobileBackgroundImage from '../images/background_dark_mobile.png';
 import backgroundLightImage from '../images/background_light.png';
 import mobileBackgroundLightImage from '../images/background_light_mobile.png';
+import { SEO } from 'astro-seo';
 
 type Props = {
     title?: string;
@@ -14,6 +15,7 @@ type Props = {
     keywords?: string;
     noindex?: boolean;
     ogType?: 'website' | 'article';
+    ogImage?: string;
     backgroundVariant?: 'image' | 'slate';
     showDefaultSidebarTrigger?: boolean;
     floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>;
@@ -28,6 +30,7 @@ const {
     keywords = 'design tools, design resources, mockups, icons, fonts, color palettes, design inspiration, UI resources',
     noindex = false,
     ogType = 'website',
+    ogImage: customOgImage,
     backgroundVariant = 'image',
     showDefaultSidebarTrigger = false,
     floatingNavbarSocialLinks = [],
@@ -37,15 +40,21 @@ const {
 } = Astro.props;
 
 const canonicalUrl = Astro.url.href;
-const ogImage = new URL('/favicon.svg', Astro.url).href;
 const faviconVersion = '20260331';
 const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
+
+const defaultOgImage = new URL(
+    `/api/og.png?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`,
+    Astro.url
+).href;
+const ogImage = customOgImage || defaultOgImage;
 ---
 
 <html lang="en">
     <head>
         <meta charset="utf-8" />
         <script
+            type="text/partytown"
             src="https://cdn.databuddy.cc/databuddy.js"
             data-client-id="CzkF34Qr773cOXFFoHjzM"
             crossorigin="anonymous"
@@ -54,29 +63,47 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
         <link rel="icon" type="image/svg+xml" href={faviconSvg} />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={keywords} />
-        <meta name="author" content="Atharv Remeshan" />
-        <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'} />
-        <meta name="theme-color" content="#000000" />
-        <link rel="canonical" href={canonicalUrl} />
-        <link rel="sitemap" href="/sitemap-index.xml" />
-
-        <meta property="og:type" content={ogType} />
-        <meta property="og:site_name" content="Design Index" />
-        <meta property="og:locale" content="en_US" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:image:alt" content="Design Index" />
-
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={ogImage} />
-        <meta name="twitter:image:alt" content="Design Index" />
+        <SEO
+            title={title}
+            description={description}
+            canonical={canonicalUrl}
+            noindex={noindex}
+            nofollow={noindex}
+            robotsExtras={noindex ? undefined : 'max-image-preview:large,max-snippet:-1,max-video-preview:-1'}
+            openGraph={{
+                basic: {
+                    title: title,
+                    type: ogType,
+                    image: ogImage,
+                    url: canonicalUrl,
+                },
+                optional: {
+                    siteName: 'Design Index',
+                    locale: 'en_US',
+                    description: description,
+                },
+                image: {
+                    alt: 'Design Index',
+                }
+            }}
+            twitter={{
+                card: 'summary_large_image',
+                title: title,
+                description: description,
+                image: ogImage,
+                imageAlt: 'Design Index',
+            }}
+            extend={{
+                meta: [
+                    { name: 'keywords', content: keywords },
+                    { name: 'author', content: 'Atharv Remeshan' },
+                    { name: 'theme-color', content: '#000000' },
+                ],
+                link: [
+                    { rel: 'sitemap', href: '/sitemap-index.xml' }
+                ]
+            }}
+        />
         <script is:inline>
             (() => {
                 const storageKey = 'design-index-theme';
@@ -95,6 +122,24 @@ const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
         </script>
         <Font cssVariable="--font-kalamayka" />
         <Font cssVariable="--departure" />
+        <style is:inline>
+            .bg-fixed-container {
+                position: fixed !important;
+                inset: 0 !important;
+                z-index: -10 !important;
+            }
+            .bg-fixed-container img, .bg-fixed-container picture {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+                object-position: center !important;
+            }
+            @media (max-width: 767px) {
+                .bg-fixed-container img, .bg-fixed-container picture {
+                    object-position: 60% center !important;
+                }
+            }
+        </style>
     </head>
     <body class={`theme-body-bg relative min-h-screen font-kal ${backgroundVariant === 'slate' ? 'theme-solid-bg' : ''}`}>
         {
