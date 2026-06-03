@@ -4,8 +4,6 @@ import react from '@astrojs/react';
 import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 
-import partytown from '@astrojs/partytown';
-
 export default defineConfig({
   output: "server",
   site:"https://designindex.xyz",
@@ -53,7 +51,7 @@ export default defineConfig({
       }
     }
   ],
-  integrations: [react(), partytown()],
+  integrations: [react()],
   adapter: vercel(),
   build: {
     inlineStylesheets: 'always'
