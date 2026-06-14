@@ -43,6 +43,18 @@ export default function SearchBar() {
   const [results, setResults] = useState<ToolResult[]>([]);
   const [keywords, setKeywords] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"relevant" | "similar">("relevant");
+
+  const relevantResults = results.filter((item) => item.matchedKeywordsCount > 1);
+  const similarResults = results.filter((item) => item.matchedKeywordsCount === 1);
+  const displayedResults = activeTab === "relevant" ? relevantResults : similarResults;
+
+  useEffect(() => {
+    if (results.length > 0) {
+      const hasRelevant = results.some((item) => item.matchedKeywordsCount > 1);
+      setActiveTab(hasRelevant ? "relevant" : "similar");
+    }
+  }, [results]);
 
   const placeholders = [
     "ask anything",
@@ -299,19 +311,7 @@ export default function SearchBar() {
             )}
           </div>
 
-          {/* extracted keywords preview */}
-          {!loading && keywords.length > 0 && (
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 max-w-xl">
-              {keywords.map((keyword) => (
-                <span
-                  key={keyword}
-                  className="text-[10px] uppercase tracking-[0.12em] border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-2 py-1 rounded-md font-departure theme-text-soft"
-                >
-                  {keyword}
-                </span>
-              ))}
-            </div>
-          )}
+
         </div>
       </main>
 
@@ -354,59 +354,104 @@ export default function SearchBar() {
           activeQuery &&
           results.length > 0 && (
             <div className="w-full">
-              <div className="flex items-center justify-between border-b border-[var(--app-border-strong)] pb-3 mb-6">
-                <p className="font-departure font-semibold text-[11px] uppercase tracking-[0.16em] theme-text-primary select-none">
-                  Search Results ({results.length})
-                </p>
+              <div className="flex items-center justify-between border-b border-[var(--app-border-strong)] mb-6">
+                <div className="flex space-x-6">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("relevant")}
+                    className={`relative pb-3 font-departure text-[11px] uppercase tracking-[0.16em] font-semibold transition ${
+                      activeTab === "relevant"
+                        ? "theme-text-primary"
+                        : "theme-text-soft hover:theme-text-primary"
+                    }`}
+                  >
+                    Relevant Results ({relevantResults.length})
+                    {activeTab === "relevant" && (
+                      <motion.div
+                        layoutId="active-tab-indicator"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-black dark:bg-white"
+                      />
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("similar")}
+                    className={`relative pb-3 font-departure text-[11px] uppercase tracking-[0.16em] font-semibold transition ${
+                      activeTab === "similar"
+                        ? "theme-text-primary"
+                        : "theme-text-soft hover:theme-text-primary"
+                    }`}
+                  >
+                    Similar Results ({similarResults.length})
+                    {activeTab === "similar" && (
+                      <motion.div
+                        layoutId="active-tab-indicator"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-black dark:bg-white"
+                      />
+                    )}
+                  </button>
+                </div>
 
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="font-departure text-[11px] uppercase tracking-[0.16em] theme-text-soft hover:theme-text-primary transition"
+                  className="pb-3 font-departure text-[11px] uppercase tracking-[0.16em] theme-text-soft hover:theme-text-primary transition"
                 >
                   Clear
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 gap-8 pb-10 sm:grid-cols-2 lg:grid-cols-3">
-                {results.map((item) => (
-                  <a
-                    key={item.id}
-                    href={`/${encodeURIComponent(
-                      item.tool_name
-                    )}?id=${item.id}`}
-                    className="group overflow-hidden rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-[var(--app-border-strong)] shadow-2xl flex flex-col"
-                  >
-                    <img
-                      alt={item.tool_name}
-                      loading="lazy"
-                      decoding="async"
-                      src={
-                        item.og_image_link ||
-                        "/favicon.svg"
-                      }
-                      className="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"
-                      onError={(e) => {
-                        e.currentTarget.src =
-                          "/favicon.svg";
+              {displayedResults.length > 0 ? (
+                <div className="grid grid-cols-1 gap-8 pb-10 sm:grid-cols-2 lg:grid-cols-3">
+                  {displayedResults.map((item) => (
+                    <a
+                      key={item.id}
+                      href={`/${encodeURIComponent(
+                        item.tool_name
+                      )}?id=${item.id}`}
+                      className="group overflow-hidden rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-[var(--app-border-strong)] shadow-2xl flex flex-col"
+                    >
+                      <img
+                        alt={item.tool_name}
+                        loading="lazy"
+                        decoding="async"
+                        src={
+                          item.og_image_link ||
+                          "/favicon.svg"
+                        }
+                        className="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"
+                        onError={(e) => {
+                          e.currentTarget.src =
+                            "/favicon.svg";
 
-                        e.currentTarget.className =
-                          "aspect-video w-full object-contain p-8 opacity-45";
-                      }}
-                    />
+                          e.currentTarget.className =
+                            "aspect-video w-full object-contain p-8 opacity-45";
+                        }}
+                      />
 
-                    <div className="space-y-3 p-4">
-                      <h3 className="font-departure text-base leading-5 theme-text-primary md:text-lg">
-                        {item.tool_name}
-                      </h3>
+                      <div className="space-y-3 p-4">
+                        <h3 className="font-departure text-base leading-5 theme-text-primary md:text-lg">
+                          {item.tool_name}
+                        </h3>
 
-                      <p className="text-sm font-departure leading-5 theme-text-soft">
-                        {item.description}
-                      </p>
-                    </div>
-                  </a>
-                ))}
-              </div>
+                        <p className="text-sm font-departure leading-5 theme-text-soft">
+                          {item.description}
+                        </p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-4 text-center pb-10">
+                  <span className="font-departure text-xl theme-text-primary md:text-2xl">
+                    No tools in this category
+                  </span>
+
+                  <span className="mt-2 text-sm theme-text-soft md:text-base font-departure">
+                    Try checking the other tab or search for different terms
+                  </span>
+                </div>
+              )}
             </div>
           )}
 

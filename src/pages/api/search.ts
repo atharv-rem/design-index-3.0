@@ -45,50 +45,16 @@ export const GET: APIRoute = async ({ url }) => {
       });
     }
 
-    // Optional reranking
+    // Map and sort purely by match_count descending
     const ranked = data
-      .map((item: any) => {
-        let relevanceScore = Number(item.match_count);
-
-        const toolName = (item.tool_name || "").toLowerCase();
-        const description = (item.description || "").toLowerCase();
-
-        for (const keyword of keywords) {
-          // exact tool name match
-          if (toolName === keyword) {
-            relevanceScore += 15;
-          }
-
-          // tool name starts with keyword
-          else if (toolName.startsWith(keyword)) {
-            relevanceScore += 8;
-          }
-
-          // whole word match
-          else if (
-            new RegExp(`\\b${keyword}\\b`, "i").test(toolName)
-          ) {
-            relevanceScore += 5;
-          }
-
-          // description match
-          if (
-            new RegExp(`\\b${keyword}\\b`, "i").test(description)
-          ) {
-            relevanceScore += 2;
-          }
-        }
-
-        return {
-          id: item.primary_key ?? 0,
-          tool_name: item.tool_name || "Untitled Tool",
-          description: item.description || "",
-          og_image_link: item.og_image_link || "",
-          matchedKeywordsCount: Number(item.match_count),
-          relevanceScore,
-        };
-      })
-      .sort((a: any, b: any) => b.relevanceScore - a.relevanceScore);
+      .map((item: any) => ({
+        id: item.primary_key ?? 0,
+        tool_name: item.tool_name || "Untitled Tool",
+        description: item.description || "",
+        og_image_link: item.og_image_link || "",
+        matchedKeywordsCount: Number(item.match_count),
+      }))
+      .sort((a: any, b: any) => b.matchedKeywordsCount - a.matchedKeywordsCount);
 
     return Response.json(ranked, {
       headers: {
