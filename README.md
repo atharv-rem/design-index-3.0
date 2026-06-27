@@ -1,5 +1,4 @@
-# 🎨 Design Index (designindex.xyz)
-
+# Design Index 
 Design Index is a blazing-fast, curated index for discovering premium design tools, mockups, icons, fonts, illustrations, and inspiration. It combines natural language search capabilities with high-performance caching for a seamless discovery experience.
 
 ---
@@ -8,7 +7,7 @@ Design Index is a blazing-fast, curated index for discovering premium design too
 
 The application is built using a modern, performant, and premium stack:
 
-*   **Framework & Architecture**: [Astro v6](https://astro.build/) configured with Server-Side Rendering (SSR) using the [Vercel Adapter](https://docs.astro.build/en/guides/integrations-guide/vercel/).
+*   **Framework & Architecture**: [Astro v7](https://astro.build/) configured with Server-Side Rendering (SSR) using the [Vercel Adapter](https://docs.astro.build/en/guides/integrations-guide/vercel/).
 *   **UI Library**: [React 19](https://react.dev/) for high-fidelity interactive components.
 *   **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) for a sleek, responsive design system.
 *   **Primitive Components**: [Base UI](https://base-ui.com/) and [Radix UI](https://www.radix-ui.com/) for accessible, unstyled primitives.
