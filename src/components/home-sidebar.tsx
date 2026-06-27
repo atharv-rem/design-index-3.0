@@ -81,7 +81,7 @@ function HomeSidebarContent() {
           transition={{ type: "spring", stiffness: 180, damping: 24, mass: 0.95 }}
         >
           <div className="flex items-center gap-2">
-            <p className="text-md font-semibold tracking-wide theme-text-primary">Design Index</p>
+            <p className="text-md font-semibold tracking-[0.05rem] theme-text-primary">design index</p>
             <button
               type="button"
               aria-label="Close sidebar"
@@ -104,15 +104,15 @@ function HomeSidebarContent() {
             transition={{ type: "spring", stiffness: 170, damping: 24, mass: 0.95, delay: 0.06 + index * 0.05 }}
           >
             <SidebarGroup className="px-0 py-1.5">
-              <SidebarGroupLabel className="px-2 pb-1 font-departure text-[11px] uppercase tracking-[0.16em] theme-text-soft">
+              <SidebarGroupLabel className="px-2 pb-1 font-rethink font-medium text-[11px] uppercase tracking-[0.16em] theme-text-soft">
                 {group.title}
               </SidebarGroupLabel>
-              <SidebarMenu className="space-y-1 font-departure">
+              <SidebarMenu className="space-y-1 font-rethink">
                 {group.links.map((link) => (
                   <SidebarMenuItem key={link.label}>
                     <SidebarMenuButton
                       asChild
-                      className="text-sm theme-text-muted hover:bg-[var(--sidebar-accent)] hover:theme-text-primary"
+                      className="text-sm font-semibold theme-text-muted hover:bg-[var(--sidebar-accent)] hover:theme-text-primary bg-[#fafafa] dark:bg-[#141414] rounded-md px-2 py-1.5 transition-colors"
                     >
                       <a href={link.href} onClick={() => setOpenMobile(false)}>
                         {link.label}
@@ -125,13 +125,13 @@ function HomeSidebarContent() {
           </motion.div>
         ))}
       </SidebarContent>
-
+ 
       <SidebarFooter className="px-4 py-5">
         <motion.div
           {...mobileMotion}
           transition={{ type: "spring", stiffness: 165, damping: 25, mass: 1, delay: 0.22 }}
         >
-          <div className="flex items-center justify-center font-departure text-[15px] theme-text-primary md:text-[10px]">
+          <div className="flex items-center justify-center font-rethink text-[15px] theme-text-primary md:text-[10px]">
             <span>Made with</span>
             <img
               src={heart}
@@ -220,7 +220,7 @@ export default function HomeSidebar({
 
       <Sidebar
         collapsible="offcanvas"
-        className="z-50 border-none theme-sidebar-shell"
+        className="z-50 border-r border-sidebar-border shadow-hairline theme-sidebar-shell"
       >
         {isMounted ? <HomeSidebarContent /> : <HomeSidebarSkeletonContent />}
       </Sidebar>

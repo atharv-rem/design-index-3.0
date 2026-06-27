@@ -69,77 +69,67 @@ export default function BottomFloatingNavbar({
 
   if (!isMounted) {
     return (
-      <div className={`shadow-everywhere fixed bottom-6 left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-full border border-[var(--app-border-strong)] bg-[var(--app-navbar)] px-4 py-2.5 backdrop-blur-md flex items-center justify-between gap-3.5 transition-all duration-300 ${
-        hasVisitActions ? "max-w-[420px]" : "max-w-[300px]"
-      }`}>
-        <Skeleton className="h-9 w-9 rounded-full bg-zinc-800 shrink-0" />
+      <div className="shadow-hairline fixed bottom-6 left-1/2 z-40 w-auto -translate-x-1/2 rounded-[12px] bg-[var(--app-navbar)] px-3 py-2 backdrop-blur-md flex items-center gap-2 transition-all duration-300">
+        <Skeleton className="h-9 w-9 rounded-full bg-[var(--app-surface-soft)] shrink-0" />
         {hasVisitActions && (
-          <div className="flex items-center gap-1.5">
-            <Skeleton className="h-9 w-16 rounded-full bg-zinc-800" />
-            <Skeleton className="h-9 w-16 rounded-full bg-zinc-800" />
-          </div>
+          <>
+            <Skeleton className="h-9 w-16 rounded-full bg-[var(--app-surface-soft)]" />
+            <Skeleton className="h-9 w-16 rounded-full bg-[var(--app-surface-soft)]" />
+          </>
         )}
-        <div className="flex items-center gap-0.5">
-          <Skeleton className="h-7 w-7 rounded-full bg-zinc-800" />
-          <Skeleton className="h-7 w-7 rounded-full bg-zinc-800" />
-          <Skeleton className="h-7 w-7 rounded-full bg-zinc-800" />
-        </div>
-        <Skeleton className="h-9 w-9 rounded-full bg-zinc-800 shrink-0" />
+        <Skeleton className="h-9 w-9 rounded-full bg-[var(--app-surface-soft)] shrink-0" />
+        <Skeleton className="h-9 w-9 rounded-full bg-[var(--app-surface-soft)] shrink-0" />
+        <Skeleton className="h-9 w-9 rounded-full bg-[var(--app-surface-soft)] shrink-0" />
+        <Skeleton className="h-9 w-9 rounded-full bg-[var(--app-surface-soft)] shrink-0" />
       </div>
     )
   }
 
   return (
-    <div className={`shadow-everywhere fixed bottom-6 left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-full border border-[var(--app-border-strong)] bg-[var(--app-navbar)] px-4 py-2.5 backdrop-blur-md flex items-center justify-between gap-3.5 transition-all duration-300 ${
-      hasVisitActions ? "max-w-[420px]" : "max-w-[300px]"
-    }`}>
+    <div className="bg-white dark:bg-black shadow-hairline fixed bottom-6 left-1/2 z-40 w-auto -translate-x-1/2 rounded-[12px] px-3 py-2 flex items-center gap-2 transition-all duration-300">
       {/* Sidebar Icon Toggle */}
-      <SidebarTrigger className="h-9 w-9 rounded-full p-0 theme-nav-control transition-colors shrink-0" />
+      <SidebarTrigger className="h-9 w-9 rounded-full p-0 theme-nav-control shrink-0 flex items-center justify-center [&_svg]:!size-[22px]" />
 
       {/* Center Actions if visitUrl is present */}
       {hasVisitActions && (
-        <div className="flex items-center gap-1.5 shrink-0">
+        <>
           <a
             href={visitUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-9 items-center justify-center rounded-full bg-[var(--app-text)] px-4 text-[11px] font-departure font-semibold uppercase tracking-[0.08em] text-[var(--app-bg)] hover:opacity-90 transition shrink-0"
+            className="inline-flex h-9 items-center justify-center rounded-[12px] bg-[var(--app-text)] px-4 text-[11px] font-rethink font-bold uppercase tracking-[0.08em] text-[var(--app-bg)] hover:opacity-90 transition shrink-0"
           >
             Visit
           </a>
           <button
             type="button"
             onClick={handleShare}
-            className="inline-flex h-9 items-center justify-center rounded-full border border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-3.5 text-[11px] font-departure font-semibold uppercase tracking-[0.08em] theme-text-primary hover:bg-[var(--app-sidebar-accent)] transition shrink-0 cursor-pointer"
+            className="inline-flex h-9 items-center justify-center rounded-[12px] border border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-3.5 text-[11px] font-rethink font-bold uppercase tracking-[0.08em] theme-text-primary hover:bg-[var(--app-sidebar-accent)] transition shrink-0 cursor-pointer"
           >
             {shareLabel}
           </button>
-        </div>
+        </>
       )}
 
-      {/* Social Icons Link Grid */}
-      <nav aria-label="Social links" className="flex items-center gap-0.5">
-        {socialLinks.map((social) => (
-          <a
-            key={social.label}
-            href={social.href}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={social.label}
-            className="rounded-full p-1 theme-nav-control transition-colors shrink-0"
-          >
-            <img
-              src={social.icon}
-              alt=""
-              loading="lazy"
-              decoding="async"
-              width={20}
-              height={20}
-              className="size-5 theme-social-icon"
-            />
-          </a>
-        ))}
-      </nav>
+      {/* Social Icons Link List */}
+      {socialLinks.map((social) => (
+        <a
+          key={social.label}
+          href={social.href}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={social.label}
+          className="h-9 w-9 rounded-full theme-nav-control transition-colors shrink-0 flex items-center justify-center"
+        >
+          <img
+            src={social.icon}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="size-[22px] theme-social-icon"
+          />
+        </a>
+      ))}
 
       {/* Theme Toggle Button */}
       <button
@@ -147,12 +137,12 @@ export default function BottomFloatingNavbar({
         type="button"
         onClick={toggleTheme}
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-        className="rounded-full p-1 theme-nav-control theme-text-primary transition-colors flex items-center justify-center cursor-pointer shrink-0"
+        className="h-9 w-9 rounded-full theme-nav-control theme-text-primary transition-colors flex items-center justify-center cursor-pointer shrink-0"
       >
         {isDark ? (
-          <Sun className="size-5 text-[var(--app-text)]" />
+          <Sun className="size-[22px] text-[var(--app-text)]" />
         ) : (
-          <Moon className="size-5 text-[var(--app-text)]" />
+          <Moon className="size-[22px] text-[var(--app-text)]" />
         )}
       </button>
     </div>

@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from "motion/react";
 import winkNLP from "wink-nlp";
 import model from "wink-eng-lite-web-model";
 
-import HomeFeatures from "./home-features";
-import HomeFaq from "./home-faq";
 
 let nlpInstance: any = null;
 let itsInstance: any = null;
@@ -256,20 +254,20 @@ export default function SearchBar() {
       >
         <div className="flex h-auto w-full flex-col items-center justify-center">
           <h1
-            className={`font-kal tracking-[0.05rem] text-left md:text-center text-[50px] leading-[45px] md:leading-none font-semibold theme-hero-title md:text-[40px] transition-all duration-300 ${
+            className={`font-rethink tracking-[0.001rem] text-left md:text-center text-[45px] leading-[45px] md:leading-none font-medium theme-hero-title md:text-[35px] transition-all duration-300 ${
               isSearchActive ? "hidden" : ""
             }`}
           >
             Find any design tool you need
           </h1>
 
-          <div className="shadow-everywhere mt-5 md:mt-5 h-auto w-full max-w-[430px] bg-white dark:bg-black border border-[var(--app-border)] dark:border-white/10 px-2.5 py-2 text-left flex items-center pointer-events-auto">
-            <div className="relative w-full flex items-center overflow-hidden min-h-[18px]">
+          <div className="shadow-hairline mt-5 md:mt-5 h-auto w-full max-w-[600px] bg-white dark:bg-black px-4 py-3 text-left flex-col pointer-events-auto rounded-[12px]">
+            <div className="relative w-full flex flex-row items-start justify-start overflow-hidden min-h-[60px]">
               <textarea
                 ref={inputRef}
                 inputMode="text"
                 enterKeyHint="search"
-                rows={1}
+                rows={4}
                 title="Search design tools"
                 aria-label="Search design tools"
                 value={inputValue}
@@ -277,11 +275,7 @@ export default function SearchBar() {
                   setInputValue(e.target.value)
                 }
                 onKeyDown={handleKeyDown}
-                style={{
-                  outline: "none",
-                  boxShadow: "none",
-                }}
-                className="font-kal text-[13px] leading-tight theme-text-primary font-semibold bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.05rem] z-10"
+                className="font-rethink text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] z-10"
               />
 
               <AnimatePresence mode="wait">
@@ -292,7 +286,7 @@ export default function SearchBar() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -10, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="absolute left-0 pointer-events-none font-kal text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.05rem] select-none"
+                    className="absolute left-0 pointer-events-none font-rethink text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.05rem] select-none"
                   >
                     {placeholders[placeholderIndex]}
                   </motion.div>
@@ -304,7 +298,7 @@ export default function SearchBar() {
               <button
                 type="button"
                 onClick={handleClear}
-                className="ml-2 font-kal text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0"
+                className="w-full ml-2 font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 items-center justify-center text-right px-[10px]"
               >
                 clear
               </button>
@@ -319,7 +313,7 @@ export default function SearchBar() {
         {/* Loading */}
         {loading && (
           <div className="w-full">
-            <p className="font-departure text-[11px] uppercase tracking-[0.16em] theme-text-primary animate-pulse mb-4">
+            <p className="font-rethink text-[11px] uppercase tracking-[0.16em] theme-text-primary animate-pulse mb-4">
               Searching...
             </p>
 
@@ -342,13 +336,6 @@ export default function SearchBar() {
           </div>
         )}
 
-        {/* Error */}
-        {error && (
-          <div className="rounded-md border border-red-500/20 bg-red-500/10 p-4 text-red-200 font-departure text-xs">
-            {error}
-          </div>
-        )}
-
         {/* Results */}
         {!loading &&
           activeQuery &&
@@ -359,7 +346,7 @@ export default function SearchBar() {
                   <button
                     type="button"
                     onClick={() => setActiveTab("relevant")}
-                    className={`relative pb-3 font-departure text-[11px] uppercase tracking-[0.16em] font-semibold transition ${
+                    className={`relative pb-3 font-rethink text-[13px]  tracking-[0.05rem] font-semibold transition ${
                       activeTab === "relevant"
                         ? "theme-text-primary"
                         : "theme-text-soft hover:theme-text-primary"
@@ -376,7 +363,7 @@ export default function SearchBar() {
                   <button
                     type="button"
                     onClick={() => setActiveTab("similar")}
-                    className={`relative pb-3 font-departure text-[11px] uppercase tracking-[0.16em] font-semibold transition ${
+                    className={`relative pb-3 font-rethink text-[13px]  tracking-[0.05rem] font-semibold transition ${
                       activeTab === "similar"
                         ? "theme-text-primary"
                         : "theme-text-soft hover:theme-text-primary"
@@ -395,7 +382,7 @@ export default function SearchBar() {
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="pb-3 font-departure text-[11px] uppercase tracking-[0.16em] theme-text-soft hover:theme-text-primary transition"
+                  className="pb-3 font-rethink text-[13px]  tracking-[0.05rem] font-semibold transition"
                 >
                   Clear
                 </button>
@@ -409,7 +396,7 @@ export default function SearchBar() {
                       href={`/${encodeURIComponent(
                         item.tool_name
                       )}?id=${item.id}`}
-                      className="group overflow-hidden rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-[var(--app-border-strong)] shadow-2xl flex flex-col"
+                      className="group overflow-hidden rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--app-border-strong)] shadow-hairline flex flex-col"
                     >
                       <img
                         alt={item.tool_name}
@@ -429,12 +416,12 @@ export default function SearchBar() {
                         }}
                       />
 
-                      <div className="space-y-3 p-4">
-                        <h3 className="font-departure text-base leading-5 theme-text-primary md:text-lg">
+                      <div className="space-y-1 p-4">
+                        <h3 className="font-rethink font-medium text-base leading-5 theme-text-primary md:text-lg">
                           {item.tool_name}
                         </h3>
 
-                        <p className="text-sm font-departure leading-5 theme-text-soft">
+                        <p className="text-sm font-rethink leading-4 theme-text-soft">
                           {item.description}
                         </p>
                       </div>
@@ -443,11 +430,11 @@ export default function SearchBar() {
                 </div>
               ) : (
                 <div className="flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-4 text-center pb-10">
-                  <span className="font-departure text-xl theme-text-primary md:text-2xl">
+                  <span className="font-rethink text-xl theme-text-primary md:text-2xl">
                     No tools in this category
                   </span>
 
-                  <span className="mt-2 text-sm theme-text-soft md:text-base font-departure">
+                  <span className="mt-2 text-sm theme-text-soft md:text-base font-rethink">
                     Try checking the other tab or search for different terms
                   </span>
                 </div>
@@ -459,24 +446,24 @@ export default function SearchBar() {
         {!loading &&
           activeQuery &&
           results.length === 0 && (
-            <div className="flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-4 text-center">
-              <span className="font-departure text-xl theme-text-primary md:text-2xl">
+            <div className="flex min-h-48 flex-col items-center justify-center px-4 text-center">
+              <span className="font-rethink text-xl theme-text-primary md:text-2xl font-semibold">
                 No tools match your search
               </span>
 
-              <span className="mt-2 text-sm theme-text-soft md:text-base font-departure">
+              <span className="mt-2 text-sm theme-text-soft md:text-base font-rethink font-medium">
                 Try searching for other terms or categories
               </span>
+              {error && (
+                <div className="text-red-400 font-rethink text-[15px] font-medium mb-[10px] items-center justify-center">
+                  {error}
+                </div>
+              )}
             </div>
           )}
       </div>
 
-      {!isSearchActive && (
-        <section className="relative z-30 mx-auto flex w-full flex-col gap-6 pb-24 pt-8 md:pt-16 max-w-4xl px-6 pointer-events-auto">
-          <HomeFeatures />
-          <HomeFaq />
-        </section>
-      )}
+
     </div>
   );
 }

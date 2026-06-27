@@ -43,7 +43,7 @@ const pageTitle =
   `${tool.tool_name} | Design Index`;
 
 const pageDescription =
-  `Discover ${tool.tool_name}. Explore details and preview the tool site directly from Design Index.`;
+  `${tool.extended_description}`;
 
 ---
 
@@ -61,37 +61,38 @@ const pageDescription =
     <section class="grid grid-cols-1 gap-4 lg:h-full lg:grid-cols-2 lg:items-stretch lg:overflow-hidden">
       <aside class="rounded-xl md:p-2 lg:h-full lg:overflow-hidden">
         <div class="no-scrollbar pb-[20px] lg:h-full lg:overflow-y-auto lg:pr-1">
-          <p class="theme-text-soft font-departure text-[11px] uppercase tracking-[0.16em]">
+          
+          <p class="theme-text-soft font-rethink font-bold text-[11px] uppercase tracking-[0.1rem]">
             Tool details
           </p>
+          <div class="flex flex-row justify-start items-center gap-4">
+            <h1 class="theme-text-primary mt-2 font-rethink font-medium text-2xl leading-tight md:text-3xl">
+              {tool.tool_name}
+            </h1>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {
+                tool.pricing.includes(
+                  "free",
+                ) && (
+                  <span class="rounded-md border border-emerald-400/20 dark:border-emerald-400/30 bg-emerald-400/10 dark:bg-emerald-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-200">
+                    Free
+                  </span>
+                )
+              }
 
-          <h1 class="theme-text-primary mt-2 font-departure text-2xl leading-tight md:text-3xl">
-            {tool.tool_name}
-          </h1>
-
-          <div class="mt-4 flex flex-wrap gap-2">
-            {
-              tool.pricing.includes(
-                "free",
-              ) && (
-                <span class="rounded-md border border-emerald-400/20 dark:border-emerald-400/30 bg-emerald-400/10 dark:bg-emerald-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-200">
-                  Free
-                </span>
-              )
-            }
-
-            {
-              tool.pricing.includes(
-                "paid",
-              ) && (
-                <span class="rounded-md border border-rose-400/20 dark:border-rose-400/30 bg-rose-400/10 dark:bg-rose-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-rose-700 dark:text-rose-200">
-                  Paid
-                </span>
-              )
-            }
+              {
+                tool.pricing.includes(
+                  "paid",
+                ) && (
+                  <span class="rounded-md border border-rose-400/20 dark:border-rose-400/30 bg-rose-400/10 dark:bg-rose-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-rose-700 dark:text-rose-200">
+                    Paid
+                  </span>
+                )
+              }
+            </div>
           </div>
 
-          <p class="theme-text-muted mt-4 font-departure text-sm leading-6">
+          <p class="theme-text-muted mt-3 font-rethink font-medium text-[15px] leading-[20px] leading-6">
             {tool.extended_description}
           </p>
 
@@ -100,9 +101,9 @@ const pageDescription =
               href={tool.website_url}
               target="_blank"
               rel="noreferrer"
-              class="theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-departure text-xs uppercase tracking-[0.12em]"
+              class="theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-rethink text-[15px] font-medium tracking-[0.05rem]"
             >
-              Visit Website
+              visit website
             </a>
 
             <button
@@ -111,14 +112,14 @@ const pageDescription =
               data-share-title={
                 tool.tool_name
               }
-              class="theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-departure text-xs uppercase tracking-[0.12em]"
+              class="theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-rethink text-[15px] font-medium tracking-[0.05rem]"
             >
-              Share
+              share
             </button>
           </div>
 
           <div class="mt-6">
-            <p class="theme-text-soft font-departure text-[11px] uppercase">
+            <p class="theme-text-soft font-rethink text-[11px] uppercase font-medium tracking-[0.1rem]">
               Try these tools
             </p>
 
@@ -147,16 +148,12 @@ const pageDescription =
                       />
 
                       <div class="space-y-1 p-3">
-                        <p class="theme-text-primary line-clamp-1 font-departure text-sm">
-                          {
-                            item.tool_name
-                          }
+                        <p class="theme-text-primary line-clamp-1 font-rethink text-[15px] font-medium">
+                          {item.tool_name}
                         </p>
 
-                        <p class="theme-text-muted line-clamp-2 font-departure text-xs leading-5">
-                          {
-                            item.description
-                          }
+                        <p class="theme-text-muted font-rethink text-xs leading-5">
+                          {item.description}
                         </p>
                       </div>
                     </a>
@@ -171,7 +168,7 @@ const pageDescription =
       <div class="hidden rounded-xl p-2 lg:block lg:h-full lg:overflow-hidden">
         <div class="no-scrollbar flex flex-col gap-2 lg:h-full lg:overflow-y-auto lg:pr-1">
           <div class="mb-2 flex items-center justify-between px-2 py-1">
-            <p class="theme-text-soft font-departure text-[11px] uppercase">
+            <p class="theme-text-soft font-rethink text-[11px] uppercase tracking-[0.1rem] font-bold">
               Live preview
             </p>
 
@@ -193,7 +190,7 @@ const pageDescription =
               class="theme-solid-bg absolute inset-0 z-10 flex items-center justify-center"
               data-embed-loading
             >
-              <p class="theme-text-soft font-departure text-xs uppercase">
+              <p class="theme-text-soft font-rethink text-xs uppercase">
                 loading website
               </p>
             </div>

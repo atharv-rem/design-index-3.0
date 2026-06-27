@@ -13,13 +13,18 @@ if (Astro.cache.enabled) {
 }
 ---
 
-<HomescreenLayout title="Design Tools Directory | Design Index" description="Explore curated design tools for prototyping, collaboration, handoff, asset generation, and productivity workflows." keywords="design tools, prototyping tools, handoff tools, design collaboration, design workflow tools" backgroundVariant="slate">
-	<main class="mt-[40px] md:mt-[30px] px-[20px]">
+<HomescreenLayout title="Tools | Design Index" description="Explore curated design tools for prototyping, collaboration, handoff, asset generation, and productivity workflows." keywords="design tools, prototyping tools, handoff tools, design collaboration, design workflow tools" backgroundVariant="slate">
+	<main class="mt-[12px] px-[20px]">
 		<section>
 			<div>
-				<h1 class="mt-3 font-departure font-regular text-4xl leading-none theme-text-primary md:text-[40px]">TOOLS</h1>
-				<p class="mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
+				<h1 class="font-rethink font-medium text-4xl leading-none theme-text-primary md:text-[40px]">
+					tools
+				</h1>
+				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base">
 					A curated collection of practical design tools for workflows like prototyping, handoff, collaboration, asset generation, and productivity. Discover utilities that reduce friction, speed up iteration, and help you ship cleaner work with confidence.
+				</p>
+				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base">
+					A curated collection of design tools for prototyping, collaboration, asset generation, and productivity. Discover utilities that reduce friction and speed up your workflow.
 				</p>
 				<ToolsGrid client:load category="tool" initialTools={tools} />
 			</div>

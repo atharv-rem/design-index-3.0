@@ -92,59 +92,46 @@ if (Astro.request.method === "POST") {
 	<main class="mt-[40px] md:mt-[30px] px-[20px] pb-10">
 		<section class="mx-auto w-full max-w-[500px] rounded-xl">
 			<div>
-				<h1 class="mt-3 font-departure font-regular text-4xl leading-none theme-text-primary md:text-[40px]">SUBMIT A TOOL</h1>
-				<p class="mt-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-surface-soft)] px-[10px] py-[5px] font-departure text-sm leading-[20px] theme-text-muted md:text-base">
+				<h1 class="mt-3 font-rethink text-4xl leading-none theme-text-primary md:text-[40px] font-semibold">Submit a Tool</h1>
+				<p class="mt-4 font-rethink text-sm leading-[20px] theme-text-muted md:text-base">
 					Know a great design resource? Submit it here and we will review it for quality, usefulness, and relevance.
 				</p>
 			</div>
 
 			<div class="mt-6 md:max-w-2xl">
-				{success && (
-					<div class="mb-6 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4 font-departure text-sm text-emerald-600 dark:text-emerald-400">
-						<p class="font-bold uppercase tracking-wider">Submission Received!</p>
-						<p class="mt-1 normal-case tracking-normal">Thank you for submitting the tool. We have successfully sent an email notification and will review it shortly!</p>
-					</div>
-				)}
 
-				{errorMessage && (
-					<div class="mb-6 rounded-lg border border-rose-500/20 bg-rose-500/10 p-4 font-departure text-sm text-rose-600 dark:text-rose-400">
-						<p class="font-bold uppercase tracking-wider">Submission Failed</p>
-						<p class="mt-1 normal-case tracking-normal">{errorMessage}</p>
-					</div>
-				)}
-
-				<form class="rounded-lg border border-[var(--app-border)] bg-[var(--app-surface)] p-4" action="#" method="post">
+				<form action="#" method="post">
 					<div class="grid gap-4 md:grid-cols-2">
-						<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
+						<label class="flex flex-col gap-2 font-rethink text-xs font-medium tracking-[0.05rem] theme-text-soft">
 							Tool Name
 							<input
 								type="text"
 								name="toolName"
 								placeholder="Figma"
 								required
-								class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-departure text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
+								class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-rethink text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
 							/>
 						</label>
 
-						<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
+						<label class="flex flex-col gap-2 font-rethink text-xs font-medium tracking-[0.05rem] theme-text-soft">
 							Tool URL
 							<input
 								type="url"
 								name="toolUrl"
 								placeholder="https://example.com"
 								required
-								class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-departure text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
+								class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-rethink text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
 							/>
 						</label>
 					</div>
 
 					<div class="mt-4 grid gap-4 md:grid-cols-2">
-						<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
+						<label class="flex flex-col gap-2 font-rethink text-xs font-medium tracking-[0.05rem] theme-text-soft">
 							Category
 							<select
 								name="category"
 								required
-								class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-departure text-sm normal-case tracking-normal theme-text-primary focus:border-[var(--app-border-strong)] focus:outline-none"
+								class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-rethink text-sm normal-case tracking-normal theme-text-primary focus:border-[var(--app-border-strong)] focus:outline-none"
 							>
 								<option value="">Select a category</option>
 								<option value="colours">Colours</option>
@@ -157,32 +144,44 @@ if (Astro.request.method === "POST") {
 							</select>
 						</label>
 
-						<label class="flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
+						<label class="flex flex-col gap-2 font-rethink text-xs font-medium tracking-[0.05rem] theme-text-soft">
 							Your Email
 							<input
 								type="email"
 								name="email"
 								placeholder="you@example.com"
 								required
-								class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-departure text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
+								class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-rethink text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
 							/>
 						</label>
 					</div>
 
-					<label class="mt-4 flex flex-col gap-2 font-departure text-xs uppercase tracking-[0.12em] theme-text-soft">
+					<label class="mt-4 flex flex-col gap-2 font-rethink text-xs font-medium tracking-[0.05rem] theme-text-soft">
 						Why this tool?
 						<textarea
 							name="reason"
 							rows="5"
 							placeholder="What makes this tool useful for designers?"
 							required
-							class="rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 py-2 font-departure text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
+							class="rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 py-2 font-rethink text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
 						></textarea>
 					</label>
+					{success && (
+					<div class="mt-6 font-rethink text-sm text-emerald-600 dark:text-emerald-400">
+						<p class="font-bold tracking-[0.05rem]">Submission Received!</p>
+						<p class="mt-1 normal-case tracking-normal">Thank you for submitting the tool. We have successfully sent an email notification and will review it shortly!</p>
+					</div>
+					)}
 
+					{errorMessage && (
+						<div class="mt-6 font-rethink text-sm text-rose-600 dark:text-rose-400">
+							<p class="font-bold tracking-[0.05rem]">Submission Failed</p>
+							<p class="mt-1 normal-case tracking-normal">{errorMessage}</p>
+						</div>
+					)}
 					<button
 						type="submit"
-						class="mt-4 theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-departure text-xs uppercase tracking-[0.12em]"
+						class="mt-4 theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-rethink text-xs uppercase tracking-[0.05rem]"
 					>
 						Submit Tool
 					</button>

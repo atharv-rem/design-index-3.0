@@ -4,9 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --font-kal: var(--font-kalamayka), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --font-departure: var(--departure), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --font-open: var(--open), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-rethink: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --shadow-everywhere: inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.1), 0 4px 4px rgba(0, 0, 0, 0.1), 0 8px 8px rgba(0, 0, 0, 0.1);
   --app-bg: #ffffff;
   --app-solid-bg: #f6f6f6;
@@ -60,16 +58,27 @@
 }
 
 @layer utilities {
-  .font-kal {
-    @apply font-kal;
+
+  .font-rethink {
+    @apply font-rethink;
   }
 
-  .font-departure {
-    @apply font-departure;
-  }
-
-  .font-os {
-    @apply font-os;
+  .shadow-hairline {
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.65),
+      0 1px 2px 0 rgba(0, 0, 0, 0.03),
+      0 12px 30px -10px rgba(0, 0, 0, 0.06),
+      0 4px 12px -4px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    
+    @variant dark {
+      box-shadow: 
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+        0 1px 2px 0 rgba(0, 0, 0, 0.15),
+        0 12px 30px -10px rgba(0, 0, 0, 0.5),
+        0 4px 12px -4px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
   }
 
   .no-scrollbar::-webkit-scrollbar {
@@ -78,14 +87,6 @@
 
   .shadow-everywhere {
     box-shadow: var(--shadow-everywhere);
-  }
-
-  .bg-fixed-container picture {
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    inset: 0;
   }
 
   .theme-body-bg {
@@ -116,16 +117,14 @@
     @apply border border-app-border bg-app-surface backdrop-blur-[16px];
   }
 
-  .theme-panel-strong {
-    @apply border border-app-border-strong bg-app-surface-strong backdrop-blur-[18px];
-  }
-
-  .theme-panel-soft {
-    @apply border border-app-border bg-app-surface-soft backdrop-blur-[14px];
-  }
 
   .theme-card {
     @apply border border-app-border bg-app-surface backdrop-blur-[14px];
+  }
+
+  .bg-dots {
+    background-image: radial-gradient(var(--app-border) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
   }
 
   .theme-card-hover {
@@ -144,13 +143,6 @@
     @apply border-app-border-strong bg-app-surface-strong;
   }
 
-  .theme-input-surface {
-    @apply border border-app-border bg-app-panel-contrast text-app-text focus:border-app-border-strong focus:outline-none placeholder:text-app-text-soft;
-  }
-
-  .theme-nav-shell {
-    @apply border-app-border-strong bg-app-navbar text-app-text;
-  }
 
   .theme-nav-control {
     @apply text-app-text transition-all duration-200 hover:bg-app-sidebar-accent;
@@ -178,21 +170,6 @@
     @apply border-t border-app-border bg-app-footer-bg backdrop-blur-[14px];
   }
 
-  .theme-light-image {
-    display: block;
-  }
-
-  .theme-dark-image {
-    display: none;
-  }
-
-  .dark .theme-light-image {
-    display: none;
-  }
-
-  .dark .theme-dark-image {
-    display: block;
-  }
 }
 
 @theme inline {
@@ -234,33 +211,70 @@
 
   /* Unified App Custom Color/Typography Tokens */
   --color-app-bg: var(--app-bg);
+  --color-app-bg-dark: #0d0d0f;
+  
   --color-app-solid-bg: var(--app-solid-bg);
-  --color-app-surface: var(--app-surface);
-  --color-app-surface-strong: var(--app-surface-strong);
-  --color-app-surface-soft: var(--app-surface-soft);
-  --color-app-panel-contrast: var(--app-panel-contrast);
-  --color-app-text: var(--app-text);
-  --color-app-text-muted: var(--app-text-muted);
-  --color-app-text-soft: var(--app-text-soft);
-  --color-app-border: var(--app-border);
-  --color-app-border-strong: var(--app-border-strong);
-  --color-app-overlay: var(--app-overlay);
-  --color-app-navbar: var(--app-navbar);
-  --color-app-footer-bg: var(--app-footer-bg);
-  --color-app-sidebar: var(--app-sidebar);
-  --color-app-sidebar-foreground: var(--app-sidebar-foreground);
-  --color-app-sidebar-accent: var(--app-sidebar-accent);
-  --color-app-sidebar-accent-foreground: var(--app-sidebar-accent-foreground);
-  --color-app-sidebar-border: var(--app-sidebar-border);
-  --color-app-sidebar-ring: var(--app-sidebar-ring);
+  --color-app-solid-bg-dark: #0b0b0b;
 
-  --font-kal: var(--font-kal);
-  --font-departure: var(--font-departure);
-  --font-os: var(--font-open);
+  --color-app-surface: var(--app-surface);
+  --color-app-surface-dark: rgba(11, 11, 11, 0.72);
+
+  --color-app-surface-strong: var(--app-surface-strong);
+  --color-app-surface-strong-dark: rgba(17, 17, 17, 0.9);
+
+  --color-app-surface-soft: var(--app-surface-soft);
+  --color-app-surface-soft-dark: rgba(11, 11, 11, 0.55);
+
+  --color-app-panel-contrast: var(--app-panel-contrast);
+  --color-app-panel-contrast-dark: rgba(18, 18, 18, 0.96);
+
+  --color-app-text: var(--app-text);
+  --color-app-text-dark: #f5f5f5;
+
+  --color-app-text-muted: var(--app-text-muted);
+  --color-app-text-muted-dark: #d3d3d3;
+
+  --color-app-text-soft: var(--app-text-soft);
+  --color-app-text-soft-dark: #8f8f8f;
+
+  --color-app-border: var(--app-border);
+  --color-app-border-dark: rgba(255, 255, 255, 0.1);
+
+  --color-app-border-strong: var(--app-border-strong);
+  --color-app-border-strong-dark: rgba(255, 255, 255, 0.18);
+
+  --color-app-overlay: var(--app-overlay);
+  --color-app-overlay-dark: rgba(0, 0, 0, 0.5);
+
+  --color-app-navbar: var(--app-navbar);
+  --color-app-navbar-dark: rgba(0, 0, 0, 0.55);
+
+  --color-app-footer-bg: var(--app-footer-bg);
+  --color-app-footer-bg-dark: rgba(5, 5, 5, 0.95);
+
+  --color-app-sidebar: var(--app-sidebar);
+  --color-app-sidebar-dark: #0d0d0f;
+
+  --color-app-sidebar-foreground: var(--app-sidebar-foreground);
+  --color-app-sidebar-foreground-dark: #ffffff;
+
+  --color-app-sidebar-accent: var(--app-sidebar-accent);
+  --color-app-sidebar-accent-dark: #151515;
+
+  --color-app-sidebar-accent-foreground: var(--app-sidebar-accent-foreground);
+  --color-app-sidebar-accent-foreground-dark: #ffffff;
+
+  --color-app-sidebar-border: var(--app-sidebar-border);
+  --color-app-sidebar-border-dark: #2a2a2a;
+
+  --color-app-sidebar-ring: var(--app-sidebar-ring);
+  --color-app-sidebar-ring-dark: rgba(255, 255, 255, 0.22);
+
+  --font-rethink: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 .dark {
-  --app-bg: #050505;
+  --app-bg: #0d0d0f;
   --app-solid-bg: #0b0b0b;
   --app-surface: rgba(11, 11, 11, 0.72);
   --app-surface-strong: rgba(17, 17, 17, 0.9);
@@ -274,7 +288,7 @@
   --app-overlay: rgba(0, 0, 0, 0.5);
   --app-navbar: rgba(0, 0, 0, 0.55);
   --app-footer-bg: rgba(5, 5, 5, 0.95);
-  --app-sidebar: #000000;
+  --app-sidebar: #0d0d0f;
   --app-sidebar-foreground: #ffffff;
   --app-sidebar-accent: #151515;
   --app-sidebar-accent-foreground: #ffffff;
@@ -282,7 +296,7 @@
   --app-sidebar-ring: rgba(255, 255, 255, 0.22);
   --app-social-icon-filter: brightness(0) invert(1);
   --app-hero-shadow: 0 205px 57px rgba(0, 0, 0, 0.01), 0 131px 52px rgba(0, 0, 0, 0.09), 0 74px 44px rgba(0, 0, 0, 0.3), 0 33px 33px rgba(0, 0, 0, 0.51), 0 8px 18px rgba(0, 0, 0, 0.59);
-  --background: oklch(0.145 0 0);
+  --background: #0d0d0f;
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
