@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import winkNLP from "wink-nlp";
 import model from "wink-eng-lite-web-model";
+import { getOptimizedImageUrl } from "@/lib/images";
 
 
 let nlpInstance: any = null;
@@ -313,7 +314,7 @@ export default function SearchBar() {
         {/* Loading */}
         {loading && (
           <div className="w-full">
-            <p className="font-rethink text-[11px] uppercase tracking-[0.16em] theme-text-primary animate-pulse mb-4">
+            <p className="font-rethink text-[11px] tracking-[0.05rem] font-medium theme-text-primary animate-pulse mb-4">
               Searching...
             </p>
 
@@ -403,7 +404,10 @@ export default function SearchBar() {
                         loading="lazy"
                         decoding="async"
                         src={
-                          item.og_image_link ||
+                          getOptimizedImageUrl(
+                            item.og_image_link,
+                            { width: 480, quality: 76 },
+                          ) ||
                           "/favicon.svg"
                         }
                         className="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"

@@ -1,5 +1,6 @@
 ---
 import HomescreenLayout from "@/layouts/homescreen.astro";
+import { getOptimizedImageUrl } from "@/lib/images";
 
 import type {
   ToolCard,
@@ -57,13 +58,21 @@ const pageTitle =
 const pageDescription =
   `${tool.extended_description}`;
 
+const toolOgImage =
+  getOptimizedImageUrl(tool.og_image_link, {
+    width: 1200,
+    height: 630,
+    quality: 82,
+    fit: "cover",
+  }) || undefined;
+
 ---
 
 <HomescreenLayout
   title={pageTitle}
   description={pageDescription}
   keywords={`${tool.tool_name}, design tool`}
-  ogImage={tool.og_image_link || undefined}
+  ogImage={toolOgImage}
   backgroundVariant="slate"
   showFooter={false}
   visitUrl={tool.website_url}
@@ -145,7 +154,10 @@ const pageDescription =
                     >
                       <img
                         src={
-                          item.og_image_link
+                          getOptimizedImageUrl(
+                            item.og_image_link,
+                            { width: 480, quality: 76 },
+                          )
                         }
                         alt={
                           item.tool_name

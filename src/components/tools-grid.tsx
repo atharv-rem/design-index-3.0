@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { getOptimizedImageUrl } from "@/lib/images";
 import type { ToolCard } from "@/lib/tools";
 
 
@@ -82,7 +83,12 @@ export default function ToolsGrid({ category, initialTools }: ToolsGridProps) {
                 referrerPolicy="no-referrer"
                 width={1200}
                 height={675}
-                src={item.og_image_link || undefined}
+                src={
+                  getOptimizedImageUrl(
+                    item.og_image_link,
+                    { width: 640, quality: 78 },
+                  ) || undefined
+                }
                 className="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"
               />
               <div className="space-y-2 md:space-y-1 p-4">
