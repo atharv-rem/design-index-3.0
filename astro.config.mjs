@@ -1,11 +1,13 @@
 // @ts-check
-import { defineConfig,memoryCache } from 'astro/config';
+import { defineConfig, fontProviders, svgoOptimizer, passthroughImageService } from 'astro/config';
 import react from '@astrojs/react';
 import vercel from '@astrojs/vercel';
+import { cacheVercel } from '@astrojs/vercel/cache';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   output: "server",
+  prefetch:true,
   site:"https://designindex.xyz",
   integrations: [react()],
   adapter: vercel(),
@@ -13,7 +15,21 @@ export default defineConfig({
     inlineStylesheets: 'always'
   },
   cache: {
-    provider: memoryCache(),
+    provider: cacheVercel(),
+  },
+  image: {
+    service: passthroughImageService(),
+  },
+  routeRules: {
+    '/[id]/[slug]': { maxAge: 60 * 60 * 24, swr: 60 }, // Cache tool pages for 1 day, stale-while-revalidate after 60s
+  },
+  fonts: [{
+    provider: fontProviders.google(),
+    name: "Rethink Sans",
+    cssVariable: "--font-rethink-sans",
+  }],
+  experimental: {
+    svgOptimizer: svgoOptimizer(),
   },
   vite: {
     plugins: [tailwindcss()]

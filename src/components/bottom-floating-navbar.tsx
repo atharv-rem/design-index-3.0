@@ -97,14 +97,14 @@ export default function BottomFloatingNavbar({
             href={visitUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-9 items-center justify-center rounded-[12px] bg-[var(--app-text)] px-4 text-[11px] font-rethink font-bold uppercase tracking-[0.08em] text-[var(--app-bg)] hover:opacity-90 transition shrink-0"
+            className="hidden sm:inline-flex h-9 items-center justify-center rounded-[12px] bg-[var(--app-text)] px-4 text-[11px] font-rethink font-bold uppercase tracking-[0.08em] text-[var(--app-bg)] hover:opacity-90 transition shrink-0"
           >
             Visit
           </a>
           <button
             type="button"
             onClick={handleShare}
-            className="inline-flex h-9 items-center justify-center rounded-[12px] border border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-3.5 text-[11px] font-rethink font-bold uppercase tracking-[0.08em] theme-text-primary hover:bg-[var(--app-sidebar-accent)] transition shrink-0 cursor-pointer"
+            className="hidden sm:inline-flex h-9 items-center justify-center rounded-[12px] border border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-3.5 text-[11px] font-rethink font-bold uppercase tracking-[0.08em] theme-text-primary hover:bg-[var(--app-sidebar-accent)] transition shrink-0 cursor-pointer"
           >
             {shareLabel}
           </button>

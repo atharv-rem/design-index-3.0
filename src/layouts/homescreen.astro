@@ -3,6 +3,10 @@ import '../styles/global.css';
 import HomeSidebar from '../components/home-sidebar';
 import SiteFooter from '../components/site-footer.astro';
 import { SEO } from 'astro-seo';
+import { getImage } from 'astro:assets';
+import heartIcon from '../assets/love.png';
+
+const optimizedHeart = await getImage({ src: heartIcon, width: 16, height: 16 });
 
 type Props = {
     title?: string;
@@ -114,9 +118,7 @@ const ogImage = customOgImage || defaultOgImage;
                 }
             })();
         </script>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+
     </head>
     <body class="theme-body-bg relative min-h-screen font-rethink">
         <div class="theme-body-bg fixed inset-0 -z-10" />
@@ -126,6 +128,7 @@ const ogImage = customOgImage || defaultOgImage;
             floatingNavbarSocialLinks={floatingNavbarSocialLinks}
             visitUrl={visitUrl}
             shareTitle={shareTitle}
+            heartIconSrc={optimizedHeart.src}
         >
             <slot />
             {showFooter && <SiteFooter />}

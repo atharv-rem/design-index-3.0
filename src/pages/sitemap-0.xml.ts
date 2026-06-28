@@ -35,7 +35,7 @@ export const GET: APIRoute = async () => {
             ? encodeURIComponent(tool.tool_name.trim())
             : "";
           if (!name) return "";
-          return `  <url><loc>https://designindex.xyz/${name}?id=${id}</loc></url>\n`;
+          return `  <url><loc>https://designindex.xyz/${id}/${name}</loc></url>\n`;
         })
         .filter(Boolean)
         .join("");

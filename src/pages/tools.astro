@@ -7,7 +7,8 @@ const tools = await getToolsByCategory("tool");
 
 if (Astro.cache.enabled) {
 	Astro.cache.set({
-		maxAge: 3600,
+		maxAge: 86400,
+		swr: 43200,
 		tags: ["tools-page"],
 	});
 }
@@ -20,10 +21,10 @@ if (Astro.cache.enabled) {
 				<h1 class="font-rethink font-medium text-4xl leading-none theme-text-primary md:text-[40px]">
 					tools
 				</h1>
-				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base">
+				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A curated collection of practical design tools for workflows like prototyping, handoff, collaboration, asset generation, and productivity. Discover utilities that reduce friction, speed up iteration, and help you ship cleaner work with confidence.
 				</p>
-				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base">
+				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A curated collection of design tools for prototyping, collaboration, asset generation, and productivity. Discover utilities that reduce friction and speed up your workflow.
 				</p>
 				<ToolsGrid client:load category="tool" initialTools={tools} />

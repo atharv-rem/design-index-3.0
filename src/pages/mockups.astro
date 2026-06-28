@@ -7,7 +7,8 @@ const tools = await getToolsByCategory("mockup");
 
 if (Astro.cache.enabled) {
 	Astro.cache.set({
-		maxAge: 3600,
+		maxAge: 86400,
+		swr: 43200,
 		tags: ["mockups-page"],
 	});
 }
@@ -20,10 +21,10 @@ if (Astro.cache.enabled) {
 				<h1 class="font-rethink font-medium text-4xl leading-none theme-text-primary md:text-[40px]">
 					mockups
 				</h1>
-				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base">
+				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A curated library of high-quality device and product mockups to showcase your designs in real-world contexts. From phones and laptops to packaging and apparel, this section offers versatile templates to help you present your work with professionalism, clarity, and impact.
 				</p>
-				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base">
+				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A curated library of high-quality mockups to showcase designs in real-world settings. From devices to packaging, present your work with clarity, professionalism, and impact.
 				</p>
 				<ToolsGrid client:load category="mockup" initialTools={tools} />

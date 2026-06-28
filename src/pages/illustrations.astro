@@ -6,7 +6,8 @@ import { getToolsByCategory } from "@/lib/get-tool-by-category";
 const tools = await getToolsByCategory("illustration");
 if (Astro.cache.enabled) {
 	Astro.cache.set({
-		maxAge: 3600,
+		maxAge: 86400,
+		swr: 43200,
 		tags: ["illustrations-page"],
 	});
 }
@@ -19,10 +20,10 @@ if (Astro.cache.enabled) {
 				<h1 class="font-rethink font-medium text-4xl leading-none theme-text-primary md:text-[40px]">
 					illustrations
 				</h1>
-				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base">
+				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A rich archive of illustrations ranging from minimal flat styles to detailed artworks. Use these visual assets to add depth, storytelling, and emotional warmth to your projects, making them more engaging, memorable, and human-centered.
 				</p>
-				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base">
+				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A rich archive of illustrations—from minimal to detailed—to add depth, emotion, and storytelling to your projects. Make your work more engaging, memorable, and human-centered.
 				</p>
 				<ToolsGrid client:load category="illustration" initialTools={tools} />

@@ -7,7 +7,8 @@ const tools = await getToolsByCategory("icon");
 
 if (Astro.cache.enabled) {
 	Astro.cache.set({
-		maxAge: 3600,
+		maxAge: 86400,
+		swr: 43200,
 		tags: ["icons-page"],
 	});
 }
@@ -20,10 +21,10 @@ if (Astro.cache.enabled) {
 				<h1 class="font-rethink font-medium text-4xl leading-none theme-text-primary md:text-[40px]">
 					icons
 				</h1>
-				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base">
+				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A versatile collection of icon libraries covering diverse styles, categories, and use cases. Whether you need minimal line icons, bold glyphs, playful or animated icons, this section helps you communicate ideas clearly and enhance user interaction with visual clarity.
 				</p>
-				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base">
+				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A versatile collection of icon libraries spanning styles and use cases. From minimal lines to bold or animated icons, find the right visuals to enhance clarity and user interaction.
 				</p>
 				<ToolsGrid client:load category="icon" initialTools={tools} />

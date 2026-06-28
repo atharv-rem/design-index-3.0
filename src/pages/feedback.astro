@@ -1,76 +1,17 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
+import { actions } from "astro:actions";
 
 export const prerender = false;
 
-let success = Astro.url.searchParams.get("success") === "true";
-let errorMessage = "";
+const result = Astro.getActionResult(actions.submitFeedback);
 
-if (Astro.request.method === "POST") {
-  try {
-    const formData = await Astro.request.formData();
-    const name = formData.get("name")?.toString().trim();
-    const email = formData.get("email")?.toString().trim();
-    const feedback = formData.get("feedback")?.toString().trim();
-
-    if (!name || !email || !feedback) {
-      throw new Error("All fields are required.");
-    }
-
-    const resendApiKey = import.meta.env.RESEND_API_KEY;
-    const adminEmail = import.meta.env.ADMIN_EMAIL;
-
-    if (!resendApiKey) {
-      throw new Error("RESEND_API_KEY is not configured in the server environment variables.");
-    }
-    if (!adminEmail) {
-      throw new Error("ADMIN_EMAIL is not configured in the server environment variables.");
-    }
-
-    const emailResponse = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${resendApiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "Design Index Feedback <onboarding@resend.dev>",
-        to: adminEmail,
-        subject: `New Feedback from: ${name}`,
-        html: `
-          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; border: 1px solid #e5e7eb; border-radius: 12px; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-            <h2 style="color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 16px; margin-top: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.025em;">New Feedback Submission</h2>
-            <p style="margin: 16px 0; color: #4b5563; font-size: 16px; line-height: 1.5;">You received a new feedback message from a visitor on Design Index.</p>
-            
-            <table style="width: 100%; border-collapse: collapse; margin-top: 24px;">
-              <tr style="border-bottom: 1px solid #f3f4f6;">
-                <td style="padding: 12px 0; font-weight: 600; width: 140px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Name</td>
-                <td style="padding: 12px 0; color: #111827; font-size: 15px; font-weight: 500;">${name}</td>
-              </tr>
-              <tr style="border-bottom: 1px solid #f3f4f6;">
-                <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Email</td>
-                <td style="padding: 12px 0; font-size: 15px;"><a href="mailto:${email}" style="color: #2563eb; text-decoration: underline;">${email}</a></td>
-              </tr>
-              <tr>
-                <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: top;">Feedback</td>
-                <td style="padding: 12px 0; color: #374151; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${feedback}</td>
-              </tr>
-            </table>
-          </div>
-        `,
-      }),
-    });
-
-    if (!emailResponse.ok) {
-      const errorText = await emailResponse.text();
-      throw new Error(`Email service returned error: ${errorText}`);
-    }
-
-    return Astro.redirect(`${Astro.url.pathname}?success=true`);
-  } catch (err: any) {
-    errorMessage = err.message;
-  }
+if (result && !result.error) {
+  return Astro.redirect(`${Astro.url.pathname}?success=true`);
 }
+
+let success = Astro.url.searchParams.get("success") === "true";
+let errorMessage = result?.error ? result.error.message : "";
 ---
 
 <HomescreenLayout
@@ -82,17 +23,17 @@ if (Astro.request.method === "POST") {
 	<main class="mt-[40px] md:mt-[30px] px-[20px] pb-10">
 		<section class="mx-auto w-full max-w-[500px] rounded-xl">
 			<div>
-				<h1 class="mt-3 font-rethink text-4xl leading-none theme-text-primary md:text-[40px] font-medium">Feedback</h1>
-				<p class="mt-4 font-rethink text-sm leading-[20px] theme-text-muted md:text-base">
+				<h1 class="mt-3 font-rethink text-4xl leading-none theme-text-primary md:text-[40px] font-medium tracking-[0.01rem]">Feedback</h1>
+				<p class="mt-3 font-rethink font-medium text-[15px] leading-[20px] theme-text-muted md:text-base">
 					Tell us what is working, what feels missing, and what would make Design Index more useful in your workflow.
 				</p>
 			</div>
 
 			<div class="mt-6 md:max-w-2xl">
 
-				<form action="#" method="post">
+				<form action={actions.submitFeedback} method="post">
 					<div class="grid gap-4 md:grid-cols-2">
-						<label class="flex flex-col gap-2 font-rethink text-xs tracking-[0.05rem] theme-text-soft">
+						<label class="flex flex-col gap-2 font-rethink text-sm tracking-[0.05rem] theme-text-soft">
 							Name
 							<input
 								type="text"
@@ -103,7 +44,7 @@ if (Astro.request.method === "POST") {
 							/>
 						</label>
 
-						<label class="flex flex-col gap-2 font-rethink text-xs tracking-[0.05rem] theme-text-soft">
+						<label class="flex flex-col gap-2 font-rethink text-sm tracking-[0.05rem] theme-text-soft">
 							Email
 							<input
 								type="email"
@@ -115,7 +56,7 @@ if (Astro.request.method === "POST") {
 						</label>
 					</div>
 
-					<label class="mt-4 flex flex-col gap-2 font-rethink text-xs tracking-[0.05rem] theme-text-soft">
+					<label class="mt-4 flex flex-col gap-2 font-rethink text-sm tracking-[0.05rem] theme-text-soft">
 						Feedback
 						<textarea
 							name="feedback"
@@ -140,7 +81,7 @@ if (Astro.request.method === "POST") {
 					)}
 					<button
 						type="submit"
-						class="mt-4 theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-rethink text-xs uppercase tracking-[0.12em]"
+						class="mt-4 font-bold theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-rethink text-xs uppercase tracking-[0.12em]"
 					>
 						Send Feedback
 					</button>

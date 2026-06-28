@@ -93,7 +93,8 @@ export const GET: APIRoute = async ({
 
   if (cache.enabled) {
     cache.set({
-      maxAge: 3600,
+      maxAge: 86400,
+      swr: 43200,
     });
   }
 
@@ -106,7 +107,7 @@ export const GET: APIRoute = async ({
   return Response.json(payload, {
     headers: {
       "Cache-Control":
-        "public, s-maxage=3600, stale-while-revalidate=86400",
+        "public, s-maxage=86400, stale-while-revalidate=43200",
 
       "x-cache": "miss",
     },

@@ -1,15 +1,16 @@
 ---
 const year = new Date().getFullYear();
+import { Image } from "astro:assets";
 import instagramIcon from "../assets/instagram.svg?url";
 import githubIcon from "../assets/github.svg?url";
 import threadsIcon from "../assets/threads.svg?url";
 import twitterIcon from "../assets/twitter.svg?url";
-import loveIcon from "../assets/love.png?url";
+import loveIcon from "../assets/love.png";
 ---
 
 <footer class="relative z-30 mt-8 theme-footer-shell">
 	<div class="mx-auto w-full max-w-7xl px-6 py-8">
-		<div class="flex flex-col justify-between md:flex-row md:items-start">
+		<div class="flex flex-col justify-between md:flex-row md:items-start space-y-5">
 			<div class="w-full md:max-w-sm">
 				<a href="/" class="font-rethink text-3xl font-semibold theme-text-primary transition-opacity hover:opacity-90">Design Index</a>
 				<p class="mt-2 font-rethink text-sm leading-6 theme-text-soft">Curated design tools, resources, and inspiration.</p>
@@ -76,7 +77,7 @@ import loveIcon from "../assets/love.png?url";
 			</p>
 			<p class="inline-flex items-center gap-2 font-rethink text-sm theme-text-soft">
 				Built with
-				<img src={loveIcon} alt="love" loading="lazy" decoding="async" width="16" height="16" class="h-4 w-4" />
+				<Image src={loveIcon} alt="love" loading="lazy" decoding="async" width="16" height="16" class="h-4 w-4" />
 				by Atharv
 			</p>
 		</div>

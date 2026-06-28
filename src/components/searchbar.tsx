@@ -393,9 +393,9 @@ export default function SearchBar() {
                   {displayedResults.map((item) => (
                     <a
                       key={item.id}
-                      href={`/${encodeURIComponent(
+                      href={`/${item.id}/${encodeURIComponent(
                         item.tool_name
-                      )}?id=${item.id}`}
+                      )}`}
                       className="group overflow-hidden rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--app-border-strong)] shadow-hairline flex flex-col"
                     >
                       <img
@@ -416,12 +416,12 @@ export default function SearchBar() {
                         }}
                       />
 
-                      <div className="space-y-1 p-4">
-                        <h3 className="font-rethink font-medium text-base leading-5 theme-text-primary md:text-lg">
+                      <div className="space-y-2 md:space-y-1 p-4">
+                        <h3 className="font-rethink font-semibold text-[20px] leading-5 theme-text-primary md:text-lg">
                           {item.tool_name}
                         </h3>
 
-                        <p className="text-sm font-rethink leading-4 theme-text-soft">
+                        <p className="text-[15px] md:text-sm font-rethink leading-[20px] md:leading-[15px] font-medium theme-text-soft">
                           {item.description}
                         </p>
                       </div>

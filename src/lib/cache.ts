@@ -10,7 +10,7 @@ const redisClient = redisUrl && redisToken
     })
   : null;
 
-export const CACHE_TTL_SECONDS = 60 * 5;
+export const CACHE_TTL_SECONDS = 60 * 60 * 24;
 
 export const getCachedJson = async <T>(key: string): Promise<T | null> => {
   if (!redisClient) {

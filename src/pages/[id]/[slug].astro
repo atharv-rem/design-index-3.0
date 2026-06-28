@@ -1,0 +1,378 @@
+---
+import HomescreenLayout from "@/layouts/homescreen.astro";
+
+import type {
+  ToolCard,
+  ToolDetail,
+} from "@/lib/tools";
+
+export const prerender = false;
+
+if (Astro.cache.enabled) {
+  Astro.cache.set({
+    maxAge: 86400,
+    swr: 43200,
+  });
+}
+
+const { id, slug } = Astro.params;
+
+if (!id) {
+  Astro.logger.error("Missing ID parameter in URL params.");
+  return Astro.redirect("/tools");
+}
+
+Astro.logger.info(`Rendering tool page for ID: ${id}, slug: ${slug}`);
+
+const apiResponse = await fetch(
+  new URL(`/api/tools/${id}`, Astro.url),
+);
+
+if (!apiResponse.ok) {
+  Astro.logger.error(`Failed to fetch tool details for ID: ${id} from API (Response status: ${apiResponse.status})`);
+  return Astro.redirect("/tools");
+}
+
+const { tool, suggestedTools } =
+  (await apiResponse.json()) as {
+    tool: ToolDetail;
+    suggestedTools: ToolCard[];
+  };
+
+if (!tool) {
+  Astro.logger.error(`API response was ok, but tool object is null/undefined for ID: ${id}`);
+  return Astro.redirect("/tools");
+}
+
+// Normalize/redirect to expected slug if it doesn't match (comparing decoded strings to prevent infinite loops)
+if (decodeURIComponent(slug ?? "") !== tool.tool_name) {
+  const canonicalSlug = encodeURIComponent(tool.tool_name);
+  Astro.logger.warn(`Non-canonical slug matched '${slug}'. Redirecting to canonical slug: '${canonicalSlug}'`);
+  return Astro.redirect(`/${id}/${canonicalSlug}`, 301);
+}
+
+const pageTitle =
+  `${tool.tool_name} | Design Index`;
+
+const pageDescription =
+  `${tool.extended_description}`;
+
+---
+
+<HomescreenLayout
+  title={pageTitle}
+  description={pageDescription}
+  keywords={`${tool.tool_name}, design tool`}
+  ogImage={tool.og_image_link || undefined}
+  backgroundVariant="slate"
+  showFooter={false}
+  visitUrl={tool.website_url}
+  shareTitle={tool.tool_name}
+>
+  <main class="mt-4 px-[15px] pb-4 lg:h-[calc(100vh-2rem)] lg:pb-0">
+    <section class="grid grid-cols-1 gap-4 lg:h-full lg:grid-cols-2 lg:items-stretch lg:overflow-hidden">
+      <aside class="rounded-xl md:p-2 lg:h-full lg:overflow-hidden">
+        <div class="no-scrollbar pb-[20px] lg:h-full lg:overflow-y-auto lg:pr-1">
+          
+          <p class="theme-text-soft font-rethink font-bold text-[11px] uppercase tracking-[0.1rem]">
+            Tool details
+          </p>
+          <div class="flex flex-row justify-start items-center gap-4">
+            <h1 class="theme-text-primary mt-2 font-rethink font-medium text-2xl leading-tight md:text-3xl">
+              {tool.tool_name}
+            </h1>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {
+                tool.pricing.includes(
+                  "free",
+                ) && (
+                  <span class="rounded-md border border-emerald-400/20 dark:border-emerald-400/30 bg-emerald-400/10 dark:bg-emerald-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-200">
+                    Free
+                  </span>
+                )
+              }
+
+              {
+                tool.pricing.includes(
+                  "paid",
+                ) && (
+                  <span class="rounded-md border border-rose-400/20 dark:border-rose-400/30 bg-rose-400/10 dark:bg-rose-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-rose-700 dark:text-rose-200">
+                    Paid
+                  </span>
+                )
+              }
+            </div>
+          </div>
+
+          <p class="theme-text-muted mt-3 font-rethink font-medium text-[15px] leading-[20px] leading-6">
+            {tool.extended_description}
+          </p>
+
+          <div class="mt-5 flex flex-wrap items-center gap-2">
+            <a
+              href={tool.website_url}
+              target="_blank"
+              rel="noreferrer"
+              class="theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-rethink text-[15px] font-medium tracking-[0.05rem]"
+            >
+              visit website
+            </a>
+
+            <button
+              type="button"
+              data-share-button
+              data-share-title={
+                tool.tool_name
+              }
+              class="theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-rethink text-[15px] font-medium tracking-[0.05rem]"
+            >
+              share
+            </button>
+          </div>
+
+          <div class="mt-6">
+            <p class="theme-text-soft font-rethink text-[11px] uppercase font-medium tracking-[0.1rem]">
+              Try these tools
+            </p>
+
+            <div class="mt-3 grid grid-cols-1 gap-8 md:grid-cols-2">
+              {
+                suggestedTools.map(
+                  (item) => (
+                    <a
+                      href={`/${item.id}/${encodeURIComponent(item.tool_name)}`}
+                      class="theme-card theme-card-hover group overflow-hidden rounded-[8px] transition duration-200 hover:-translate-y-0.5"
+                    >
+                      <img
+                        src={
+                          item.og_image_link
+                        }
+                        alt={
+                          item.tool_name
+                        }
+                        loading="lazy"
+                        decoding="async"
+                        fetchpriority="low"
+                        referrerpolicy="no-referrer"
+                        width="1200"
+                        height="675"
+                        class="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"
+                      />
+
+                      <div class="space-y-1 p-3">
+                        <p class="theme-text-primary line-clamp-1 font-rethink text-[15px] font-medium">
+                          {item.tool_name}
+                        </p>
+
+                        <p class="theme-text-muted font-rethink text-xs leading-5">
+                          {item.description}
+                        </p>
+                      </div>
+                    </a>
+                  ),
+                )
+              }
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="hidden rounded-xl p-2 lg:block lg:h-full lg:overflow-hidden">
+        <div class="no-scrollbar flex flex-col gap-2 lg:h-full lg:overflow-y-auto lg:pr-1">
+          <div class="mb-2 flex items-center justify-between px-2 py-1">
+            <p class="theme-text-soft font-rethink text-[11px] uppercase tracking-[0.1rem] font-bold">
+              Live preview
+            </p>
+
+            <div
+              class="flex items-center gap-1.5"
+              aria-hidden="true"
+            >
+              <span class="h-2.5 w-2.5 rounded-full bg-[#ff5f57]"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-[#febc2e]"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-[#28c840]"></span>
+            </div>
+          </div>
+
+          <div
+            class="theme-panel relative h-[70vh] overflow-hidden rounded-lg lg:h-[calc(100%-2.25rem)] lg:flex-1"
+            data-embed-wrapper
+          >
+            <div
+              class="theme-solid-bg absolute inset-0 z-10 flex items-center justify-center"
+              data-embed-loading
+            >
+              <p class="theme-text-soft font-rethink text-xs uppercase">
+                loading website
+              </p>
+            </div>
+
+            <div
+              class="h-full w-full"
+              data-embed-stage
+            >
+              <iframe
+                src={tool.website_url}
+                title={`${tool.tool_name} preview`}
+                loading="lazy"
+                class="theme-solid-bg h-full w-full"
+                referrerpolicy="no-referrer"
+                data-embed-iframe
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</HomescreenLayout>
+
+<script is:inline>
+  const wrapper =
+    document.querySelector(
+      "[data-embed-wrapper]",
+    );
+
+  const stage =
+    wrapper?.querySelector(
+      "[data-embed-stage]",
+    );
+
+  const iframe =
+    wrapper?.querySelector(
+      "[data-embed-iframe]",
+    );
+
+  const loading =
+    wrapper?.querySelector(
+      "[data-embed-loading]",
+    );
+
+  const shareButton =
+    document.querySelector(
+      "[data-share-button]",
+    );
+
+  if (shareButton) {
+    shareButton.addEventListener(
+      "click",
+      async () => {
+        const shareUrl =
+          shareButton.getAttribute(
+            "data-share-url",
+            ) ??
+          window.location.href;
+
+        const shareTitle =
+          shareButton.getAttribute(
+            "data-share-title",
+          ) ?? document.title;
+
+        try {
+          if (navigator.share) {
+            await navigator.share({
+              title: `${shareTitle} | Design Index`,
+              text: `Check out ${shareTitle} on Design Index`,
+              url: shareUrl,
+            });
+
+            return;
+          }
+
+          await navigator.clipboard.writeText(
+            shareUrl,
+          );
+
+          const previousLabel =
+            shareButton.textContent;
+
+          shareButton.textContent =
+            "Copied";
+
+          setTimeout(() => {
+            shareButton.textContent =
+              previousLabel;
+          }, 1500);
+        } catch {
+          // Ignore cancel and clipboard permission errors.
+        }
+      },
+    );
+  }
+
+  if (iframe && loading && stage) {
+    const hideLoading = () =>
+      loading.remove();
+
+    const applyViewportMode =
+      () => {
+        const isDesktop =
+          window.matchMedia(
+            "(min-width: 1024px)",
+          ).matches;
+
+        if (!isDesktop) {
+          iframe.style.transform =
+            "none";
+
+          iframe.style.width =
+            "100%";
+
+          iframe.style.height =
+            "100%";
+
+          return;
+        }
+
+        const desktopWidth = 1280;
+
+        const stageWidth =
+          stage.clientWidth;
+
+        const stageHeight =
+          stage.clientHeight;
+
+        const scale =
+          stageWidth / desktopWidth;
+
+        iframe.style.width = `${desktopWidth}px`;
+
+        iframe.style.height = `${stageHeight / scale}px`;
+
+        iframe.style.transformOrigin =
+          "top left";
+
+        iframe.style.transform = `scale(${scale})`;
+      };
+
+    iframe.addEventListener(
+      "load",
+      hideLoading,
+      { once: true },
+    );
+
+    applyViewportMode();
+
+    let resizeTimeout;
+
+    window.addEventListener(
+      "resize",
+      () => {
+        clearTimeout(
+          resizeTimeout,
+        );
+
+        resizeTimeout =
+          setTimeout(
+            applyViewportMode,
+            100,
+          );
+      },
+    );
+
+    setTimeout(
+      hideLoading,
+      8000,
+    );
+  }
+</script>

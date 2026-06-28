@@ -70,7 +70,8 @@ export default function ToolsGrid({ category, initialTools }: ToolsGridProps) {
           {filtered.map((item) => (
             <a
               key={item.id}
-              href={`/${encodeURIComponent(item.tool_name)}?id=${item.id}`}
+              href={`/${item.id}/${encodeURIComponent(item.tool_name)}`}
+              data-astro-prefetch
               className="group overflow-hidden rounded-[8px] shadow-hairline transition duration-200 hover:-translate-y-0.5 hover:border-[var(--app-border-strong)]"
             >
               <img
@@ -84,15 +85,15 @@ export default function ToolsGrid({ category, initialTools }: ToolsGridProps) {
                 src={item.og_image_link || undefined}
                 className="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"
               />
-              <div className="space-y-1 p-4">
-                <h3 className="font-rethink tracking-[0.1rem] font-semibold text-base leading-5 theme-text-primary md:text-lg">{item.tool_name}</h3>
-                <p className="text-sm font-rethink font-medium leading-[15px] theme-text-soft">{item.description}</p>
+              <div className="space-y-2 md:space-y-1 p-4">
+                <h3 className="font-rethink tracking-[0.02rem] font-semibold text-[20px] leading-5 theme-text-primary md:text-lg">{item.tool_name}</h3>
+                <p className="text-[15px] md:text-sm font-rethink font-medium md:leading-[15px] leading-[20px] theme-text-soft">{item.description}</p>
               </div>
             </a>
           ))}
         </div>
       ) : (
-        <div className="mt-8 flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-4 text-center">
+        <div className="mt-8 flex min-h-48 flex-col items-center justify-center px-4 text-center">
           <span className="font-rethink font-semibold text-xl theme-text-primary md:text-2xl">No tools match this filter</span>
           <span className="mt-1 text-sm font-semibold theme-text-soft md:text-base">Try another pricing filter</span>
         </div>

@@ -6,8 +6,8 @@ import { getToolsByCategory } from "@/lib/get-tool-by-category";
 const tools = await getToolsByCategory("colour");
 if (Astro.cache.enabled) {
 	Astro.cache.set({
-		maxAge: 3600,
-		swr:3600,
+		maxAge: 86400,
+		swr: 43200,
 		tags: ["colours-page"],
 	});
 }
@@ -24,10 +24,10 @@ if (Astro.cache.enabled) {
 				<h1 class="font-rethink font-medium text-4xl leading-none theme-text-primary md:text-[40px]">
 					colours
 				</h1>
-				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base">
+				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A curated collection of colour palettes, hues, gradients and backgrounds to inspire and streamline your design process. From bold primaries to subtle pastels, this section offers a versatile range of colour resources to help you build consistent, visually appealing, and emotionally resonant design systems
 				</p>
-				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base">
+				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A curated collection of colour palettes, gradients, and backgrounds to inspire your design process. Explore bold to subtle hues that help build consistent and visually appealing design systems.
 				</p>
 				<ToolsGrid

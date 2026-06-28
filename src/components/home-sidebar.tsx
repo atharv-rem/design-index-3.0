@@ -63,7 +63,7 @@ const defaultSocialLinks = [
   { label: "Twitter", href: "https://x.com", icon: twitterIcon },
 ]
 
-function HomeSidebarContent() {
+function HomeSidebarContent({ heartIconSrc }: { heartIconSrc?: string }) {
   const { setOpenMobile, toggleSidebar, isMobile } = useSidebar()
 
   const mobileMotion = isMobile
@@ -134,7 +134,7 @@ function HomeSidebarContent() {
           <div className="flex items-center justify-center font-rethink text-[15px] theme-text-primary md:text-[10px]">
             <span>Made with</span>
             <img
-              src={heart}
+              src={heartIconSrc || heart}
               alt="heart icon"
               loading="lazy"
               decoding="async"
@@ -188,6 +188,7 @@ type HomeSidebarProps = {
   floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>
   visitUrl?: string
   shareTitle?: string
+  heartIconSrc?: string
 }
 
 export default function HomeSidebar({
@@ -196,6 +197,7 @@ export default function HomeSidebar({
   floatingNavbarSocialLinks = [],
   visitUrl,
   shareTitle,
+  heartIconSrc,
 }: HomeSidebarProps) {
   const [isMounted, setIsMounted] = useState(false)
 
@@ -222,7 +224,7 @@ export default function HomeSidebar({
         collapsible="offcanvas"
         className="z-50 border-r border-sidebar-border shadow-hairline theme-sidebar-shell"
       >
-        {isMounted ? <HomeSidebarContent /> : <HomeSidebarSkeletonContent />}
+        {isMounted ? <HomeSidebarContent heartIconSrc={heartIconSrc} /> : <HomeSidebarSkeletonContent />}
       </Sidebar>
 
       <div className="min-w-0 flex-1">

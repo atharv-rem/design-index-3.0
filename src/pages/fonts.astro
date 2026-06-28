@@ -7,7 +7,8 @@ const tools = await getToolsByCategory("font");
 
 if (Astro.cache.enabled) {
 	Astro.cache.set({
-		maxAge: 3600,
+		maxAge: 86400,
+		swr: 43200,
 		tags: ["fonts-page"],
 	});
 }
@@ -20,10 +21,10 @@ if (Astro.cache.enabled) {
 				<h1 class="font-rethink font-medium text-4xl leading-none theme-text-primary md:text-[40px]">
 					fonts
 				</h1>
-				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base">
+				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A handpicked selection of font libraries to bring personality and clarity to your typography. Whether you're looking for elegant serifs, modern sans-serifs, or expressive display fonts, this section helps you find the perfect typeface to elevate your design language and reinforce brand identity.
 				</p>
-				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base">
+				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A handpicked collection of fonts to add personality and clarity to your typography. From elegant serifs to bold display fonts, find the perfect typeface to elevate your design and brand.
 				</p>
 				<ToolsGrid client:load category="font" initialTools={tools} />
