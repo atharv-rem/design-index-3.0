@@ -2,6 +2,85 @@ import { defineMiddleware } from "astro:middleware";
 import { detectAIBot, negotiateFormat, markdownResponse, injectMarkdownAlternateLink, parseAcceptHeader } from "@dualmark/core";
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  const pathname = context.url.pathname;
+
+  // Serve Web Bot Auth JWKS directory endpoint directly
+  if (pathname === "/.well-known/http-message-signatures-directory") {
+    const jwks = {
+      keys: [
+        {
+          kty: "EC",
+          crv: "P-256",
+          x: "MKBCTNIcKXYtyzsxuo7x2SygGDkh6tQHrc6sEBFuzmI",
+          y: "4Etl6SRW2YiLUrN5vfvVHuhp7x8Pxltm1v1FS35g1A0",
+          use: "sig",
+          alg: "ES256",
+          kid: "designindex-bot-key-1"
+        }
+      ]
+    };
+    return new Response(JSON.stringify(jwks), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "public, max-age=86400"
+      }
+    });
+  }
+
+  // Serve RFC 9727 API Catalog directly
+  if (pathname === "/.well-known/api-catalog") {
+    const catalog = {
+      linkset: [
+        {
+          anchor: "https://designindex.xyz/api/search",
+          "service-desc": [
+            {
+              href: "https://designindex.xyz/openapi.json",
+              type: "application/openapi+json"
+            }
+          ],
+          "service-doc": [
+            {
+              href: "https://designindex.xyz/docs",
+              type: "text/html"
+            }
+          ]
+        }
+      ]
+    };
+    return new Response(JSON.stringify(catalog), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/linkset+json; charset=utf-8",
+        "Cache-Control": "public, max-age=86400"
+      }
+    });
+  }
+
+  // Serve Agent Skills Discovery Index directly
+  if (pathname === "/.well-known/agent-skills/index.json") {
+    const index = {
+      $schema: "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+      skills: [
+        {
+          name: "design-search",
+          type: "skill-md",
+          description: "Searches for curated design tools, templates, mockups, fonts, and color palettes on Design Index.",
+          url: "https://designindex.xyz/SKILL.md",
+          digest: "sha256:a1c22a3e956ff73becddd17ddb83480c6f0cbdaf6cef6c3eb33d03b92af6c68a"
+        }
+      ]
+    };
+    return new Response(JSON.stringify(index), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "public, max-age=86400"
+      }
+    });
+  }
+
   // Prevent infinite loops if this is an internal fetch call to get HTML
   if (context.request.headers.get("x-dualmark-bypass") === "true") {
     return next();
@@ -9,7 +88,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const userAgent = context.request.headers.get("user-agent") ?? "";
   const acceptHeader = context.request.headers.get("accept") ?? "";
-  const pathname = context.url.pathname;
 
   // 1. Strict 406 check: if Accept excludes both HTML and Markdown and isn't "*/*"
   if (acceptHeader && !acceptHeader.includes("*/*")) {

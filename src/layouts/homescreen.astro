@@ -133,5 +133,45 @@ const ogImage = customOgImage || defaultOgImage;
             <slot />
             {showFooter && <SiteFooter />}
         </HomeSidebar>
+        
+        <script is:inline>
+          (function() {
+            if (typeof window !== "undefined" && window.navigator) {
+              const modelContext = window.navigator.modelContext;
+              if (modelContext && typeof modelContext.registerTool === "function") {
+                try {
+                  modelContext.registerTool({
+                    name: "search_design_index",
+                    description: "Search for design resources, tools, templates, mockups, fonts, and color palettes on Design Index.",
+                    inputSchema: {
+                      type: "object",
+                      properties: {
+                        query: {
+                          type: "string",
+                          description: "The search query query string."
+                        }
+                      },
+                      required: ["query"]
+                    },
+                    execute: async function(args) {
+                      try {
+                        const res = await fetch("/api/search?q=" + encodeURIComponent(args.query || ""));
+                        if (res.ok) {
+                          const data = await res.json();
+                          return { success: true, results: data };
+                        }
+                        return { success: false, error: "Failed to fetch search results" };
+                      } catch (e) {
+                        return { success: false, error: e.message };
+                      }
+                    }
+                  });
+                } catch (e) {
+                  console.warn("Failed to register WebMCP tool:", e);
+                }
+              }
+            }
+          })();
+        </script>
     </body>
 </html>
