@@ -4,12 +4,23 @@ import react from '@astrojs/react';
 import vercel from '@astrojs/vercel';
 import { cacheVercel } from '@astrojs/vercel/cache';
 import tailwindcss from '@tailwindcss/vite';
+import dualmark from '@dualmark/astro';
 
 export default defineConfig({
   output: "server",
   prefetch:true,
   site:"https://designindex.xyz",
-  integrations: [react()],
+  integrations: [
+    react(),
+    dualmark({
+      siteUrl: "https://designindex.xyz",
+      llmsTxt: {
+        enabled: true,
+        brandName: "Design Index",
+        description: "Curated design tools, mockups, icons, fonts, color resources, and inspiration.",
+      },
+    }),
+  ],
   adapter: vercel(),
   build: {
     inlineStylesheets: 'always'
