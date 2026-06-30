@@ -66,6 +66,14 @@ const defaultSocialLinks = [
 function HomeSidebarContent({ heartIconSrc }: { heartIconSrc?: string }) {
   const { setOpenMobile, toggleSidebar, isMobile } = useSidebar()
 
+  useEffect(() => {
+    const handleToggle = () => {
+      toggleSidebar()
+    }
+    window.addEventListener("toggle-sidebar", handleToggle)
+    return () => window.removeEventListener("toggle-sidebar", handleToggle)
+  }, [toggleSidebar])
+
   const mobileMotion = isMobile
     ? {
         initial: { opacity: 0, y: 8 },

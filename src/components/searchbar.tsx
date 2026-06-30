@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import winkNLP from "wink-nlp";
 import model from "wink-eng-lite-web-model";
 import { getOptimizedImageUrl } from "@/lib/images";
+import { FunkyShadow } from "funky-shadow";
+import click_dark from "../assets/click_dark.svg?url"
+import click_light from "../assets/click_light.svg?url"
 
 
 let nlpInstance: any = null;
@@ -25,24 +28,104 @@ function getNLP() {
     its: itsInstance,
   };
 }
-
-type ToolResult = {
-  id: number;
-  tool_name: string;
-  description: string;
-  og_image_link: string;
-  matchedKeywordsCount: number;
-  relevanceScore: number;
-};
-
+import { useSearchStore } from "../zustand_store/useSearchStore";
+import type { ToolResult } from "../zustand_store/useSearchStore";
 export default function SearchBar() {
-  const [inputValue, setInputValue] = useState("");
-  const [activeQuery, setActiveQuery] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<ToolResult[]>([]);
-  const [keywords, setKeywords] = useState<string[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"relevant" | "similar">("relevant");
+  const toggleSidebar = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("toggle-sidebar"));
+    }
+  };
+  const {
+    inputValue,
+    activeQuery,
+    loading,
+    results,
+    error,
+    activeTab,
+    stats,
+    toolcount,
+    setInputValue,
+    setActiveQuery,
+    setLoading,
+    setResults,
+    setError,
+    setActiveTab,
+    setStats,
+    setToolcount,
+    resetSearch,
+  } = useSearchStore();
+
+  const [containerWidth, setContainerWidth] = useState(600);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/stats")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data.pageviews === "number") {
+          setStats({ pageviews: data.pageviews });
+        }
+      })
+      .catch((err) => console.error("Failed to fetch stats:", err));
+  }, []);
+
+  useEffect(()=>{
+    fetch("./api/tool_count")
+    .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          setToolcount(data.count);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch stats:", err));
+  },[])
+
+  useEffect(() => {
+    const trimmed = inputValue.trim();
+    if (!trimmed) {
+      if (activeQuery) {
+        handleClear();
+      }
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      if (trimmed !== activeQuery) {
+        handleSearch(inputValue);
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [inputValue, activeQuery]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
+
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const relevantResults = results.filter((item) => item.matchedKeywordsCount > 1);
   const similarResults = results.filter((item) => item.matchedKeywordsCount === 1);
@@ -183,8 +266,6 @@ export default function SearchBar() {
 
     const finalKeywords = extractKeywords(trimmed);
 
-    setKeywords(finalKeywords);
-
     if (finalKeywords.length === 0) {
       setResults([]);
       setLoading(false);
@@ -217,12 +298,7 @@ export default function SearchBar() {
   };
 
   const handleClear = () => {
-    setInputValue("");
-    setActiveQuery("");
-    setResults([]);
-    setKeywords([]);
-    setError(null);
-    setLoading(false);
+    resetSearch();
 
     if (inputRef.current) {
       inputRef.current.focus();
@@ -241,10 +317,10 @@ export default function SearchBar() {
     }
   };
 
-  const isSearchActive =
-    activeQuery.length > 0 || loading;
+  const isSearchActive = activeQuery.length > 0 || loading;
 
-  return (
+  
+    return (
     <div className="w-full flex flex-col">
       <main
         className={`pointer-events-none relative z-30 flex items-center justify-center px-6 transition-all duration-300 ${
@@ -253,57 +329,95 @@ export default function SearchBar() {
             : "min-h-screen pt-10 pb-12"
         }`}
       >
-        <div className="flex h-auto w-full flex-col items-center justify-center">
+        <div className="flex w-full flex-col items-center justify-center">
           <h1
-            className={`font-rethink tracking-[0.001rem] text-left md:text-center text-[45px] leading-[45px] md:leading-none font-medium theme-hero-title md:text-[35px] transition-all duration-300 ${
+            className={`z-20 font-rethink tracking-[0.001rem] text-left md:text-center text-[45px] leading-[45px] md:leading-none font-semibold theme-hero-title md:text-[35px] transition-all duration-300 bg-transparent ${
               isSearchActive ? "hidden" : ""
             }`}
           >
-            Find any design tool you need
+            find any design tool
           </h1>
 
-          <div className="shadow-hairline mt-5 md:mt-5 h-auto w-full max-w-[600px] bg-white dark:bg-black px-4 py-3 text-left flex-col pointer-events-auto rounded-[12px]">
-            <div className="relative w-full flex flex-row items-start justify-start overflow-hidden min-h-[60px]">
-              <textarea
-                ref={inputRef}
-                inputMode="text"
-                enterKeyHint="search"
-                rows={4}
-                title="Search design tools"
-                aria-label="Search design tools"
-                value={inputValue}
-                onChange={(e) =>
-                  setInputValue(e.target.value)
-                }
-                onKeyDown={handleKeyDown}
-                className="font-rethink text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] z-10"
-              />
+          <div ref={containerRef} className="w-full max-w-[600px] mt-5 md:mt-5">
+            <FunkyShadow
+              width={containerWidth}
+              height={70}
+              radius={15}
+              offsetX={0}
+              offsetY={15}
+              spread={500}
+              blur={45}
+              opacity={isDarkMode ? 0 : 0.18}
+              pixelScale={3}
+              colors={
+                isDarkMode
+                  ? [[180, 180, 180], [140, 140, 140], [90, 90, 90], [50, 50, 50], [20, 20, 20], [0, 0, 0]]
+                  : [[0, 0, 0], [40, 40, 40], [90, 90, 90], [150, 150, 150], [210, 210, 210], [255, 255, 255]]
+              }
+            >
+              <div className="border w-full text-left flex flex-col justify-start pointer-events-auto rounded-[12px] h-[90px] bg-[#f0f0f0] dark:bg-[#313131] border border-[1px] border-[#cacaca] dark:border-[#282828] dark:shadow-hairline">
+                <div className="border-[1px] border-[#d1d1d1] dark:border-0 rounded-[12px] relative w-full flex flex-row items-start justify-start overflow-hidden h-[60px] pl-4 pr-16 pt-[11px] pb-[11px] bg-white dark:bg-[#141414] z-10">
+                  <textarea
+                    ref={inputRef}
+                    inputMode="text"
+                    enterKeyHint="search"
+                    rows={2}
+                    title="Search design tools"
+                    aria-label="Search design tools"
+                    value={inputValue}
+                    onChange={(e) =>
+                      setInputValue(e.target.value)
+                    }
+                    onKeyDown={handleKeyDown}
+                    className="font-rethink text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] font-medium z-10"
+                  />
 
-              <AnimatePresence mode="wait">
-                {!inputValue && (
-                  <motion.div
-                    key={placeholderIndex}
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -10, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="absolute left-0 pointer-events-none font-rethink text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.05rem] select-none"
+                  <AnimatePresence mode="wait">
+                    {!inputValue && (
+                      <motion.div
+                        key={placeholderIndex}
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -10, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="absolute left-4 top-[11px] pointer-events-none font-rethink text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.001rem] select-none"
+                      >
+                        {placeholders[placeholderIndex]}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {inputValue && (
+                    <button
+                      type="button"
+                      onClick={handleClear}
+                      className="absolute right-4 top-[11px] font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 z-20"
+                    >
+                      clear
+                    </button>
+                  )}
+                </div>
+                <div className="py-[5px] px-[10px] flex items-center gap-1.5 font-rethink text-[10px] theme-text-soft font-semibold select-none justify-between">
+                  <div className="flex justify-center items-center">
+                    <img src={click_dark} alt="" width={15} height={15} className="hidden animate-pulse"/>
+                    <img src={click_light} alt="" width={15} height={15} className="hidden animate-pulse"/>
+                    {stats && (
+                      <span>{stats.pageviews.toLocaleString()} views this month</span>
+                    )}
+                    {toolcount > 0 && 
+                      <span className="text-[13px]">{toolcount} tools</span>
+                    }
+                  </div>
+                  <button
+                    type="button"
+                    onClick={toggleSidebar}
+                    className="font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 cursor-pointer uppercase tracking-[0.001em] font-semibold"
                   >
-                    {placeholders[placeholderIndex]}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {inputValue && (
-              <button
-                type="button"
-                onClick={handleClear}
-                className="w-full ml-2 font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 items-center justify-center text-right px-[10px]"
-              >
-                clear
-              </button>
-            )}
+                    Explore
+                  </button>
+                </div>
+              </div>
+            </FunkyShadow>
           </div>
 
 
@@ -466,7 +580,6 @@ export default function SearchBar() {
             </div>
           )}
       </div>
-
 
     </div>
   );
