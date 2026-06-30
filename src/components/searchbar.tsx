@@ -59,6 +59,17 @@ export default function SearchBar() {
   const [containerWidth, setContainerWidth] = useState(600);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     fetch("/api/stats")
@@ -331,30 +342,15 @@ export default function SearchBar() {
       >
         <div className="flex w-full flex-col items-center justify-center">
           <h1
-            className={`z-20 font-rethink tracking-[0.001rem] text-left md:text-center text-[45px] leading-[45px] md:leading-none font-semibold theme-hero-title md:text-[35px] transition-all duration-300 bg-transparent ${
+            className={`z-20 font-google tracking-[0.001rem] text-center text-[32px] leading-tight font-semibold theme-hero-title md:text-[45px] transition-all duration-300 bg-transparent ${
               isSearchActive ? "hidden" : ""
             }`}
           >
-            find any design tool
+            Find any design Tool
           </h1>
 
           <div ref={containerRef} className="w-full max-w-[600px] mt-5 md:mt-5">
-            <FunkyShadow
-              width={containerWidth}
-              height={70}
-              radius={15}
-              offsetX={0}
-              offsetY={15}
-              spread={500}
-              blur={45}
-              opacity={isDarkMode ? 0 : 0.18}
-              pixelScale={3}
-              colors={
-                isDarkMode
-                  ? [[180, 180, 180], [140, 140, 140], [90, 90, 90], [50, 50, 50], [20, 20, 20], [0, 0, 0]]
-                  : [[0, 0, 0], [40, 40, 40], [90, 90, 90], [150, 150, 150], [210, 210, 210], [255, 255, 255]]
-              }
-            >
+            {isMobile ? (
               <div className="border w-full text-left flex flex-col justify-start pointer-events-auto rounded-[12px] h-[90px] bg-[#f0f0f0] dark:bg-[#313131] border border-[1px] border-[#cacaca] dark:border-[#282828] dark:shadow-hairline">
                 <div className="border-[1px] border-[#d1d1d1] dark:border-0 rounded-[12px] relative w-full flex flex-row items-start justify-start overflow-hidden h-[60px] pl-4 pr-16 pt-[11px] pb-[11px] bg-white dark:bg-[#141414] z-10">
                   <textarea
@@ -417,7 +413,87 @@ export default function SearchBar() {
                   </button>
                 </div>
               </div>
-            </FunkyShadow>
+            ) : (
+              <FunkyShadow
+                width={containerWidth}
+                height={70}
+                radius={15}
+                offsetX={0}
+                offsetY={15}
+                spread={500}
+                blur={45}
+                opacity={isDarkMode ? 0 : 0.18}
+                pixelScale={3}
+                colors={
+                  isDarkMode
+                    ? [[180, 180, 180], [140, 140, 140], [90, 90, 90], [50, 50, 50], [20, 20, 20], [0, 0, 0]]
+                    : [[0, 0, 0], [40, 40, 40], [90, 90, 90], [150, 150, 150], [210, 210, 210], [255, 255, 255]]
+                }
+              >
+                <div className="border w-full text-left flex flex-col justify-start pointer-events-auto rounded-[12px] h-[90px] bg-[#f0f0f0] dark:bg-[#313131] border border-[1px] border-[#cacaca] dark:border-[#282828] dark:shadow-hairline">
+                  <div className="border-[1px] border-[#d1d1d1] dark:border-0 rounded-[12px] relative w-full flex flex-row items-start justify-start overflow-hidden h-[60px] pl-4 pr-16 pt-[11px] pb-[11px] bg-white dark:bg-[#141414] z-10">
+                    <textarea
+                      ref={inputRef}
+                      inputMode="text"
+                      enterKeyHint="search"
+                      rows={2}
+                      title="Search design tools"
+                      aria-label="Search design tools"
+                      value={inputValue}
+                      onChange={(e) =>
+                        setInputValue(e.target.value)
+                      }
+                      onKeyDown={handleKeyDown}
+                      className="font-rethink text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] font-medium z-10"
+                    />
+
+                    <AnimatePresence mode="wait">
+                      {!inputValue && (
+                        <motion.div
+                          key={placeholderIndex}
+                          initial={{ y: 10, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          exit={{ y: -10, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          className="absolute left-4 top-[11px] pointer-events-none font-rethink text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.001rem] select-none"
+                        >
+                          {placeholders[placeholderIndex]}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {inputValue && (
+                      <button
+                        type="button"
+                        onClick={handleClear}
+                        className="absolute right-4 top-[11px] font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 z-20"
+                      >
+                        clear
+                      </button>
+                    )}
+                  </div>
+                  <div className="py-[5px] px-[10px] flex items-center gap-1.5 font-rethink text-[10px] theme-text-soft font-semibold select-none justify-between">
+                    <div className="flex justify-center items-center">
+                      <img src={click_dark} alt="" width={15} height={15} className="hidden animate-pulse"/>
+                      <img src={click_light} alt="" width={15} height={15} className="hidden animate-pulse"/>
+                      {stats && (
+                        <span>{stats.pageviews.toLocaleString()} views this month</span>
+                      )}
+                      {toolcount > 0 && 
+                        <span className="text-[13px]">{toolcount} tools</span>
+                      }
+                    </div>
+                    <button
+                      type="button"
+                      onClick={toggleSidebar}
+                      className="font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 cursor-pointer uppercase tracking-[0.001em] font-semibold"
+                    >
+                      Explore
+                    </button>
+                  </div>
+                </div>
+              </FunkyShadow>
+            )}
           </div>
 
 

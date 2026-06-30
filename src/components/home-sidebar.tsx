@@ -112,10 +112,10 @@ function HomeSidebarContent({ heartIconSrc }: { heartIconSrc?: string }) {
             transition={{ type: "spring", stiffness: 170, damping: 24, mass: 0.95, delay: 0.06 + index * 0.05 }}
           >
             <SidebarGroup className="px-0 py-1.5">
-              <SidebarGroupLabel className="px-2 pb-1 font-rethink font-medium text-[11px] uppercase tracking-[0.16em] theme-text-soft">
+              <SidebarGroupLabel className="px-2 pb-1 font-google font-medium text-[11px] uppercase tracking-[0.16em] theme-text-soft">
                 {group.title}
               </SidebarGroupLabel>
-              <SidebarMenu className="space-y-1 font-rethink">
+              <SidebarMenu className="space-y-1 font-google">
                 {group.links.map((link) => (
                   <SidebarMenuItem key={link.label}>
                     <SidebarMenuButton

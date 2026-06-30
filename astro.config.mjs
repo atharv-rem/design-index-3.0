@@ -32,13 +32,19 @@ export default defineConfig({
     service: passthroughImageService(),
   },
   routeRules: {
-    '/[id]/[slug]': { maxAge: 60 * 60 * 24, swr: 60 }, // Cache tool pages for 1 day, stale-while-revalidate after 60s
+    '/[id]/[slug]': { maxAge: 60 * 60 * 24, swr: 60 * 60 }, 
   },
   fonts: [{
     provider: fontProviders.google(),
     name: "Rethink Sans",
     cssVariable: "--font-rethink-sans",
-  }],
+  },
+  {
+    provider: fontProviders.google(),
+    name: "Google Sans",
+    cssVariable: "--font-google-sans",
+  }
+  ],
   experimental: {
     svgOptimizer: svgoOptimizer(),
   },
