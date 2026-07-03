@@ -34,6 +34,7 @@ const linkGroups = [
       { label: "Colours", href: "/colours" },
       { label: "Mockups", href: "/mockups" },
       { label: "Illustrations", href: "/illustrations" },
+      { label: "UI", href: "/ui" },
       { label: "Icons", href: "/icons" },
       { label: "Fonts", href: "/fonts" },
       { label: "Design Inspiration", href: "/design-inspo" },

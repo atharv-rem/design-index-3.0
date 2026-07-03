@@ -1,0 +1,34 @@
+---
+import HomescreenLayout from "../layouts/homescreen.astro";
+import ToolsGrid from "../components/tools-grid";
+import { getToolsByCategory } from "@/lib/get-tool-by-category";
+
+const tools = await getToolsByCategory("ui");
+
+if (Astro.cache.enabled) {
+	Astro.cache.set({
+		maxAge: 86400,
+		swr: 43200,
+		tags: ["ui-page"],
+	});
+}
+---
+
+<HomescreenLayout title="UI | Design Index" description="Explore curated UI kits, components, layout tools, and design libraries to build modern and user-friendly interfaces." keywords="ui, ui kits, design systems, components, layout, web design, interface design" backgroundVariant="slate">
+	<main class="mt-[12px] px-[20px]">
+		<section>
+			<div>
+				<h1 class="font-google font-medium tracking-[0.05rem] text-4xl leading-none theme-text-primary md:text-[40px]">
+					UI
+				</h1>
+				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base font-medium">
+					A curated library of user interface kits, design systems, interactive components, and front-end tools. Speed up your development and design workflow with premium, customizable resources designed for visual consistency and excellent user experience.
+				</p>
+				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
+					A curated library of user interface kits, design systems, and components. Speed up your design and development workflow with premium UI resources.
+				</p>
+				<ToolsGrid client:load category="ui" initialTools={tools} />
+			</div>
+		</section>
+	</main>
+</HomescreenLayout>

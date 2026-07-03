@@ -16,6 +16,7 @@ const staticPages = [
   "/submit-tool",
   "/terms",
   "/tools",
+  "/ui",
 ];
 
 export const GET: APIRoute = async () => {
