@@ -1,7 +1,11 @@
 ---
 import HomescreenLayout from "@/layouts/homescreen.astro";
 import { getOptimizedImageUrl } from "@/lib/images";
-
+import {Image} from "astro:assets"
+import visitLightIcon from "@/assets/visit_light.svg?url";
+import visitDarkIcon from "@/assets/visit_dark.svg?url";
+import sharelightIcon from "@/assets/share_light.svg?url";
+import shareDarkIcon from "@/assets/share_dark.svg?url";
 import type {
   ToolCard,
   ToolDetail,
@@ -20,7 +24,7 @@ const { id, slug } = Astro.params;
 
 if (!id) {
   Astro.logger.error("Missing ID parameter in URL params.");
-  return Astro.redirect("/tools");
+  return Astro.redirect("/");
 }
 
 Astro.logger.info(`Rendering tool page for ID: ${id}, slug: ${slug}`);
@@ -31,7 +35,7 @@ const apiResponse = await fetch(
 
 if (!apiResponse.ok) {
   Astro.logger.error(`Failed to fetch tool details for ID: ${id} from API (Response status: ${apiResponse.status})`);
-  return Astro.redirect("/tools");
+  return Astro.redirect("/");
 }
 
 const { tool, suggestedTools } =
@@ -42,7 +46,7 @@ const { tool, suggestedTools } =
 
 if (!tool) {
   Astro.logger.error(`API response was ok, but tool object is null/undefined for ID: ${id}`);
-  return Astro.redirect("/tools");
+  return Astro.redirect("/");
 }
 
 // Normalize/redirect to expected slug if it doesn't match (comparing decoded strings to prevent infinite loops)
@@ -87,7 +91,7 @@ const toolOgImage =
             Tool details
           </p>
           <div class="flex flex-row justify-start items-center gap-4">
-            <h1 class="theme-text-primary mt-2 font-rethink font-medium text-2xl leading-tight md:text-3xl">
+            <h1 class="theme-text-primary mt-2 tracking-[0.001rem] font-google font-semibold text-2xl leading-tight md:text-3xl">
               {tool.tool_name}
             </h1>
             <div class="mt-4 flex flex-wrap gap-2">
@@ -122,9 +126,23 @@ const toolOgImage =
               href={tool.website_url}
               target="_blank"
               rel="noreferrer"
-              class="theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-rethink text-[15px] font-medium tracking-[0.05rem]"
+              class="theme-button inline-flex h-10 items-center justify-center rounded-[15px] px-4 font-google text-[15px] font-bold tracking-[0.001rem]"
             >
-              visit website
+             <img
+                src={visitLightIcon}
+                alt={`${tool.tool_name} favicon`}
+                width={15}
+                height={15}
+                class="mr-2 rounded-sm dark:hidden block"
+              />
+              <img
+                src={visitDarkIcon}
+                alt={`${tool.tool_name} favicon`}
+                width={15}
+                height={15}
+                class="mr-2 rounded-sm dark:block hidden"
+              />
+            <p>visit</p>
             </a>
 
             <button
@@ -133,14 +151,28 @@ const toolOgImage =
               data-share-title={
                 tool.tool_name
               }
-              class="theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-rethink text-[15px] font-medium tracking-[0.05rem]"
+              class="theme-button inline-flex h-10 items-center justify-center rounded-[15px] px-4 font-google text-[15px] font-bold tracking-[0.001rem]"
             >
-              share
+              <img
+                src={sharelightIcon}
+                alt={`${tool.tool_name} favicon`}
+                width={15}
+                height={15}
+                class="mr-2 rounded-sm dark:hidden block"
+              />
+              <img
+                src={shareDarkIcon}
+                alt={`${tool.tool_name} favicon`}
+                width={15}
+                height={15}
+                class="mr-2 rounded-sm dark:block hidden"
+              />
+               <span data-share-label>share</span>
             </button>
           </div>
 
           <div class="mt-6">
-            <p class="theme-text-soft font-rethink text-[11px] uppercase font-medium tracking-[0.1rem]">
+            <p class="theme-text-soft font-rethink text-[11px] uppercase font-bold tracking-[0.1rem]">
               Try these tools
             </p>
 
@@ -150,7 +182,7 @@ const toolOgImage =
                   (item) => (
                     <a
                       href={`/${item.id}/${encodeURIComponent(item.tool_name)}`}
-                      class="theme-card theme-card-hover group overflow-hidden rounded-[8px] transition duration-200 hover:-translate-y-0.5"
+                      class=" shadow-hairline theme-card theme-card-hover group overflow-hidden rounded-[8px] transition duration-200 hover:-translate-y-0.5"
                     >
                       <img
                         src={
@@ -171,12 +203,12 @@ const toolOgImage =
                         class="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"
                       />
 
-                      <div class="space-y-1 p-3">
-                        <p class="theme-text-primary line-clamp-1 font-rethink text-[15px] font-medium">
+                      <div class="p-3">
+                        <p class="theme-text-primary line-clamp-1 font-google text-[15px] font-semibold tracking-[0.001rem]">
                           {item.tool_name}
                         </p>
 
-                        <p class="theme-text-muted font-rethink text-xs leading-5">
+                        <p class="theme-text-muted font-rethink font-medium text-[12px] mt-[2px] leading-[12px]">
                           {item.description}
                         </p>
                       </div>
@@ -295,16 +327,14 @@ const toolOgImage =
             shareUrl,
           );
 
-          const previousLabel =
-            shareButton.textContent;
-
-          shareButton.textContent =
-            "Copied";
-
-          setTimeout(() => {
-            shareButton.textContent =
-              previousLabel;
-          }, 1500);
+          const labelEl = shareButton.querySelector("[data-share-label]");
+          if (labelEl) {
+            const previousLabel = labelEl.textContent;
+            labelEl.textContent = "Copied";
+            setTimeout(() => {
+              labelEl.textContent = previousLabel;
+            }, 1500);
+          }
         } catch {
           // Ignore cancel and clipboard permission errors.
         }
