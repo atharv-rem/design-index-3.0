@@ -360,10 +360,89 @@ export default function SearchBar() {
   const isSearchActive = activeQuery.length > 0 || loading;
 
   
-    return (
+  const renderSearchBarCard = () => (
+    <div className="w-full text-left flex flex-col justify-start pointer-events-auto rounded-[12px] min-h-[90px] h-auto bg-[#f0f0f0] dark:bg-[#313131] border border-[#cacaca] dark:border-[#282828] dark:shadow-hairline overflow-hidden">
+      <div className="border-[1px] border-[#d1d1d1] dark:border-0 rounded-[12px] relative w-full flex flex-row items-start justify-start overflow-hidden h-[60px] pl-4 pr-16 pt-[11px] pb-[11px] bg-white dark:bg-[#141414] z-10">
+        <textarea
+          ref={inputRef}
+          inputMode="text"
+          enterKeyHint="search"
+          rows={2}
+          title="Search design tools"
+          aria-label="Search design tools"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className="font-rethink text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] z-10"
+        />
+
+        <AnimatePresence mode="wait">
+          {!inputValue && (
+            <motion.div
+              key={placeholderIndex}
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -10, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="absolute left-4 top-[11px] pointer-events-none font-rethink text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.001rem] select-none"
+            >
+              {placeholders[placeholderIndex]}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {inputValue && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className="absolute right-4 top-[11px] font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 z-20"
+          >
+            clear
+          </button>
+        )}
+      </div>
+
+      <div className="py-[6px] px-2.5 sm:px-3 flex items-center justify-between font-rethink text-[11px] sm:text-[13px] theme-text-soft font-semibold select-none gap-2 min-h-[30px]">
+        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-0.5 max-w-full">
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 whitespace-nowrap">
+            <img src={click_dark} alt="" width={15} height={15} className="hidden dark:block animate-pulse shrink-0"/>
+            <img src={click_light} alt="" width={15} height={15} className="block dark:hidden animate-pulse shrink-0"/>
+            {stats && (
+              <span>
+                {stats.pageviews.toLocaleString()} views <span className="hidden sm:inline">this month</span>
+              </span>
+            )}
+          </div>
+          {stats && stats.visitors > 0 && (
+            <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 whitespace-nowrap">
+              <img src={user_dark} alt="" width={15} height={15} className="hidden dark:block shrink-0"/>
+              <img src={user_light} alt="" width={15} height={15} className="block dark:hidden shrink-0"/>
+              <span>{stats.visitors.toLocaleString()} visitors</span>
+            </div>
+          )}
+          {toolcount > 0 && (
+            <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 whitespace-nowrap">
+              <img src={tool_dark} alt="" width={15} height={15} className="hidden dark:block shrink-0"/>
+              <img src={tool_light} alt="" width={15} height={15} className="block dark:hidden shrink-0"/>
+              <span>{toolcount} tools</span>
+            </div>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={toggleSidebar}
+          className="font-rethink text-[11px] sm:text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 cursor-pointer uppercase tracking-[0.001em] font-semibold pl-1"
+        >
+          Explore
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
     <div className="w-full flex flex-col">
       <main
-        className={`pointer-events-none relative z-30 flex items-center justify-center px-6 transition-all duration-300 ${
+        className={`pointer-events-none relative z-30 flex items-center justify-center px-4 sm:px-6 transition-all duration-300 ${
           isSearchActive
             ? "h-auto pt-10 pb-6"
             : "min-h-screen pt-10 pb-12"
@@ -371,7 +450,7 @@ export default function SearchBar() {
       >
         <div className="flex w-full flex-col items-center justify-center">
           <h1
-            className={`z-20 font-google tracking-[0.001rem] text-center text-[32px] leading-tight font-semibold theme-hero-title md:text-[45px] transition-all duration-300 bg-transparent ${
+            className={`z-20 font-google tracking-[0.001rem] text-center text-[28px] sm:text-[32px] md:text-[45px] leading-tight font-semibold theme-hero-title transition-all duration-300 bg-transparent ${
               isSearchActive ? "hidden" : ""
             }`}
           >
@@ -380,84 +459,8 @@ export default function SearchBar() {
 
           <div ref={containerRef} className="w-full max-w-[600px] mt-5 md:mt-5">
             {isMobile ? (
-              <div className="border w-full text-left flex flex-col justify-start pointer-events-auto rounded-[12px] h-[90px] bg-[#f0f0f0] dark:bg-[#313131] border border-[1px] border-[#cacaca] dark:border-[#282828] dark:shadow-hairline">
-                <div className="border-[1px] border-[#d1d1d1] dark:border-0 rounded-[12px] relative w-full flex flex-row items-start justify-start overflow-hidden h-[60px] pl-4 pr-16 pt-[11px] pb-[11px] bg-white dark:bg-[#141414] z-10">
-                  <textarea
-                    ref={inputRef}
-                    inputMode="text"
-                    enterKeyHint="search"
-                    rows={2}
-                    title="Search design tools"
-                    aria-label="Search design tools"
-                    value={inputValue}
-                    onChange={(e) =>
-                      setInputValue(e.target.value)
-                    }
-                    onKeyDown={handleKeyDown}
-                    className="font-rethink text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] font-medium z-10"
-                  />
-
-                  <AnimatePresence mode="wait">
-                    {!inputValue && (
-                      <motion.div
-                        key={placeholderIndex}
-                        initial={{ y: 10, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: -10, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="absolute left-4 top-[11px] pointer-events-none font-rethink text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.001rem] select-none"
-                      >
-                        {placeholders[placeholderIndex]}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {inputValue && (
-                    <button
-                      type="button"
-                      onClick={handleClear}
-                      className="absolute right-4 top-[11px] font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 z-20"
-                    >
-                      clear
-                    </button>
-                  )}
-                </div>
-                <div className="py-[5px] px-[10px] flex items-center gap-1.5 font-rethink text-[10px] theme-text-soft font-semibold select-none justify-between">
-                  <div className="flex justify-center items-center gap-3">
-                    <div className="flex items-center gap-1.5">
-                      <img src={click_dark} alt="" width={15} height={15} className="hidden dark:block animate-pulse"/>
-                      <img src={click_light} alt="" width={15} height={15} className="block dark:hidden animate-pulse"/>
-                      {stats && (
-                        <span className="text-[13px]">{stats.pageviews.toLocaleString()} views this month</span>
-                      )}
-                    </div>
-                    {stats && stats.visitors > 0 && (
-                      <div className="flex items-center gap-1.5">
-                        <img src={user_dark} alt="" width={15} height={15} className="hidden dark:block"/>
-                        <img src={user_light} alt="" width={15} height={15} className="block dark:hidden"/>
-                        <span className="text-[13px]">{stats.visitors.toLocaleString()} visitors</span>
-                      </div>
-                    )}
-                    {toolcount > 0 && (
-                      <div className="flex items-center gap-1.5">
-                        <img src={tool_dark} alt="" width={15} height={15} className="hidden dark:block"/>
-                        <img src={tool_light} alt="" width={15} height={15} className="block dark:hidden"/>
-                        <span className="text-[13px]">{toolcount} tools</span>
-                      </div>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={toggleSidebar}
-                    className="font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 cursor-pointer uppercase tracking-[0.001em] font-semibold"
-                  >
-                    Explore
-                  </button>
-                </div>
-              </div>
-            ) 
-            : 
-            (
+              renderSearchBarCard()
+            ) : (
               <FunkyShadow
                 width={containerWidth}
                 height={70}
@@ -474,86 +477,10 @@ export default function SearchBar() {
                     : [[0, 0, 0], [40, 40, 40], [90, 90, 90], [150, 150, 150], [210, 210, 210], [255, 255, 255]]
                 }
               >
-                <div className="border w-full text-left flex flex-col justify-start pointer-events-auto rounded-[12px] h-[90px] bg-[#f0f0f0] dark:bg-[#313131] border border-[1px] border-[#cacaca] dark:border-[#282828] dark:shadow-hairline">
-                  <div className="border-[1px] border-[#d1d1d1] dark:border-0 rounded-[12px] relative w-full flex flex-row items-start justify-start overflow-hidden h-[60px] pl-4 pr-16 pt-[11px] pb-[11px] bg-white dark:bg-[#141414] z-10">
-                    <textarea
-                      ref={inputRef}
-                      inputMode="text"
-                      enterKeyHint="search"
-                      rows={2}
-                      title="Search design tools"
-                      aria-label="Search design tools"
-                      value={inputValue}
-                      onChange={(e) =>
-                        setInputValue(e.target.value)
-                      }
-                      onKeyDown={handleKeyDown}
-                      className="font-rethink text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] font-medium z-10"
-                    />
-
-                    <AnimatePresence mode="wait">
-                      {!inputValue && (
-                        <motion.div
-                          key={placeholderIndex}
-                          initial={{ y: 10, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          exit={{ y: -10, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                          className="absolute left-4 top-[11px] pointer-events-none font-rethink text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.001rem] select-none"
-                        >
-                          {placeholders[placeholderIndex]}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    {inputValue && (
-                      <button
-                        type="button"
-                        onClick={handleClear}
-                        className="absolute right-4 top-[11px] font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 z-20"
-                      >
-                        clear
-                      </button>
-                    )}
-                  </div>
-                  <div className="py-[5px] px-[10px] flex items-center gap-1.5 font-rethink text-[10px] theme-text-soft font-semibold select-none justify-between">
-                    <div className="flex justify-center items-center gap-3">
-                      <div className="flex items-center gap-1.5">
-                        <img src={click_dark} alt="" width={15} height={15} className="hidden dark:block animate-pulse"/>
-                        <img src={click_light} alt="" width={15} height={15} className="block dark:hidden animate-pulse"/>
-                        {stats && (
-                          <span className="text-[13px]">{stats.pageviews.toLocaleString()} views this month</span>
-                        )}
-                      </div>
-                      {stats && stats.visitors > 0 && (
-                        <div className="flex items-center gap-1.5">
-                          <img src={user_dark} alt="" width={15} height={15} className="hidden dark:block"/>
-                          <img src={user_light} alt="" width={15} height={15} className="block dark:hidden"/>
-                          <span className="text-[13px]">{stats.visitors.toLocaleString()} visitors</span>
-                        </div>
-                      )}
-                      {toolcount > 0 && (
-                        <div className="flex items-center gap-1.5">
-                          <img src={tool_dark} alt="" width={18} height={18} className="hidden dark:block"/>
-                          <img src={tool_light} alt="" width={18} height={18} className="block dark:hidden"/>
-                          <span className="text-[13px]">{toolcount} tools</span>
-                        </div>
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={toggleSidebar}
-                      className="font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 cursor-pointer uppercase tracking-[0.001em] font-semibold"
-                    >
-                      Explore
-                    </button>
-                  </div>
-                </div>
+                {renderSearchBarCard()}
               </FunkyShadow>
             )}
           </div>
-
-
         </div>
       </main>
 
