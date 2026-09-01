@@ -7,6 +7,7 @@ export type SupabaseToolRow = {
   id?: number;
   primary_key?: number;
   tool_name?: string;
+  category?: string;
   pricing?: string;
   description?: string;
   extended_description?: string;
@@ -26,6 +27,7 @@ export type ToolCard = {
 export type ToolDetail = {
   id: number;
   tool_name: string;
+  category?: string;
   pricing: ToolPricing;
   extended_description: string;
   og_image_link: string;
@@ -54,6 +56,8 @@ export const normalizeToolDetail = (
     tool_name:
       item.tool_name?.trim() ||
       "Untitled Tool",
+
+    category: item.category?.trim() || undefined,
 
     pricing: isToolPricing(rawPricing)
       ? rawPricing

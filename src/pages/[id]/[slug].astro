@@ -1,11 +1,11 @@
 ---
 import HomescreenLayout from "@/layouts/homescreen.astro";
 import { getOptimizedImageUrl } from "@/lib/images";
-import {Image} from "astro:assets"
-import visitLightIcon from "@/assets/visit_light.svg?url";
-import visitDarkIcon from "@/assets/visit_dark.svg?url";
-import sharelightIcon from "@/assets/share_light.svg?url";
-import shareDarkIcon from "@/assets/share_dark.svg?url";
+import visitLightIcon from "@/assets/visit_light.svg";
+import visitDarkIcon from "@/assets/visit_dark.svg";
+import sharelightIcon from "@/assets/share_light.svg";
+import shareDarkIcon from "@/assets/share_dark.svg";
+import { Badge } from "@/components/ui/badge";
 import type {
   ToolCard,
   ToolDetail,
@@ -114,18 +114,18 @@ const toolOgImage =
           <p class="theme-text-soft font-rethink font-bold text-[11px] uppercase tracking-[0.1rem]">
             Tool details
           </p>
-          <div class="flex flex-row justify-start items-center gap-4">
-            <h1 class="theme-text-primary mt-2 tracking-[0.001rem] font-google font-semibold text-2xl leading-tight md:text-3xl">
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <h1 class="theme-text-primary tracking-[0.001rem] font-google font-semibold text-2xl leading-tight md:text-3xl">
               {tool.tool_name}
             </h1>
-            <div class="mt-4 flex flex-wrap gap-2">
+            <div class="flex flex-wrap items-center gap-2">
               {
                 tool.pricing.includes(
                   "free",
                 ) && (
-                  <span class="rounded-md border border-emerald-400/20 dark:border-emerald-400/30 bg-emerald-400/10 dark:bg-emerald-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-200">
-                    Free
-                  </span>
+                  <Badge variant="green" className="py-[12px] px-4 text-[12px] font-semibold rounded-[10px]">
+                    FREE
+                  </Badge>
                 )
               }
 
@@ -133,9 +133,9 @@ const toolOgImage =
                 tool.pricing.includes(
                   "paid",
                 ) && (
-                  <span class="rounded-md border border-rose-400/20 dark:border-rose-400/30 bg-rose-400/10 dark:bg-rose-400/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-rose-700 dark:text-rose-200">
-                    Paid
-                  </span>
+                  <Badge variant="red" className="py-[12px] px-4 text-[12px] font-semibold rounded-[10px]">
+                    PAID
+                  </Badge>
                 )
               }
             </div>
@@ -152,21 +152,21 @@ const toolOgImage =
               rel="noreferrer"
               class="theme-button inline-flex h-10 items-center justify-center rounded-[15px] px-4 font-google text-[15px] font-bold tracking-[0.001rem]"
             >
-             <img
-                src={visitLightIcon}
-                alt={`${tool.tool_name} favicon`}
+              <img
+                src={visitLightIcon.src}
+                alt=""
                 width={15}
                 height={15}
                 class="mr-2 rounded-sm dark:hidden block"
               />
               <img
-                src={visitDarkIcon}
-                alt={`${tool.tool_name} favicon`}
+                src={visitDarkIcon.src}
+                alt=""
                 width={15}
                 height={15}
                 class="mr-2 rounded-sm dark:block hidden"
               />
-            <p>visit</p>
+              <p>visit</p>
             </a>
 
             <button
@@ -178,20 +178,20 @@ const toolOgImage =
               class="theme-button inline-flex h-10 items-center justify-center rounded-[15px] px-4 font-google text-[15px] font-bold tracking-[0.001rem]"
             >
               <img
-                src={sharelightIcon}
-                alt={`${tool.tool_name} favicon`}
+                src={sharelightIcon.src}
+                alt=""
                 width={15}
                 height={15}
                 class="mr-2 rounded-sm dark:hidden block"
               />
               <img
-                src={shareDarkIcon}
-                alt={`${tool.tool_name} favicon`}
+                src={shareDarkIcon.src}
+                alt=""
                 width={15}
                 height={15}
                 class="mr-2 rounded-sm dark:block hidden"
               />
-               <span data-share-label>share</span>
+              <span data-share-label>share</span>
             </button>
           </div>
 

@@ -183,6 +183,13 @@
 }
 
 @theme inline {
+  --shadow-color: 0 0 0;
+  --shadow-surface:
+    0px 1px 2px rgb(var(--shadow-color, 0 0 0) / 0.04),
+    0px 4px 4px rgb(var(--shadow-color, 0 0 0) / 0.03),
+    0px 10px 6px rgb(var(--shadow-color, 0 0 0) / 0.02),
+    0px 17px 7px rgb(var(--shadow-color, 0 0 0) / 0.01);
+
   --font-heading: var(--font-sans);
   --font-sans: 'Geist Variable', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -221,22 +228,22 @@
 
   /* Unified App Custom Color/Typography Tokens */
   --color-app-bg: var(--app-bg);
-  --color-app-bg-dark: #0d0d0f;
+  --color-app-bg-dark: #141416;
   
   --color-app-solid-bg: var(--app-solid-bg);
-  --color-app-solid-bg-dark: #0b0b0b;
+  --color-app-solid-bg-dark: #101012;
 
   --color-app-surface: var(--app-surface);
-  --color-app-surface-dark: rgba(11, 11, 11, 0.72);
+  --color-app-surface-dark: rgba(24, 24, 28, 0.72);
 
   --color-app-surface-strong: var(--app-surface-strong);
-  --color-app-surface-strong-dark: rgba(17, 17, 17, 0.9);
+  --color-app-surface-strong-dark: rgba(30, 30, 34, 0.9);
 
   --color-app-surface-soft: var(--app-surface-soft);
-  --color-app-surface-soft-dark: rgba(11, 11, 11, 0.55);
+  --color-app-surface-soft-dark: rgba(22, 22, 26, 0.55);
 
   --color-app-panel-contrast: var(--app-panel-contrast);
-  --color-app-panel-contrast-dark: rgba(18, 18, 18, 0.96);
+  --color-app-panel-contrast-dark: rgba(26, 26, 30, 0.96);
 
   --color-app-text: var(--app-text);
   --color-app-text-dark: #f5f5f5;
@@ -263,19 +270,19 @@
   --color-app-footer-bg-dark: rgba(5, 5, 5, 0.95);
 
   --color-app-sidebar: var(--app-sidebar);
-  --color-app-sidebar-dark: #0d0d0f;
+  --color-app-sidebar-dark: #141416;
 
   --color-app-sidebar-foreground: var(--app-sidebar-foreground);
   --color-app-sidebar-foreground-dark: #ffffff;
 
   --color-app-sidebar-accent: var(--app-sidebar-accent);
-  --color-app-sidebar-accent-dark: #151515;
+  --color-app-sidebar-accent-dark: #1c1c20;
 
   --color-app-sidebar-accent-foreground: var(--app-sidebar-accent-foreground);
   --color-app-sidebar-accent-foreground-dark: #ffffff;
 
   --color-app-sidebar-border: var(--app-sidebar-border);
-  --color-app-sidebar-border-dark: #2a2a2a;
+  --color-app-sidebar-border-dark: #2a2a2e;
 
   --color-app-sidebar-ring: var(--app-sidebar-ring);
   --color-app-sidebar-ring-dark: rgba(255, 255, 255, 0.22);
@@ -285,29 +292,29 @@
 }
 
 .dark {
-  --app-bg: #0d0d0f;
-  --app-solid-bg: #0b0b0b;
-  --app-surface: rgba(11, 11, 11, 0.72);
-  --app-surface-strong: rgba(17, 17, 17, 0.9);
-  --app-surface-soft: rgba(11, 11, 11, 0.55);
-  --app-panel-contrast: rgba(18, 18, 18, 0.96);
+  --app-bg: #141416;
+  --app-solid-bg: #101012;
+  --app-surface: rgba(24, 24, 28, 0.72);
+  --app-surface-strong: rgba(30, 30, 34, 0.9);
+  --app-surface-soft: rgba(22, 22, 26, 0.55);
+  --app-panel-contrast: rgba(26, 26, 30, 0.96);
   --app-text: #f5f5f5;
   --app-text-muted: #d3d3d3;
   --app-text-soft: #8f8f8f;
   --app-border: rgba(255, 255, 255, 0.1);
   --app-border-strong: rgba(255, 255, 255, 0.18);
   --app-overlay: rgba(0, 0, 0, 0.5);
-  --app-navbar: rgba(0, 0, 0, 0.55);
-  --app-footer-bg: rgba(5, 5, 5, 0.95);
-  --app-sidebar: #0d0d0f;
+  --app-navbar: rgba(20, 20, 22, 0.65);
+  --app-footer-bg: rgba(20, 20, 22, 0.95);
+  --app-sidebar: #141416;
   --app-sidebar-foreground: #ffffff;
-  --app-sidebar-accent: #151515;
+  --app-sidebar-accent: #1c1c20;
   --app-sidebar-accent-foreground: #ffffff;
-  --app-sidebar-border: #2a2a2a;
+  --app-sidebar-border: #2a2a2e;
   --app-sidebar-ring: rgba(255, 255, 255, 0.22);
   --app-social-icon-filter: brightness(0) invert(1);
   --app-hero-shadow: 0 205px 57px rgba(0, 0, 0, 0.01), 0 131px 52px rgba(0, 0, 0, 0.09), 0 74px 44px rgba(0, 0, 0, 0.3), 0 33px 33px rgba(0, 0, 0, 0.51), 0 8px 18px rgba(0, 0, 0, 0.59);
-  --background: #0d0d0f;
+  --background: #141416;
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);

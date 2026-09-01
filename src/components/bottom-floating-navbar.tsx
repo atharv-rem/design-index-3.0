@@ -86,7 +86,7 @@ export default function BottomFloatingNavbar({
   }
 
   return (
-    <div className="bg-white dark:bg-black shadow-hairline fixed bottom-6 left-1/2 z-40 w-auto -translate-x-1/2 rounded-[12px] px-3 py-2 flex items-center gap-2 transition-all duration-300">
+    <div className="bg-white dark:bg-[#141416] shadow-hairline fixed bottom-6 left-1/2 z-40 w-auto -translate-x-1/2 rounded-[12px] px-3 py-2 flex items-center gap-2 transition-all duration-300">
       {/* Sidebar Icon Toggle */}
       <SidebarTrigger className="h-9 w-9 rounded-full p-0 theme-nav-control shrink-0 flex items-center justify-center [&_svg]:!size-[22px]" />
 

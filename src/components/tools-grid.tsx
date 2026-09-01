@@ -73,7 +73,7 @@ export default function ToolsGrid({ category, initialTools }: ToolsGridProps) {
               key={item.id}
               href={`/${item.id}/${encodeURIComponent(item.tool_name)}`}
               data-astro-prefetch
-              className="group overflow-hidden rounded-[8px] shadow-hairline transition duration-200 hover:-translate-y-0.5 hover:border-[var(--app-border-strong)]"
+              className="group overflow-hidden rounded-[8px] shadow-surface ring-1 ring-black/6 dark:ring-white/10 transition duration-200 hover:-translate-y-0.5"
             >
               <img
                 alt={item.description.toLowerCase()}
