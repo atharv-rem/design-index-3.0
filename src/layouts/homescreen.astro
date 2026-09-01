@@ -38,7 +38,7 @@ const {
     shareTitle,
 } = Astro.props;
 
-const canonicalUrl = Astro.url.href;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://designindex.xyz').href;
 const faviconVersion = '20260331';
 const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
 
@@ -120,6 +120,95 @@ const ogImage = customOgImage || defaultOgImage;
             })();
         </script>
 
+        <script type="application/ld+json" set:html={JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": "https://designindex.xyz/#website",
+              "url": "https://designindex.xyz/",
+              "name": "Design Index",
+              "alternateName": ["DesignIndex"],
+              "description": "Discover curated design tools, mockups, icons, fonts, color resources, and inspiration in one fast searchable index.",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://designindex.xyz/tools?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+              }
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://designindex.xyz/#organization",
+              "name": "Design Index",
+              "url": "https://designindex.xyz/",
+              "logo": "https://designindex.xyz/favicon.svg"
+            },
+            {
+              "@type": "ItemList",
+              "@id": "https://designindex.xyz/#sitenavigation",
+              "name": "Site Navigation",
+              "itemListElement": [
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 1,
+                  "name": "Mockups",
+                  "url": "https://designindex.xyz/mockups"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 2,
+                  "name": "Icons",
+                  "url": "https://designindex.xyz/icons"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 3,
+                  "name": "Fonts",
+                  "url": "https://designindex.xyz/fonts"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 4,
+                  "name": "Colours",
+                  "url": "https://designindex.xyz/colours"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 5,
+                  "name": "UI Kits",
+                  "url": "https://designindex.xyz/ui"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 6,
+                  "name": "Illustrations",
+                  "url": "https://designindex.xyz/illustrations"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 7,
+                  "name": "Design Inspiration",
+                  "url": "https://designindex.xyz/design-inspo"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 8,
+                  "name": "Tools",
+                  "url": "https://designindex.xyz/tools"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 9,
+                  "name": "About",
+                  "url": "https://designindex.xyz/about"
+                }
+              ]
+            }
+          ]
+        })} />
     </head>
     <body class="theme-body-bg relative min-h-screen font-rethink">
         <div class="theme-body-bg fixed inset-0 -z-10" />

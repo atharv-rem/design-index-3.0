@@ -35,7 +35,7 @@ const apiResponse = await fetch(
 
 if (!apiResponse.ok) {
   Astro.logger.error(`Failed to fetch tool details for ID: ${id} from API (Response status: ${apiResponse.status})`);
-  return Astro.redirect("/");
+  return new Response(null, { status: 404, statusText: "Not Found" });
 }
 
 const { tool, suggestedTools } =
@@ -46,7 +46,7 @@ const { tool, suggestedTools } =
 
 if (!tool) {
   Astro.logger.error(`API response was ok, but tool object is null/undefined for ID: ${id}`);
-  return Astro.redirect("/");
+  return new Response(null, { status: 404, statusText: "Not Found" });
 }
 
 // Normalize/redirect to expected slug if it doesn't match (comparing decoded strings to prevent infinite loops)
@@ -82,6 +82,30 @@ const toolOgImage =
   visitUrl={tool.website_url}
   shareTitle={tool.tool_name}
 >
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Design Index",
+        "item": "https://designindex.xyz"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": tool.category ? (tool.category.charAt(0).toUpperCase() + tool.category.slice(1)) : "Tools",
+        "item": `https://designindex.xyz/${tool.category || "tools"}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": tool.tool_name,
+        "item": Astro.url.href
+      }
+    ]
+  })} />
   <main class="mt-4 px-[15px] pb-4 lg:h-[calc(100vh-2rem)] lg:pb-0">
     <section class="grid grid-cols-1 gap-4 lg:h-full lg:grid-cols-2 lg:items-stretch lg:overflow-hidden">
       <aside class="rounded-xl md:p-2 lg:h-full lg:overflow-hidden">

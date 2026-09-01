@@ -1,0 +1,26 @@
+---
+import HomescreenLayout from "../layouts/homescreen.astro";
+---
+
+<HomescreenLayout
+	title="404 Page Not Found | Design Index"
+	description="The requested page or design resource could not be found on Design Index."
+	noindex={true}
+	backgroundVariant="slate"
+>
+	<main class="relative z-10 flex min-h-[70vh] flex-col items-center justify-center text-center px-6">
+		<h1 class="font-google text-6xl font-bold theme-text-primary md:text-8xl">404</h1>
+		<p class="mt-4 font-rethink text-lg font-medium theme-text-muted md:text-xl">
+			Page Not Found
+		</p>
+		<p class="mt-2 font-rethink text-sm theme-text-soft max-w-md">
+			The design resource or page you are looking for might have been moved, renamed, or no longer exists.
+		</p>
+		<a
+			href="/"
+			class="mt-6 theme-button inline-flex h-10 items-center justify-center rounded-md px-6 font-rethink text-sm font-semibold"
+		>
+			Back to Home
+		</a>
+	</main>
+</HomescreenLayout>
