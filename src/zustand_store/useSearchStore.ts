@@ -16,7 +16,7 @@ interface SearchState {
   results: ToolResult[];
   error: string | null;
   activeTab: "relevant" | "similar";
-  stats: { pageviews: number } | null;
+  stats: { pageviews: number; visitors: number } | null;
   toolcount: number;
   setInputValue: (val: string) => void;
   setActiveQuery: (val: string) => void;
@@ -24,7 +24,7 @@ interface SearchState {
   setResults: (val: ToolResult[]) => void;
   setError: (val: string | null) => void;
   setActiveTab: (val: "relevant" | "similar") => void;
-  setStats: (val: { pageviews: number } | null) => void;
+  setStats: (val: { pageviews: number; visitors: number } | null) => void;
   setToolcount: (val: number) => void;
   resetSearch: () => void;
 }

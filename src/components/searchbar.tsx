@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import winkNLP from "wink-nlp";
 import model from "wink-eng-lite-web-model";
@@ -8,6 +8,10 @@ import { getOptimizedImageUrl } from "@/lib/images";
 import { FunkyShadow } from "funky-shadow";
 import click_dark from "../assets/click_dark.svg?url"
 import click_light from "../assets/click_light.svg?url"
+import user_dark from "../assets/user_dark.svg?url"
+import user_light from "../assets/user_light.svg?url"
+import tool_dark from "../assets/tool_dark.svg?url"
+import tool_light from "../assets/tool_light.svg?url"
 
 
 let nlpInstance: any = null;
@@ -29,7 +33,6 @@ function getNLP() {
   };
 }
 import { useSearchStore } from "../zustand_store/useSearchStore";
-import type { ToolResult } from "../zustand_store/useSearchStore";
 export default function SearchBar() {
   const toggleSidebar = () => {
     if (typeof window !== "undefined") {
@@ -72,26 +75,52 @@ export default function SearchBar() {
   }, []);
 
   useEffect(() => {
+    const cacheKey = "databuddy_stats_session_cache";
+    if (typeof window !== "undefined") {
+      try {
+        const cached = sessionStorage.getItem(cacheKey);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed && typeof parsed.pageviews === "number") {
+            setStats(parsed);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to read stats from sessionStorage:", err);
+      }
+    }
+
     fetch("/api/stats")
       .then((res) => res.json())
       .then((data) => {
         if (data && typeof data.pageviews === "number") {
-          setStats({ pageviews: data.pageviews });
+          const newStats = {
+            pageviews: data.pageviews,
+            visitors: typeof data.visitors === "number" ? data.visitors : 0,
+          };
+          setStats(newStats);
+          if (typeof window !== "undefined") {
+            try {
+              sessionStorage.setItem(cacheKey, JSON.stringify(newStats));
+            } catch (err) {
+              console.error("Failed to save stats to sessionStorage:", err);
+            }
+          }
         }
       })
       .catch((err) => console.error("Failed to fetch stats:", err));
   }, []);
 
-  useEffect(()=>{
-    fetch("./api/tool_count")
-    .then((res) => res.json())
+  useEffect(() => {
+    fetch("/api/tool_count")
+      .then((res) => res.json())
       .then((data) => {
         if (data) {
           setToolcount(data.count);
         }
       })
-      .catch((err) => console.error("Failed to fetch stats:", err));
-  },[])
+      .catch((err) => console.error("Failed to fetch tool count:", err));
+  }, []);
 
   useEffect(() => {
     const trimmed = inputValue.trim();
@@ -394,15 +423,28 @@ export default function SearchBar() {
                   )}
                 </div>
                 <div className="py-[5px] px-[10px] flex items-center gap-1.5 font-rethink text-[10px] theme-text-soft font-semibold select-none justify-between">
-                  <div className="flex justify-center items-center">
-                    <img src={click_dark} alt="" width={15} height={15} className="hidden animate-pulse"/>
-                    <img src={click_light} alt="" width={15} height={15} className="hidden animate-pulse"/>
-                    {stats && (
-                      <span>{stats.pageviews.toLocaleString()} views this month</span>
+                  <div className="flex justify-center items-center gap-3">
+                    <div className="flex items-center gap-1.5">
+                      <img src={click_dark} alt="" width={15} height={15} className="hidden dark:block animate-pulse"/>
+                      <img src={click_light} alt="" width={15} height={15} className="block dark:hidden animate-pulse"/>
+                      {stats && (
+                        <span className="text-[13px]">{stats.pageviews.toLocaleString()} views this month</span>
+                      )}
+                    </div>
+                    {stats && stats.visitors > 0 && (
+                      <div className="flex items-center gap-1.5">
+                        <img src={user_dark} alt="" width={15} height={15} className="hidden dark:block"/>
+                        <img src={user_light} alt="" width={15} height={15} className="block dark:hidden"/>
+                        <span className="text-[13px]">{stats.visitors.toLocaleString()} visitors</span>
+                      </div>
                     )}
-                    {toolcount > 0 && 
-                      <span className="text-[13px]">{toolcount} tools</span>
-                    }
+                    {toolcount > 0 && (
+                      <div className="flex items-center gap-1.5">
+                        <img src={tool_dark} alt="" width={15} height={15} className="hidden dark:block"/>
+                        <img src={tool_light} alt="" width={15} height={15} className="block dark:hidden"/>
+                        <span className="text-[13px]">{toolcount} tools</span>
+                      </div>
+                    )}
                   </div>
                   <button
                     type="button"
@@ -413,7 +455,9 @@ export default function SearchBar() {
                   </button>
                 </div>
               </div>
-            ) : (
+            ) 
+            : 
+            (
               <FunkyShadow
                 width={containerWidth}
                 height={70}
@@ -473,15 +517,28 @@ export default function SearchBar() {
                     )}
                   </div>
                   <div className="py-[5px] px-[10px] flex items-center gap-1.5 font-rethink text-[10px] theme-text-soft font-semibold select-none justify-between">
-                    <div className="flex justify-center items-center">
-                      <img src={click_dark} alt="" width={15} height={15} className="hidden animate-pulse"/>
-                      <img src={click_light} alt="" width={15} height={15} className="hidden animate-pulse"/>
-                      {stats && (
-                        <span>{stats.pageviews.toLocaleString()} views this month</span>
+                    <div className="flex justify-center items-center gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <img src={click_dark} alt="" width={15} height={15} className="hidden dark:block animate-pulse"/>
+                        <img src={click_light} alt="" width={15} height={15} className="block dark:hidden animate-pulse"/>
+                        {stats && (
+                          <span className="text-[13px]">{stats.pageviews.toLocaleString()} views this month</span>
+                        )}
+                      </div>
+                      {stats && stats.visitors > 0 && (
+                        <div className="flex items-center gap-1.5">
+                          <img src={user_dark} alt="" width={15} height={15} className="hidden dark:block"/>
+                          <img src={user_light} alt="" width={15} height={15} className="block dark:hidden"/>
+                          <span className="text-[13px]">{stats.visitors.toLocaleString()} visitors</span>
+                        </div>
                       )}
-                      {toolcount > 0 && 
-                        <span className="text-[13px]">{toolcount} tools</span>
-                      }
+                      {toolcount > 0 && (
+                        <div className="flex items-center gap-1.5">
+                          <img src={tool_dark} alt="" width={18} height={18} className="hidden dark:block"/>
+                          <img src={tool_light} alt="" width={18} height={18} className="block dark:hidden"/>
+                          <span className="text-[13px]">{toolcount} tools</span>
+                        </div>
+                      )}
                     </div>
                     <button
                       type="button"
