@@ -1,4 +1,4 @@
-import { getCachedJson, setCachedJson } from "@/lib/cache";
+import { getCachedJson, setCachedJsonInBackground } from "@/lib/cache";
 
 export const prerender = false;
 
@@ -82,8 +82,8 @@ export async function GET() {
       visitors: Number(visitors) || 0,
     };
 
-    // Cache result in Redis asynchronously
-    void setCachedJson(CACHE_KEY, payload, CACHE_TTL_SECONDS);
+    // Cache result in Redis without delaying the response
+    setCachedJsonInBackground(CACHE_KEY, payload, CACHE_TTL_SECONDS);
 
     return new Response(
       JSON.stringify(payload), 

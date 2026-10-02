@@ -11,7 +11,8 @@ const EXIT_MS = 300;
 const SWIPE_DISMISS_PX = 40;
 const SWIPE_DISMISS_VELOCITY = 400;
 
-const SITE_URL = "https://designindex.xyz";
+const SESSION_KEY = "design-index-alerts-shown";
+const SITE_URL ="https://designindex.xyz";
 
 export function HomeAlerts() {
 	const [active, setActive] = React.useState<AlertKind | null>(null);
@@ -30,6 +31,14 @@ export function HomeAlerts() {
 	}, []);
 
 	React.useEffect(() => {
+		// Show the alerts once per browser session, on whichever page is visited first.
+		try {
+			if (sessionStorage.getItem(SESSION_KEY)) return;
+			sessionStorage.setItem(SESSION_KEY, "1");
+		} catch {
+			// storage unavailable: fall through and show them
+		}
+
 		const timers: number[] = [];
 		const queue: AlertKind[] = ["sponsor", "share"];
 
@@ -123,7 +132,7 @@ export function HomeAlerts() {
 							.then(dismiss);
 					}
 				}}
-				className="pointer-events-auto relative touch-pan-x rounded-2xl bg-background text-foreground shadow-lg ring-1 ring-foreground/10"
+				className="pointer-events-auto relative touch-pan-x rounded-2xl bg-background text-foreground ring-1 ring-black/10 shadow-[0_12px_32px_-6px_rgb(0_0_0/0.28),0_4px_12px_-4px_rgb(0_0_0/0.18)] dark:ring-white/15 dark:shadow-[0_16px_40px_-6px_rgb(0_0_0/0.85),0_0_0_1px_rgb(0_0_0/0.6)]"
 			>
 				{active === "sponsor" ? (
 					<a

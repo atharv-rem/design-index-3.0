@@ -4,6 +4,7 @@ import visitLightIcon from "@/assets/visit_light.svg";
 import visitDarkIcon from "@/assets/visit_dark.svg";
 import sharelightIcon from "@/assets/share_light.svg";
 import shareDarkIcon from "@/assets/share_dark.svg";
+import ToolImage from "@/components/tool-image";
 import { Badge } from "@/components/ui/badge";
 import { BrowserMockupCard } from "@/components/mockups/browser-mockup-card";
 
@@ -143,21 +144,17 @@ const { name, description, websiteUrl, pricing = "", sponsored = false, suggeste
                         </span>
                       )}
                       <div class="overflow-hidden [&_img]:transition-transform [&_img]:duration-500 group-hover:[&_img]:scale-[1.04]">
-                        <img
+                        <ToolImage
+                          client:visible
+                          alt={item.name}
+                          width={1200}
+                          height={675}
                           src={
                             getOptimizedImageUrl(
                               item.og_image_link,
                               { width: 480, quality: 76 },
                             )
                           }
-                          alt={item.name}
-                          loading="lazy"
-                          decoding="async"
-                          fetchpriority="low"
-                          referrerpolicy="no-referrer"
-                          width="1200"
-                          height="675"
-                          class="aspect-video w-full object-cover"
                         />
                       </div>
 
