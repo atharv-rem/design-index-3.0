@@ -1,44 +1,29 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { play } from "cuelume";
 import { motion, AnimatePresence } from "motion/react";
-import winkNLP from "wink-nlp";
-import model from "wink-eng-lite-web-model";
+import { ArrowRight, Hammer, MousePointerClick, SearchX, Users, X } from "lucide-react";
 import { getOptimizedImageUrl } from "@/lib/images";
-import { FunkyShadow } from "funky-shadow";
-import click_dark from "../assets/click_dark.svg?url"
-import click_light from "../assets/click_light.svg?url"
-import user_dark from "../assets/user_dark.svg?url"
-import user_light from "../assets/user_light.svg?url"
-import tool_dark from "../assets/tool_dark.svg?url"
-import tool_light from "../assets/tool_light.svg?url"
+import { searchTools } from "@/lib/search";
+import ToolImage from "@/components/tool-image";
+import { Kbd } from "@/components/ui/kbd";
+import { RadioGroupPrimitive, RadioPrimitive } from "@/components/ui/radio-group";
+import { segmentedControlItemVariants, segmentedControlRootClassName } from "@/lib/segmented-control";
+import type { SponsorCard } from "@/lib/sponsors";
 
 
-let nlpInstance: any = null;
-let itsInstance: any = null;
-
-function getNLP() {
-  if (typeof window === "undefined") {
-    return { nlp: null, its: null };
-  }
-
-  if (!nlpInstance) {
-    nlpInstance = winkNLP(model);
-    itsInstance = nlpInstance.its;
-  }
-
-  return {
-    nlp: nlpInstance,
-    its: itsInstance,
-  };
-}
 import { useSearchStore } from "../zustand_store/useSearchStore";
-export default function SearchBar() {
-  const toggleSidebar = () => {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("toggle-sidebar"));
-    }
-  };
+
+const resultTabClassName = segmentedControlItemVariants({
+  className: "font-google",
+  state: "checked",
+});
+
+// One sponsored card after every N results.
+const SPONSOR_INTERVAL = 8;
+
+export default function SearchBar({ sponsors = [] }: { sponsors?: SponsorCard[] }) {
   const {
     inputValue,
     activeQuery,
@@ -58,21 +43,6 @@ export default function SearchBar() {
     setToolcount,
     resetSearch,
   } = useSearchStore();
-
-  const [containerWidth, setContainerWidth] = useState(600);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   useEffect(() => {
     const cacheKey = "databuddy_stats_session_cache";
@@ -140,36 +110,36 @@ export default function SearchBar() {
     return () => clearTimeout(timer);
   }, [inputValue, activeQuery]);
 
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setContainerWidth(entry.contentRect.width);
-      }
-    });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setIsDarkMode(document.documentElement.classList.contains("dark"));
-
-    const observer = new MutationObserver(() => {
-      setIsDarkMode(document.documentElement.classList.contains("dark"));
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   const relevantResults = results.filter((item) => item.matchedKeywordsCount > 1);
   const similarResults = results.filter((item) => item.matchedKeywordsCount === 1);
   const displayedResults = activeTab === "relevant" ? relevantResults : similarResults;
+  const otherResults = activeTab === "relevant" ? similarResults : relevantResults;
+
+  const gridEntries = (() => {
+    const entries: (
+      | { kind: "tool"; item: (typeof displayedResults)[number] }
+      | { kind: "sponsor"; sponsor: SponsorCard; key: string }
+    )[] = [];
+    let sponsorCount = 0;
+
+    displayedResults.forEach((item, index) => {
+      entries.push({ kind: "tool", item });
+
+      if (sponsors.length > 0 && (index + 1) % SPONSOR_INTERVAL === 0) {
+        const sponsor = sponsors[sponsorCount % sponsors.length];
+        entries.push({ kind: "sponsor", sponsor, key: `sponsor-${sponsor.id}-${sponsorCount}` });
+        sponsorCount += 1;
+      }
+    });
+
+    // Fewer results than one full interval: still show a single sponsor at the end.
+    if (sponsors.length > 0 && displayedResults.length > 0 && displayedResults.length < SPONSOR_INTERVAL) {
+      const sponsor = sponsors[0];
+      entries.push({ kind: "sponsor", sponsor, key: `sponsor-${sponsor.id}-0` });
+    }
+
+    return entries;
+  })();
 
   useEffect(() => {
     if (results.length > 0) {
@@ -202,95 +172,18 @@ export default function SearchBar() {
     }
   }, []);
 
-  const extractKeywords = (text: string): string[] => {
-    try {
-      const { nlp, its } = getNLP();
-
-      if (!nlp || !its) {
-        throw new Error("NLP model unavailable");
-      }
-
-      const doc = nlp.readDoc(text);
-
-      let mainKeywords = doc
-        .tokens()
-        .filter((token: any) => {
-          const pos = token.out(its.pos);
-
-          // Removed VERB for cleaner search
-          return ["NOUN", "ADJ", "PROPN"].includes(pos);
-        })
-        .out(its.lemma) as string[];
-
-      const customStopwords = [
-        "want",
-        "need",
-        "use",
-        "get",
-        "have",
-        "make",
-        "find",
-        "see",
-        "create",
-        "show",
-        "add",
-        "help",
-        "look",
-        "tool",
-        "tools",
-        "website",
-        "websites",
-        "app",
-        "apps",
-        "best",
-        "good",
-      ];
-
-      mainKeywords = mainKeywords.filter(
-        (word) =>
-          word.length > 1 &&
-          /[a-z]/i.test(word) &&
-          !customStopwords.includes(word.toLowerCase())
-      );
-
-      // Regex fallback for terms like 3d, ai, ui, etc.
-      const regexFallback =
-        text.toLowerCase().match(/\b[\da-z\-]{2,}\b/g) || [];
-
-      const extraKeywords = regexFallback.filter(
-        (w) => /\d/.test(w) || w.length <= 3
-      );
-
-      // Merge + dedupe
-      let finalKeywords = [
-        ...new Set([...mainKeywords, ...extraKeywords]),
-      ]
-        .map((k) => k.toLowerCase())
-
-        // singular normalization
-        .map((k) => {
-          if (k.endsWith("s") && k.length > 3) {
-            return k.slice(0, -1);
-          }
-
-          return k;
-        })
-
-        // remove duplicates again
-        .filter((value, index, self) => self.indexOf(value) === index);
-
-      return finalKeywords;
-    } catch (err) {
-      console.error("Keyword extraction error:", err);
-
-      // Basic fallback
-      return text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, "")
-        .split(/\s+/)
-        .filter((w) => w.length > 1);
-    }
-  };
+  // Press "/" anywhere (outside editable fields) to focus the search input.
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "/" || e.metaKey || e.ctrlKey || e.altKey) return;
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
+      e.preventDefault();
+      inputRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   const handleSearch = async (queryText: string) => {
     const trimmed = queryText.trim();
@@ -304,30 +197,15 @@ export default function SearchBar() {
     setError(null);
     setActiveQuery(trimmed);
 
-    const finalKeywords = extractKeywords(trimmed);
-
-    if (finalKeywords.length === 0) {
-      setResults([]);
-      setLoading(false);
-      return;
-    }
-
     try {
-      const res = await fetch(
-        `/api/search?keywords=${encodeURIComponent(
-          finalKeywords.join(",")
-        )}`
-      );
-
-      if (!res.ok) {
-        throw new Error("Search request failed");
-      }
-
-      const data = await res.json();
+      const data = await searchTools(trimmed);
 
       setResults(data);
+      play(data.length > 0 ? "ready" : "warning", { emphasis: "subtle" });
     } catch (err) {
       console.error("Search fetch error:", err);
+
+      play("error", { emphasis: "subtle" });
 
       setError(
         "Failed to fetch search results. Please try again."
@@ -361,8 +239,8 @@ export default function SearchBar() {
 
   
   const renderSearchBarCard = () => (
-    <div className="w-full text-left flex flex-col justify-start pointer-events-auto rounded-[12px] min-h-[90px] h-auto bg-[#f0f0f0] dark:bg-[#313131] border border-[#cacaca] dark:border-[#282828] dark:shadow-hairline overflow-hidden">
-      <div className="border-[1px] border-[#d1d1d1] dark:border-0 rounded-[12px] relative w-full flex flex-row items-start justify-start overflow-hidden h-[60px] pl-4 pr-16 pt-[11px] pb-[11px] bg-white dark:bg-[#141414] z-10">
+    <div className="w-full text-left flex flex-col justify-start pointer-events-auto rounded-[12px] h-auto overflow-hidden">
+      <div className="border-[1px] border-[#ededed] dark:border-white/10 rounded-[12px] relative w-full flex flex-row items-start justify-start overflow-hidden h-[60px] pl-4 pr-20 pt-[11px] pb-[11px] bg-white dark:bg-[#141414] z-10">
         <textarea
           ref={inputRef}
           inputMode="text"
@@ -370,10 +248,11 @@ export default function SearchBar() {
           rows={2}
           title="Search design tools"
           aria-label="Search design tools"
+          data-cuelume-type
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="font-rethink text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] z-10"
+          className="font-google text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] z-10"
         />
 
         <AnimatePresence mode="wait">
@@ -384,57 +263,143 @@ export default function SearchBar() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -10, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="absolute left-4 top-[11px] pointer-events-none font-rethink text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.001rem] select-none"
+              className="absolute left-4 top-[11px] pointer-events-none font-google text-[13px] leading-tight theme-text-soft font-semibold tracking-[0.001rem] select-none"
             >
               {placeholders[placeholderIndex]}
             </motion.div>
           )}
         </AnimatePresence>
 
-        {inputValue && (
-          <button
-            type="button"
-            onClick={handleClear}
-            className="absolute right-4 top-[11px] font-rethink text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 z-20"
+        {inputValue ? (
+          <div className="absolute right-3 top-[9px] z-20 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleClear}
+              data-cuelume-close
+              data-cuelume-emphasis="subtle"
+              className="font-(family-name:--font-inter-stack) text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0"
+            >
+              clear
+            </button>
+            <Kbd className="hidden sm:inline-flex" aria-label="Enter">↵</Kbd>
+          </div>
+        ) : (
+          <Kbd
+            className="absolute right-3 top-[9px] z-20 hidden sm:inline-flex"
+            aria-label="Press slash to focus search"
           >
-            clear
-          </button>
+            /
+          </Kbd>
         )}
       </div>
+    </div>
+  );
 
-      <div className="py-[6px] px-2.5 sm:px-3 flex items-center justify-between font-rethink text-[11px] sm:text-[13px] theme-text-soft font-semibold select-none gap-2 min-h-[30px]">
-        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-0.5 max-w-full">
-          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 whitespace-nowrap">
-            <img src={click_dark} alt="" width={15} height={15} className="hidden dark:block animate-pulse shrink-0"/>
-            <img src={click_light} alt="" width={15} height={15} className="block dark:hidden animate-pulse shrink-0"/>
-            {stats && (
-              <span>
-                {stats.pageviews.toLocaleString()} views <span className="hidden sm:inline">this month</span>
-              </span>
-            )}
-          </div>
-          {stats && stats.visitors > 0 && (
-            <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 whitespace-nowrap">
-              <img src={user_dark} alt="" width={15} height={15} className="hidden dark:block shrink-0"/>
-              <img src={user_light} alt="" width={15} height={15} className="block dark:hidden shrink-0"/>
-              <span>{stats.visitors.toLocaleString()} visitors</span>
-            </div>
-          )}
-          {toolcount > 0 && (
-            <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 whitespace-nowrap">
-              <img src={tool_dark} alt="" width={15} height={15} className="hidden dark:block shrink-0"/>
-              <img src={tool_light} alt="" width={15} height={15} className="block dark:hidden shrink-0"/>
-              <span>{toolcount} tools</span>
-            </div>
-          )}
+  // Strip: 4 equal-width cells (1 row of 4 on desktop, 2x2 on mobile).
+  const SPONSOR_SLOTS = 4;
+  const stripSponsors = sponsors.slice(0, SPONSOR_SLOTS);
+
+  const sponsorCellClassName =
+    "col-span-1 flex min-h-[56px] min-w-0 items-center justify-center sm:min-h-0";
+
+  const sponsorLineProps = {
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.5,
+    strokeLinecap: "round",
+    strokeDasharray: "6 6",
+  } as const;
+
+  const renderStatsRow = () => (
+    <div className="mt-4 flex w-full items-center justify-center gap-3 overflow-x-auto no-scrollbar px-1 font-(family-name:--font-inter-stack) text-[11px] sm:text-[13px] theme-text-soft font-semibold select-none pointer-events-auto">
+      <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 whitespace-nowrap">
+        <MousePointerClick size={15} className="shrink-0" aria-hidden="true" />
+        {stats && (
+          <span>
+            {stats.pageviews.toLocaleString()} views <span className="hidden sm:inline">this month</span>
+          </span>
+        )}
+      </div>
+      {stats && stats.visitors > 0 && (
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 whitespace-nowrap">
+          <Users size={15} className="shrink-0" aria-hidden="true" />
+          <span>{stats.visitors.toLocaleString()} visitors</span>
         </div>
-        <button
-          type="button"
-          onClick={toggleSidebar}
-          className="font-rethink text-[11px] sm:text-[13px] theme-text-soft hover:theme-text-primary transition shrink-0 cursor-pointer uppercase tracking-[0.001em] font-semibold pl-1"
-        >
-          Explore
-        </button>
+      )}
+      {toolcount > 0 && (
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 whitespace-nowrap">
+          <Hammer size={15} className="shrink-0" aria-hidden="true" />
+          <span>{toolcount} tools</span>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderSponsorStrip = () => (
+    <div className="relative mt-5 w-full pointer-events-auto">
+      {/* Desktop: 4 columns in a single row */}
+      <svg
+        aria-hidden="true"
+        className="absolute inset-0 hidden h-full w-full pointer-events-none text-[#e2e2e2] dark:text-[#333] sm:block"
+        {...sponsorLineProps}
+      >
+        <line x1="0" x2="100%" y1="1.5" y2="1.5" />
+        <line x1="0" x2="100%" y1="100%" y2="100%" transform="translate(0,-1.5)" />
+        {[1, 2, 3].map((n) => (
+          <line key={n} x1={`${(n / 4) * 100}%`} x2={`${(n / 4) * 100}%`} y1="5%" y2="95%" />
+        ))}
+      </svg>
+      {/* Mobile: 2 columns, 2 rows */}
+      <svg
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full pointer-events-none text-[#f0f0f0] dark:text-[#2a2a2a] sm:hidden"
+        {...sponsorLineProps}
+      >
+        <line x1="0" x2="100%" y1="1.5" y2="1.5" />
+        <line x1="0" x2="100%" y1="50%" y2="50%" />
+        <line x1="0" x2="100%" y1="100%" y2="100%" transform="translate(0,-1.5)" />
+        <line x1="50%" x2="50%" y1="2.5%" y2="47.5%" />
+        <line x1="50%" x2="50%" y1="52.5%" y2="97.5%" />
+      </svg>
+      <div className="grid grid-cols-2 font-(family-name:--font-inter-stack) sm:h-[64px] sm:grid-cols-4">
+        {stripSponsors.map((sponsor) => (
+          <a
+            key={sponsor.id}
+            href={`/sponsors/${sponsor.slug}`}
+            data-cuelume-navigate
+            data-cuelume-emphasis="subtle"
+            title={sponsor.description || sponsor.name}
+            className={`${sponsorCellClassName} gap-1.5 px-2 sm:gap-1 sm:px-3 theme-text-soft hover:theme-text-primary transition`}
+          >
+            {sponsor.og_image_link && (
+              <img
+                src={
+                  getOptimizedImageUrl(sponsor.og_image_link, { width: 64, quality: 76 }) ||
+                  "/favicon.ico"
+                }
+                alt=""
+                width={24}
+                height={24}
+                loading="lazy"
+                className="size-7 rounded-[4px] object-cover shrink-0 sm:size-6"
+              />
+            )}
+            <span className="truncate text-[17px] font-semibold sm:text-[15px]">{sponsor.name}</span>
+          </a>
+        ))}
+
+        {Array.from({ length: SPONSOR_SLOTS - stripSponsors.length }).map((_, i) => (
+          <a
+            key={`open-${i}`}
+            href="/sponsor"
+            data-cuelume-navigate
+            data-cuelume-emphasis="subtle"
+            className={`${sponsorCellClassName} justify-center gap-1.5 px-2 text-[16px] font-medium sm:text-[13px] theme-text-soft hover:theme-text-primary transition`}
+          >
+            <span aria-hidden="true">+</span>
+            <span className="truncate">sponsor</span>
+          </a>
+        ))}
       </div>
     </div>
   );
@@ -450,36 +415,17 @@ export default function SearchBar() {
       >
         <div className="flex w-full flex-col items-center justify-center">
           <h1
-            className={`z-20 font-google tracking-[0.001rem] text-center text-[28px] sm:text-[32px] md:text-[45px] leading-tight font-semibold theme-hero-title transition-all duration-300 bg-transparent ${
+            className={`z-20 font-gatuzo tracking-[0.001rem] text-center text-[28px] sm:text-[32px] md:text-[45px] leading-tight font-semibold theme-hero-title dark:text-[#d4d4d4] dark:[text-shadow:0_2px_10px_rgb(0_0_0/0.9),0_8px_28px_rgb(0_0_0/0.8)] transition-all duration-300 bg-transparent ${
               isSearchActive ? "hidden" : ""
             }`}
           >
-            Find any design Tool
+            find any design tool
           </h1>
 
-          <div ref={containerRef} className="w-full max-w-[600px] mt-5 md:mt-5">
-            {isMobile ? (
-              renderSearchBarCard()
-            ) : (
-              <FunkyShadow
-                width={containerWidth}
-                height={70}
-                radius={15}
-                offsetX={0}
-                offsetY={15}
-                spread={500}
-                blur={45}
-                opacity={isDarkMode ? 0 : 0.18}
-                pixelScale={3}
-                colors={
-                  isDarkMode
-                    ? [[180, 180, 180], [140, 140, 140], [90, 90, 90], [50, 50, 50], [20, 20, 20], [0, 0, 0]]
-                    : [[0, 0, 0], [40, 40, 40], [90, 90, 90], [150, 150, 150], [210, 210, 210], [255, 255, 255]]
-                }
-              >
-                {renderSearchBarCard()}
-              </FunkyShadow>
-            )}
+          <div className="w-full max-w-[600px] mt-5 md:mt-5">
+            {renderSearchBarCard()}
+            {!isSearchActive && renderStatsRow()}
+            {!isSearchActive && renderSponsorStrip()}
           </div>
         </div>
       </main>
@@ -488,22 +434,36 @@ export default function SearchBar() {
         {/* Loading */}
         {loading && (
           <div className="w-full">
-            <p className="font-rethink text-[11px] tracking-[0.05rem] font-medium theme-text-primary animate-pulse mb-4">
+            <p className="font-google text-[11px] tracking-[0.05rem] font-medium theme-text-primary animate-pulse mb-4">
               Searching...
             </p>
 
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 3 }).map((_, i) => (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
+              {Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}
-                  className="rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface-soft)] p-4 animate-pulse space-y-4 shadow-md"
+                  className="flex flex-col overflow-hidden rounded-xl bg-white dark:bg-[#141416] shadow-[0_1px_2px_rgb(0_0_0/0.04)] ring-1 ring-black/5 dark:ring-white/10"
                 >
-                  <div className="aspect-video w-full rounded bg-[var(--app-border-strong)]" />
+                  <div
+                    className="skeleton-shimmer aspect-video w-full"
+                    style={{ animationDelay: `${i * 120}ms` }}
+                  />
 
-                  <div className="space-y-2">
-                    <div className="h-4 w-1/2 rounded bg-[var(--app-border-strong)]" />
-
-                    <div className="h-3 w-5/6 rounded bg-[var(--app-border-strong)]" />
+                  <div className="flex flex-col gap-2.5 p-4">
+                    <div
+                      className="skeleton-shimmer h-[17px] w-2/3 rounded-md"
+                      style={{ animationDelay: `${i * 120 + 60}ms` }}
+                    />
+                    <div className="flex flex-col gap-1.5">
+                      <div
+                        className="skeleton-shimmer h-3 w-full rounded-md"
+                        style={{ animationDelay: `${i * 120 + 120}ms` }}
+                      />
+                      <div
+                        className="skeleton-shimmer h-3 w-4/5 rounded-md"
+                        style={{ animationDelay: `${i * 120 + 180}ms` }}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
@@ -516,105 +476,127 @@ export default function SearchBar() {
           activeQuery &&
           results.length > 0 && (
             <div className="w-full">
-              <div className="flex items-center justify-between border-b border-[var(--app-border-strong)] mb-6">
-                <div className="flex space-x-6">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("relevant")}
-                    className={`relative pb-3 font-rethink text-[13px]  tracking-[0.05rem] font-semibold transition ${
-                      activeTab === "relevant"
-                        ? "theme-text-primary"
-                        : "theme-text-soft hover:theme-text-primary"
-                    }`}
-                  >
-                    Relevant Results ({relevantResults.length})
-                    {activeTab === "relevant" && (
-                      <motion.div
-                        layoutId="active-tab-indicator"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-black dark:bg-white"
-                      />
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("similar")}
-                    className={`relative pb-3 font-rethink text-[13px]  tracking-[0.05rem] font-semibold transition ${
-                      activeTab === "similar"
-                        ? "theme-text-primary"
-                        : "theme-text-soft hover:theme-text-primary"
-                    }`}
-                  >
-                    Similar Results ({similarResults.length})
-                    {activeTab === "similar" && (
-                      <motion.div
-                        layoutId="active-tab-indicator"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-black dark:bg-white"
-                      />
-                    )}
-                  </button>
-                </div>
+              <div className="mb-6 flex items-center justify-between gap-3">
+                <RadioGroupPrimitive
+                  aria-label="Result type"
+                  className={segmentedControlRootClassName}
+                  value={activeTab}
+                  onValueChange={(value) => setActiveTab(value as "relevant" | "similar")}
+                >
+                  {(
+                    [
+                      { value: "relevant", label: "Relevant", count: relevantResults.length },
+                      { value: "similar", label: "Similar", count: similarResults.length },
+                    ] as const
+                  ).map((tab) => (
+                    <RadioPrimitive.Root
+                      key={tab.value}
+                      value={tab.value}
+                      data-cuelume-select
+                      className={resultTabClassName}
+                    >
+                      {tab.label}
+                      <span className="tabular-nums opacity-60">{tab.count}</span>
+                    </RadioPrimitive.Root>
+                  ))}
+                </RadioGroupPrimitive>
 
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="pb-3 font-rethink text-[13px]  tracking-[0.05rem] font-semibold transition"
+                  data-cuelume-close
+                  data-cuelume-emphasis="subtle"
+                  className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-lg px-2.5 font-google text-[13px] font-semibold theme-text-soft transition-colors hover:bg-muted hover:theme-text-primary"
                 >
+                  <X className="size-3.5" aria-hidden="true" />
                   Clear
                 </button>
               </div>
 
               {displayedResults.length > 0 ? (
-                <div className="grid grid-cols-1 gap-8 pb-10 sm:grid-cols-2 lg:grid-cols-3">
-                  {displayedResults.map((item) => (
-                    <a
-                      key={item.id}
-                      href={`/${item.id}/${encodeURIComponent(
-                        item.tool_name
-                      )}`}
-                      className="group overflow-hidden rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--app-border-strong)] shadow-hairline flex flex-col"
-                    >
-                      <img
-                        alt={item.tool_name}
-                        loading="lazy"
-                        decoding="async"
-                        src={
-                          getOptimizedImageUrl(
-                            item.og_image_link,
-                            { width: 480, quality: 76 },
-                          ) ||
-                          "/favicon.svg"
+                <div className="grid grid-cols-1 gap-6 pb-10 sm:grid-cols-2 lg:grid-cols-3">
+                  {gridEntries.map((entry) => {
+                    const isSponsor = entry.kind === "sponsor";
+                    const card = isSponsor
+                      ? {
+                          key: entry.key,
+                          href: `/sponsors/${entry.sponsor.slug}`,
+                          name: entry.sponsor.name,
+                          description: entry.sponsor.description,
+                          og_image_link: entry.sponsor.og_image_link,
                         }
-                        className="aspect-video w-full object-cover transition duration-200 group-hover:scale-[1.02]"
-                        onError={(e) => {
-                          e.currentTarget.src =
-                            "/favicon.svg";
+                      : {
+                          key: String(entry.item.id),
+                          href: `/${entry.item.id}/${encodeURIComponent(entry.item.tool_name)}`,
+                          name: entry.item.tool_name,
+                          description: entry.item.description,
+                          og_image_link: entry.item.og_image_link,
+                        };
 
-                          e.currentTarget.className =
-                            "aspect-video w-full object-contain p-8 opacity-45";
-                        }}
-                      />
-
-                      <div className="space-y-2 md:space-y-1 p-4">
-                        <h3 className="font-rethink font-semibold text-[20px] leading-5 theme-text-primary md:text-lg">
-                          {item.tool_name}
-                        </h3>
-
-                        <p className="text-[15px] md:text-sm font-rethink leading-[20px] md:leading-[15px] font-medium theme-text-soft">
-                          {item.description}
-                        </p>
+                    return (
+                    <a
+                      key={card.key}
+                      href={card.href}
+                      data-cuelume-navigate
+                      data-cuelume-emphasis="subtle"
+                      className="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-[#141416] shadow-[0_1px_2px_rgb(0_0_0/0.04)] ring-1 ring-black/5 transition duration-200 hover:-translate-y-1 hover:shadow-[0_8px_24px_-12px_rgb(0_0_0/0.1)] dark:shadow-[0_4px_14px_rgb(0_0_0/0.8),0_14px_36px_-8px_rgb(0_0_0/0.9),inset_0_1px_0_rgb(255_255_255/0.06)] dark:ring-white/10 dark:hover:shadow-[0_6px_18px_rgb(0_0_0/0.85),0_22px_48px_-8px_rgb(0_0_0/1),inset_0_1px_0_rgb(255_255_255/0.08)]"
+                    >
+                      {isSponsor && (
+                        <span className="absolute left-2.5 top-2.5 z-10 rounded-md bg-[var(--app-bg)]/80 px-2 py-0.5 font-google text-[10px] font-semibold uppercase tracking-[0.1em] theme-text-primary backdrop-blur">
+                          Sponsored
+                        </span>
+                      )}
+                      <div className="overflow-hidden [&_img]:transition-transform [&_img]:duration-500 group-hover:[&_img]:scale-[1.04]">
+                        <ToolImage
+                          alt={card.description.toLowerCase()}
+                          width={1200}
+                          height={675}
+                          src={
+                            getOptimizedImageUrl(
+                              card.og_image_link,
+                              { width: 640, quality: 78 },
+                            ) || undefined
+                          }
+                        />
+                      </div>
+                      <div className="flex flex-1 flex-col gap-1.5 p-4">
+                        <h3 className="font-google text-[17px] font-semibold leading-snug theme-text-primary">{card.name}</h3>
+                        <p className="line-clamp-2 font-google text-sm font-medium leading-5 theme-text-soft">{card.description}</p>
                       </div>
                     </a>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
-                <div className="flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-4 text-center pb-10">
-                  <span className="font-rethink text-xl theme-text-primary md:text-2xl">
-                    No tools in this category
+                <div
+                  role="status"
+                  className="mb-10 flex min-h-56 flex-col items-center justify-center rounded-xl bg-[var(--app-surface-soft)] px-6 py-10 text-center"
+                >
+                  <span className="flex size-10 items-center justify-center rounded-full bg-[var(--sidebar-accent)] theme-text-muted">
+                    <SearchX className="size-5" aria-hidden="true" />
                   </span>
-
-                  <span className="mt-2 text-sm theme-text-soft md:text-base font-rethink">
-                    Try checking the other tab or search for different terms
+                  <span className="mt-4 font-google text-lg font-semibold theme-text-primary">
+                    No {activeTab === "relevant" ? "relevant" : "similar"} results
                   </span>
+                  <span className="mt-1 max-w-sm font-(family-name:--font-inter-stack) text-sm font-medium theme-text-soft">
+                    {otherResults.length > 0
+                      ? `Nothing matched closely enough here, but ${otherResults.length} ${otherResults.length === 1 ? "tool was" : "tools were"} found in the other tab.`
+                      : "Try searching for different terms."}
+                  </span>
+                  {otherResults.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab(activeTab === "relevant" ? "similar" : "relevant")}
+                      data-cuelume-tap
+                      className="group/cta mt-5 inline-flex h-10 cursor-pointer items-center gap-2 rounded-xl bg-[var(--app-text)] pr-2.5 pl-4 font-google text-[13px] font-medium text-[var(--app-bg)] shadow-sm ring-1 ring-(--app-text)/10 transition-[opacity,transform,box-shadow] duration-200 ease-out hover:opacity-90 hover:shadow-md active:scale-[0.96]"
+                    >
+                      View {activeTab === "relevant" ? "similar" : "relevant"} results
+                      <span className="flex h-6 items-center gap-1 rounded-lg bg-(--app-bg)/15 pr-1.5 pl-2 text-[12px] tabular-nums">
+                        {otherResults.length}
+                        <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/cta:translate-x-0.5" aria-hidden="true" />
+                      </span>
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -625,15 +607,15 @@ export default function SearchBar() {
           activeQuery &&
           results.length === 0 && (
             <div className="flex min-h-48 flex-col items-center justify-center px-4 text-center">
-              <span className="font-rethink text-xl theme-text-primary md:text-2xl font-semibold">
+              <span className="font-google text-xl theme-text-primary md:text-2xl font-semibold">
                 No tools match your search
               </span>
 
-              <span className="mt-2 text-sm theme-text-soft md:text-base font-rethink font-medium">
+              <span className="mt-2 text-sm theme-text-soft md:text-base font-(family-name:--font-inter-stack) font-medium">
                 Try searching for other terms or categories
               </span>
               {error && (
-                <div className="text-red-400 font-rethink text-[15px] font-medium mb-[10px] items-center justify-center">
+                <div className="text-red-400 font-(family-name:--font-inter-stack) text-[15px] font-medium mb-[10px] items-center justify-center">
                   {error}
                 </div>
               )}

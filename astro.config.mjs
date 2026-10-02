@@ -35,20 +35,37 @@ export default defineConfig({
     '/[id]/[slug]': { maxAge: 60 * 60 * 24, swr: 60 * 60 }, 
   },
   fonts: [{
-    provider: fontProviders.google(),
-    name: "Rethink Sans",
-    cssVariable: "--font-rethink-sans",
+    provider: fontProviders.local(),
+    name: "Gatuzo",
+    cssVariable: "--font-gatuzo-local",
+    options: {
+      variants: [{
+        weight: 400,
+        style: "normal",
+        src: ["./src/assets/fonts/gatuzo_font.ttf"],
+      }],
+    },
   },
   {
     provider: fontProviders.google(),
     name: "Google Sans",
     cssVariable: "--font-google-sans",
+    weights: ["400", "500", "600", "700"],
+  },
+  {
+    provider: fontProviders.google(),
+    name: "Inter",
+    cssVariable: "--font-inter",
+    weights: ["400", "500", "600", "700"],
   }
   ],
   experimental: {
     svgOptimizer: svgoOptimizer(),
   },
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: ["wink-nlp", "wink-eng-lite-web-model", "motion/react"],
+    },
   }
 });

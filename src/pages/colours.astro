@@ -1,9 +1,11 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
+import { getSponsorCards } from "@/lib/sponsors";
 import { getToolsByCategory } from "@/lib/get-tool-by-category";
 
 const tools = await getToolsByCategory("colour");
+const sponsors = await getSponsorCards();
 if (Astro.cache.enabled) {
 	Astro.cache.set({
 		maxAge: 86400,
@@ -18,10 +20,10 @@ if (Astro.cache.enabled) {
 	description="A curated collection of colour palettes, hues, gradients and backgrounds to inspire and streamline your design process. From bold primaries to subtle pastels, this section offers a versatile range of colour resources to help you build consistent, visually appealing, and emotionally resonant design systems."
 	backgroundVariant="slate"
 >
-	<main class="mt-[12px] px-[20px]">
+	<main class="mt-[15px] px-[20px]">
 		<section>
 			<div>
-				<h1 class="font-google font-medium text-4xl leading-none theme-text-primary md:text-[40px] tracking-[0.05rem]">
+				<h1 class="font-google font-semibold text-4xl leading-none theme-text-primary md:text-[40px] tracking-[0.05rem]">
 					Colours
 				</h1>
 				<p class="hidden md:block mt-3 font-rethink text-[20px] leading-[18px] theme-text-muted md:text-base font-medium">
@@ -34,6 +36,7 @@ if (Astro.cache.enabled) {
 					client:load
 					category="colour"
 					initialTools={tools}
+					sponsors={sponsors}
 				/>
 			</div>
 		</section>

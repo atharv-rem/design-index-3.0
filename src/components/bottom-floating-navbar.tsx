@@ -1,36 +1,64 @@
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useEffect, useState } from "react"
-import { Sun, Moon } from "lucide-react"
+import { Suspense, lazy, useEffect, useState } from "react"
+import { ArrowUpRight, Check, Moon, Search, Share2, Sun } from "lucide-react"
 
-type SocialLink = {
-  label: string
-  href: string
-  icon: string
-}
+// Loaded on demand so the search model and UI only ship once someone opens search.
+const loadCommandSearch = () => import("@/components/command-search")
+const CommandSearch = lazy(loadCommandSearch)
 
 type BottomFloatingNavbarProps = {
-  socialLinks?: SocialLink[]
+  showSearch?: boolean
   visitUrl?: string
+  visitSponsored?: boolean
   shareTitle?: string
 }
 
 const STORAGE_KEY = "design-index-theme"
 
+const shellClassName =
+  "font-google fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] left-1/2 z-40 flex w-auto max-w-[calc(100vw-1.5rem)] -translate-x-1/2 items-center gap-1.5 rounded-[24px] [corner-shape:squircle] border border-[var(--app-border-strong)] bg-white p-1.5 shadow-[0_8px_30px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.1)] dark:bg-[#1f1f23] dark:shadow-[0_8px_30px_rgb(0_0_0/0.7),0_2px_6px_rgb(0_0_0/0.6),inset_0_1px_0_rgb(255_255_255/0.08)]"
+
+const controlClassName =
+  "flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-[17px] [corner-shape:squircle] theme-nav-control transition-[background-color,transform] duration-150 active:scale-95"
+
 export default function BottomFloatingNavbar({
-  socialLinks = [],
+  showSearch = false,
   visitUrl,
+  visitSponsored = false,
   shareTitle,
 }: BottomFloatingNavbarProps) {
   const [isMounted, setIsMounted] = useState(false)
   const [isDark, setIsDark] = useState(true)
-  const [shareLabel, setShareLabel] = useState("Share")
+  const [copied, setCopied] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchLoaded, setSearchLoaded] = useState(false)
+
+  const openSearch = () => {
+    setSearchLoaded(true)
+    setSearchOpen(true)
+  }
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
     setIsDark(stored ? stored === "dark" : true)
     setIsMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (!showSearch) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault()
+        setSearchLoaded(true)
+        setSearchOpen((open) => !open)
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [showSearch])
 
   const toggleTheme = () => {
     const newIsDark = !isDark
@@ -58,8 +86,8 @@ export default function BottomFloatingNavbar({
         return
       }
       await navigator.clipboard.writeText(url)
-      setShareLabel("Copied")
-      setTimeout(() => setShareLabel("Share"), 1500)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
     } catch (err) {
       // Ignore
     }
@@ -69,82 +97,86 @@ export default function BottomFloatingNavbar({
 
   if (!isMounted) {
     return (
-      <div className="shadow-hairline fixed bottom-6 left-1/2 z-40 w-auto -translate-x-1/2 rounded-[12px] bg-[var(--app-navbar)] px-3 py-2 backdrop-blur-md flex items-center gap-2 transition-all duration-300">
-        <Skeleton className="h-9 w-9 rounded-full bg-[var(--app-surface-soft)] shrink-0" />
+      <div className={shellClassName}>
+        <Skeleton className="h-11 w-11 shrink-0 rounded-[17px] bg-[var(--app-surface-soft)]" />
+        {showSearch && (
+          <Skeleton className="h-11 w-11 shrink-0 rounded-[17px] bg-[var(--app-surface-soft)]" />
+        )}
         {hasVisitActions && (
           <>
-            <Skeleton className="h-9 w-16 rounded-full bg-[var(--app-surface-soft)]" />
-            <Skeleton className="h-9 w-16 rounded-full bg-[var(--app-surface-soft)]" />
+            <Skeleton className="h-11 w-[96px] shrink-0 rounded-[17px] bg-[var(--app-surface-soft)]" />
+            <Skeleton className="h-11 w-[104px] shrink-0 rounded-[17px] bg-[var(--app-surface-soft)]" />
           </>
         )}
-        <Skeleton className="h-9 w-9 rounded-full bg-[var(--app-surface-soft)] shrink-0" />
-        <Skeleton className="h-9 w-9 rounded-full bg-[var(--app-surface-soft)] shrink-0" />
-        <Skeleton className="h-9 w-9 rounded-full bg-[var(--app-surface-soft)] shrink-0" />
-        <Skeleton className="h-9 w-9 rounded-full bg-[var(--app-surface-soft)] shrink-0" />
+        <Skeleton className="h-11 w-11 shrink-0 rounded-[17px] bg-[var(--app-surface-soft)]" />
       </div>
     )
   }
 
   return (
-    <div className="bg-white dark:bg-[#141416] shadow-hairline fixed bottom-6 left-1/2 z-40 w-auto -translate-x-1/2 rounded-[12px] px-3 py-2 flex items-center gap-2 transition-all duration-300">
+    <div className={shellClassName}>
       {/* Sidebar Icon Toggle */}
-      <SidebarTrigger className="h-9 w-9 rounded-full p-0 theme-nav-control shrink-0 flex items-center justify-center [&_svg]:!size-[22px]" />
+      <SidebarTrigger data-cuelume-open className={`${controlClassName} p-0 [&_svg]:!size-[24px]`} />
 
-      {/* Center Actions if visitUrl is present */}
+      {/* Search (content pages only) */}
+      {showSearch && (
+        <button
+          type="button"
+          onClick={openSearch}
+          data-cuelume-open
+          data-cuelume-emphasis="subtle"
+          onPointerEnter={loadCommandSearch}
+          onFocus={loadCommandSearch}
+          aria-label="Search design tools"
+          title="Search (Ctrl K)"
+          className={`${controlClassName} theme-text-primary`}
+        >
+          <Search className="size-[22px]" />
+        </button>
+      )}
+
+      {/* Page actions if visitUrl is present */}
       {hasVisitActions && (
         <>
           <a
             href={visitUrl}
+            data-cuelume-tap
             target="_blank"
-            rel="noreferrer"
-            className="hidden sm:inline-flex h-9 items-center justify-center rounded-[12px] bg-[var(--app-text)] px-4 text-[11px] font-rethink font-bold uppercase tracking-[0.08em] text-[var(--app-bg)] hover:opacity-90 transition shrink-0"
+            rel={visitSponsored ? "sponsored noopener noreferrer" : "noopener"}
+            className="group/visit flex h-11 shrink-0 items-center justify-center gap-2 rounded-[17px] [corner-shape:squircle] bg-[var(--app-text)] pr-3.5 pl-4.5 font-google text-[15px] font-medium text-[var(--app-bg)] transition-[opacity,transform] duration-150 hover:opacity-90 active:scale-95"
           >
             Visit
+            <ArrowUpRight className="size-[18px] transition-transform duration-200 group-hover/visit:translate-x-0.5 group-hover/visit:-translate-y-0.5" />
           </a>
           <button
             type="button"
             onClick={handleShare}
-            className="hidden sm:inline-flex h-9 items-center justify-center rounded-[12px] border border-[var(--app-border-strong)] bg-[var(--app-surface-soft)] px-3.5 text-[11px] font-rethink font-bold uppercase tracking-[0.08em] theme-text-primary hover:bg-[var(--app-sidebar-accent)] transition shrink-0 cursor-pointer"
+            data-cuelume-tap
+            data-cuelume-emphasis="subtle"
+            className="flex h-11 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[17px] [corner-shape:squircle] theme-nav-control px-4 font-google text-[15px] font-medium theme-text-primary transition-[background-color,transform] duration-150 active:scale-95"
           >
-            {shareLabel}
+            {copied ? <Check className="size-[18px]" /> : <Share2 className="size-[18px]" />}
+            {copied ? "Copied" : "Share"}
           </button>
         </>
       )}
-
-      {/* Social Icons Link List */}
-      {socialLinks.map((social) => (
-        <a
-          key={social.label}
-          href={social.href}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={social.label}
-          className="h-9 w-9 rounded-full theme-nav-control transition-colors shrink-0 flex items-center justify-center"
-        >
-          <img
-            src={social.icon}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            className="size-[22px] theme-social-icon"
-          />
-        </a>
-      ))}
 
       {/* Theme Toggle Button */}
       <button
         id="theme-toggle-btn"
         type="button"
         onClick={toggleTheme}
+        data-cuelume-toggle
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-        className="h-9 w-9 rounded-full theme-nav-control theme-text-primary transition-colors flex items-center justify-center cursor-pointer shrink-0"
+        className={`${controlClassName} theme-text-primary`}
       >
-        {isDark ? (
-          <Sun className="size-[22px] text-[var(--app-text)]" />
-        ) : (
-          <Moon className="size-[22px] text-[var(--app-text)]" />
-        )}
+        {isDark ? <Sun className="size-[24px]" /> : <Moon className="size-[24px]" />}
       </button>
+      {showSearch && searchLoaded && (
+        <Suspense fallback={null}>
+          <CommandSearch open={searchOpen} onOpenChange={setSearchOpen} />
+        </Suspense>
+      )}
     </div>
   )
 }

@@ -1,0 +1,86 @@
+---
+import HomescreenLayout from "../layouts/homescreen.astro";
+import { actions } from "astro:actions";
+
+export const prerender = false;
+
+const result = Astro.getActionResult(actions.submitSponsor);
+
+if (result && !result.error) {
+  return Astro.redirect(`${Astro.url.pathname}?success=true`);
+}
+
+let success = Astro.url.searchParams.get("success") === "true";
+let errorMessage = result?.error ? result.error.message : "";
+---
+
+<HomescreenLayout
+	title="Sponsor Design Index | Advertise to Designers"
+	description="Put your product in front of designers. Get in touch to sponsor Design Index."
+	keywords="sponsor design index, advertise to designers, design tool sponsorship"
+	backgroundVariant="slate"
+>
+	<main class="mt-[40px] md:mt-[30px] px-[20px] pb-10">
+		<section class="mx-auto w-full max-w-[500px] rounded-xl">
+			<div>
+				<h1 class="mt-3 font-google text-4xl leading-none theme-text-primary md:text-[40px] font-semibold tracking-[0.01rem]">Become a Sponsor</h1>
+				<p class="mt-3 font-(family-name:--font-inter-stack) text-[15px] font-medium leading-[20px] theme-text-muted md:text-base">
+					Want your product in front of designers? Tell us about it and we will get back to you with sponsorship details.
+				</p>
+			</div>
+
+			<div class="mt-6 md:max-w-2xl">
+				<form action={actions.submitSponsor} method="post">
+					<div class="grid gap-4 md:grid-cols-2">
+						<label class="flex flex-col gap-2 font-google text-sm font-medium tracking-[0.05rem] theme-text-soft">
+							Company Name
+							<input type="text" name="companyName" placeholder="Encrata" required class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-(family-name:--font-inter-stack) text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none" />
+						</label>
+
+						<label class="flex flex-col gap-2 font-google text-sm font-medium tracking-[0.05rem] theme-text-soft">
+							Website
+							<input type="url" name="websiteUrl" placeholder="https://example.com" required class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-(family-name:--font-inter-stack) text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none" />
+						</label>
+					</div>
+
+					<label class="mt-4 flex flex-col gap-2 font-google text-sm font-medium tracking-[0.05rem] theme-text-soft">
+						Your Email
+						<input type="email" name="email" placeholder="you@example.com" required class="h-10 rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 font-(family-name:--font-inter-stack) text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none" />
+					</label>
+
+					<label class="mt-4 flex flex-col gap-2 font-google text-sm font-medium tracking-[0.05rem] theme-text-soft">
+						Message
+						<textarea
+							name="message"
+							rows="5"
+							placeholder="Tell us about your product and what you are looking for."
+							required
+							class="rounded-md border border-[var(--app-border)] bg-[var(--app-panel-contrast)] px-3 py-2 font-(family-name:--font-inter-stack) text-sm normal-case tracking-normal theme-text-primary placeholder:theme-text-soft focus:border-[var(--app-border-strong)] focus:outline-none"
+						></textarea>
+					</label>
+
+					{success && (
+						<div class="mt-6 font-(family-name:--font-inter-stack) text-sm text-emerald-600 dark:text-emerald-400">
+							<p class="font-bold tracking-[0.05rem]">Inquiry Received!</p>
+							<p class="mt-1 normal-case tracking-normal">Thanks for your interest. We have been notified and will reach out shortly.</p>
+						</div>
+					)}
+
+					{errorMessage && (
+						<div class="mt-6 font-(family-name:--font-inter-stack) text-sm text-rose-600 dark:text-rose-400">
+							<p class="font-bold tracking-[0.05rem]">Submission Failed</p>
+							<p class="mt-1 normal-case tracking-normal">{errorMessage}</p>
+						</div>
+					)}
+
+					<button
+						type="submit"
+						class="mt-4 theme-button inline-flex h-10 items-center justify-center rounded-md px-4 font-google text-xs uppercase font-bold tracking-[0.05rem]"
+					>
+						Send Inquiry
+					</button>
+				</form>
+			</div>
+		</section>
+	</main>
+</HomescreenLayout>

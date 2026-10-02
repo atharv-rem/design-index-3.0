@@ -137,4 +137,72 @@ export const server = {
       return { success: true };
     },
   }),
+
+  submitSponsor: defineAction({
+    accept: 'form',
+    input: z.object({
+      companyName: z.string().min(1, "Company name is required").transform(s => s.trim()),
+      websiteUrl: z.string().url("Invalid website URL").transform(s => s.trim()),
+      email: z.string().email("Invalid email address").transform(s => s.trim()),
+      message: z.string().min(1, "Message is required").transform(s => s.trim()),
+    }),
+    handler: async (input) => {
+      const { companyName, websiteUrl, email, message } = input;
+
+      const resendApiKey = import.meta.env.RESEND_API_KEY;
+      const adminEmail = import.meta.env.ADMIN_EMAIL;
+
+      if (!resendApiKey) {
+        throw new Error("RESEND_API_KEY is not configured in the server environment variables.");
+      }
+      if (!adminEmail) {
+        throw new Error("ADMIN_EMAIL is not configured in the server environment variables.");
+      }
+
+      const emailResponse = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${resendApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "Design Index Sponsors <onboarding@resend.dev>",
+          to: adminEmail,
+          subject: `New Sponsor Inquiry: ${companyName}`,
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; border: 1px solid #e5e7eb; border-radius: 12px; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+              <h2 style="color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 16px; margin-top: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.025em;">New Sponsor Inquiry</h2>
+              <p style="margin: 16px 0; color: #4b5563; font-size: 16px; line-height: 1.5;">Someone wants to sponsor Design Index.</p>
+
+              <table style="width: 100%; border-collapse: collapse; margin-top: 24px;">
+                <tr style="border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 12px 0; font-weight: 600; width: 140px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Company</td>
+                  <td style="padding: 12px 0; color: #111827; font-size: 15px;">${companyName}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 12px 0; font-weight: 600; width: 140px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Website</td>
+                  <td style="padding: 12px 0; color: #111827; font-size: 15px;"><a href="${websiteUrl}" style="color: #2563eb; text-decoration: underline;">${websiteUrl}</a></td>
+                </tr>
+                <tr style="border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 12px 0; font-weight: 600; width: 140px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Contact</td>
+                  <td style="padding: 12px 0; color: #111827; font-size: 15px;"><a href="mailto:${email}" style="color: #2563eb; text-decoration: underline;">${email}</a></td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: top;">Message</td>
+                  <td style="padding: 12px 0; color: #374151; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${message}</td>
+                </tr>
+              </table>
+            </div>
+          `,
+        }),
+      });
+
+      if (!emailResponse.ok) {
+        const errorText = await emailResponse.text();
+        throw new Error(`Email service returned error: ${errorText}`);
+      }
+
+      return { success: true };
+    },
+  }),
 };

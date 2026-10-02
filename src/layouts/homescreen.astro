@@ -1,12 +1,14 @@
 ---
 import '../styles/global.css';
 import HomeSidebar from '../components/home-sidebar';
+import { HomeAlerts } from '../components/home-alerts';
 import SiteFooter from '../components/site-footer.astro';
 import { SEO } from 'astro-seo';
 import { getImage } from 'astro:assets';
-import heartIcon from '../assets/love.png';
+import { Font } from 'astro:assets';
+import heartIcon from '../assets/love.svg';
 
-const optimizedHeart = await getImage({ src: heartIcon, width: 16, height: 16 });
+const optimizedHeart = await getImage({ src: heartIcon, width: 20, height: 20 });
 
 type Props = {
     title?: string;
@@ -20,6 +22,7 @@ type Props = {
     floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>;
     showFooter?: boolean;
     visitUrl?: string;
+    visitSponsored?: boolean;
     shareTitle?: string;
 };
 
@@ -35,12 +38,15 @@ const {
     floatingNavbarSocialLinks = [],
     showFooter = true,
     visitUrl,
+    visitSponsored = false,
     shareTitle,
 } = Astro.props;
 
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://designindex.xyz').href;
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.md';
+
+const canonicalUrl =new URL(Astro.url.pathname, Astro.site || 'https://designindex.xyz').href;
 const faviconVersion = '20260331';
-const faviconSvg = `/favicon.svg?v=${faviconVersion}`;
+const faviconIco = `/favicon.ico?v=${faviconVersion}`;
 
 const defaultOgImage = new URL(
     `/api/og.png?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`,
@@ -49,9 +55,12 @@ const defaultOgImage = new URL(
 const ogImage = customOgImage || defaultOgImage;
 ---
 
-<html lang="en">
+<html lang="en" data-font-scope={isHome ? 'home' : 'app'}>
     <head>
         <meta charset="utf-8" />
+        <Font cssVariable="--font-gatuzo-local" preload={isHome ? [{ style: "normal", weight: "400" }] : undefined} />
+        <Font cssVariable="--font-google-sans" />
+        <Font cssVariable="--font-inter" />
         <script
           src="https://cdn.databuddy.cc/databuddy.js"
           data-client-id="CzkF34Qr773cOXFFoHjzM"
@@ -59,7 +68,7 @@ const ogImage = customOgImage || defaultOgImage;
           crossorigin="anonymous"
           async
         ></script>
-        <link rel="icon" type="image/svg+xml" href={faviconSvg} />
+        <link rel="icon" href={faviconIco} sizes="any" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
         <SEO
@@ -144,7 +153,7 @@ const ogImage = customOgImage || defaultOgImage;
               "@id": "https://designindex.xyz/#organization",
               "name": "Design Index",
               "url": "https://designindex.xyz/",
-              "logo": "https://designindex.xyz/favicon.svg"
+              "logo": "https://designindex.xyz/favicon.ico"
             },
             {
               "@type": "ItemList",
@@ -217,13 +226,21 @@ const ogImage = customOgImage || defaultOgImage;
             showDefaultTrigger={showDefaultSidebarTrigger}
             floatingNavbarSocialLinks={floatingNavbarSocialLinks}
             visitUrl={visitUrl}
+            visitSponsored={visitSponsored}
             shareTitle={shareTitle}
+            showSearch={!isHome}
             heartIconSrc={optimizedHeart.src}
         >
             <slot />
-            {showFooter && <SiteFooter />}
+            {showFooter && <SiteFooter flush={isHome} />}
         </HomeSidebar>
-        
+        <HomeAlerts client:idle />
+
+        <script>
+          import { bind } from "cuelume";
+          bind();
+        </script>
+
         <script is:inline>
           (function() {
             if (typeof window !== "undefined" && window.navigator) {

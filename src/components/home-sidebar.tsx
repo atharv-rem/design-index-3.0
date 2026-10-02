@@ -1,4 +1,4 @@
-import heart from "@/assets/love.png?url"
+import heart from "@/assets/love.svg?url"
 import instagramIcon from "@/assets/instagram.svg?url"
 import githubIcon from "@/assets/github.svg?url"
 import threadsIcon from "@/assets/threads.svg?url"
@@ -19,15 +19,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarSwipe,
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar"
 
 const linkGroups = [
-  {
-    title: "Home",
-    links: [{ label: "Home", href: "/" }],
-  },
   {
     title: "Explore",
     links: [
@@ -53,6 +50,7 @@ const linkGroups = [
     links: [
       { label: "Submit Tool", href: "/submit-tool" },
       { label: "Feedback", href: "/feedback" },
+      { label: "Sponsor", href: "/sponsor" },
     ],
   },
 ]
@@ -90,11 +88,14 @@ function HomeSidebarContent({ heartIconSrc }: { heartIconSrc?: string }) {
           transition={{ type: "spring", stiffness: 180, damping: 24, mass: 0.95 }}
         >
           <div className="flex items-center gap-2">
-            <p className="text-md font-semibold tracking-[0.05rem] theme-text-primary">design index</p>
+            <img src="/logo_light.svg" alt="" aria-hidden="true" className="size-6 rounded-md dark:hidden" />
+            <img src="/logo_dark.svg" alt="" aria-hidden="true" className="hidden size-6 rounded-md dark:block" />
+            <p className="font-(family-name:--font-gatuzo-local) text-base font-semibold leading-none theme-text-primary">design index</p>
             <button
               type="button"
               aria-label="Close sidebar"
               onClick={toggleSidebar}
+              data-cuelume-close
               className="ml-auto rounded-md p-1.5 theme-text-primary transition-colors hover:bg-[var(--sidebar-accent)]"
             >
               <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -113,7 +114,7 @@ function HomeSidebarContent({ heartIconSrc }: { heartIconSrc?: string }) {
             transition={{ type: "spring", stiffness: 170, damping: 24, mass: 0.95, delay: 0.06 + index * 0.05 }}
           >
             <SidebarGroup className="px-0 py-1.5">
-              <SidebarGroupLabel className="px-2 pb-1 font-google font-medium text-[11px] uppercase tracking-[0.16em] theme-text-soft">
+              <SidebarGroupLabel className="px-2 pb-1 font-google font-semibold text-[11px] uppercase tracking-[0.04em] theme-text-soft opacity-60">
                 {group.title}
               </SidebarGroupLabel>
               <SidebarMenu className="space-y-1 font-google">
@@ -121,9 +122,15 @@ function HomeSidebarContent({ heartIconSrc }: { heartIconSrc?: string }) {
                   <SidebarMenuItem key={link.label}>
                     <SidebarMenuButton
                       asChild
-                      className="text-sm font-semibold theme-text-muted hover:bg-[var(--sidebar-accent)] hover:theme-text-primary bg-[#fafafa] dark:bg-[#141414] rounded-md px-2 py-1.5 transition-colors"
+                      className="text-sm font-semibold theme-text-muted hover:bg-[var(--sidebar-accent)] hover:theme-text-primary bg-[#fafafa] dark:bg-[#1c1c20] dark:hover:bg-[#26262b] rounded-md px-2 py-1.5 transition-colors"
                     >
-                      <a href={link.href} onClick={() => setOpenMobile(false)}>
+                      <a
+                        href={link.href}
+                        data-cuelume-navigate
+                        data-cuelume-emphasis="subtle"
+                        data-astro-prefetch={isMobile ? "tap" : "hover"}
+                        onClick={() => setOpenMobile(false)}
+                      >
                         {link.label}
                       </a>
                     </SidebarMenuButton>
@@ -140,18 +147,18 @@ function HomeSidebarContent({ heartIconSrc }: { heartIconSrc?: string }) {
           {...mobileMotion}
           transition={{ type: "spring", stiffness: 165, damping: 25, mass: 1, delay: 0.22 }}
         >
-          <div className="flex items-center justify-center font-rethink text-[15px] theme-text-primary md:text-[10px]">
+          <div className="flex items-center justify-center font-google text-[17px] theme-text-primary md:text-[13px]">
             <span>Made with</span>
             <img
               src={heartIconSrc || heart}
               alt="heart icon"
               loading="lazy"
               decoding="async"
-              width={16}
-              height={16}
-              className="mx-1 inline h-4 w-4"
+              width={20}
+              height={20}
+              className="mx-1 inline h-5 w-5"
             />
-            <span> by Atharv</span>
+            <span> by <a href="https://x.com/atharv_rem" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Atharv</a></span>
           </div>
         </motion.div>
       </SidebarFooter>
@@ -167,7 +174,7 @@ function HomeSidebarSkeletonContent() {
       </SidebarHeader>
 
       <SidebarContent className="px-2 pb-2">
-        {Array.from({ length: 4 }).map((_, index) => (
+        {Array.from({ length: 3 }).map((_, index) => (
           <SidebarGroup key={index} className="px-0 py-1.5">
             <div className="px-2 pb-2">
               <Skeleton className="h-3 w-20 bg-[var(--sidebar-accent)]" />
@@ -196,8 +203,10 @@ type HomeSidebarProps = {
   showDefaultTrigger?: boolean
   floatingNavbarSocialLinks?: Array<{ label: string; href: string; icon: string }>
   visitUrl?: string
+  visitSponsored?: boolean
   shareTitle?: string
   heartIconSrc?: string
+  showSearch?: boolean
 }
 
 export default function HomeSidebar({
@@ -205,8 +214,10 @@ export default function HomeSidebar({
   showDefaultTrigger = true,
   floatingNavbarSocialLinks = [],
   visitUrl,
+  visitSponsored = false,
   shareTitle,
   heartIconSrc,
+  showSearch = false,
 }: HomeSidebarProps) {
   const [isMounted, setIsMounted] = useState(false)
 
@@ -214,14 +225,13 @@ export default function HomeSidebar({
     setIsMounted(true)
   }, [])
 
-  const resolvedFloatingNavbarSocialLinks =
-    floatingNavbarSocialLinks.length > 0 ? floatingNavbarSocialLinks : defaultSocialLinks
-
   return (
     <SidebarProvider defaultOpen={false} className="min-h-svh w-full">
+      <SidebarSwipe />
       <BottomFloatingNavbar
-        socialLinks={resolvedFloatingNavbarSocialLinks}
+        showSearch={showSearch}
         visitUrl={visitUrl}
+        visitSponsored={visitSponsored}
         shareTitle={shareTitle}
       />
 

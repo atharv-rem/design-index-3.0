@@ -1,9 +1,11 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
+import { getSponsorCards } from "@/lib/sponsors";
 import { getToolsByCategory } from "@/lib/get-tool-by-category";
 
 const tools = await getToolsByCategory("illustration");
+const sponsors = await getSponsorCards();
 if (Astro.cache.enabled) {
 	Astro.cache.set({
 		maxAge: 86400,
@@ -26,7 +28,7 @@ if (Astro.cache.enabled) {
 				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A rich archive of illustrations—from minimal to detailed—to add depth, emotion, and storytelling to your projects. Make your work more engaging, memorable, and human-centered.
 				</p>
-				<ToolsGrid client:load category="illustration" initialTools={tools} />
+				<ToolsGrid client:load category="illustration" initialTools={tools} sponsors={sponsors} />
 			</div>
 		</section>
 	</main>

@@ -1,86 +1,173 @@
 ---
 const year = new Date().getFullYear();
-import { Image } from "astro:assets";
+const { flush = false } = Astro.props;
 import instagramIcon from "../assets/instagram.svg?url";
 import githubIcon from "../assets/github.svg?url";
 import threadsIcon from "../assets/threads.svg?url";
 import twitterIcon from "../assets/twitter.svg?url";
-import loveIcon from "../assets/love.png";
+import { ArrowUpRight, HeartHandshake } from "lucide-react";
+
+const linkGroups = [
+	{
+		title: "Company",
+		links: [
+			{ label: "Home", href: "/" },
+			{ label: "About", href: "/about" },
+			{ label: "Sponsor", href: "/sponsor" },
+		],
+	},
+	{
+		title: "Resources",
+		links: [
+			{ label: "Tools", href: "/tools" },
+			{ label: "UI", href: "/ui" },
+			{ label: "Design Inspiration", href: "/design-inspo" },
+		],
+	},
+	{
+		title: "Graphics",
+		links: [
+			{ label: "Mockups", href: "/mockups" },
+			{ label: "Illustrations", href: "/illustrations" },
+			{ label: "Icons", href: "/icons" },
+		],
+	},
+	{
+		title: "Style",
+		links: [
+			{ label: "Colours", href: "/colours" },
+			{ label: "Fonts", href: "/fonts" },
+		],
+	},
+	{
+		title: "Support",
+		links: [
+			{ label: "Submit Tool", href: "/submit-tool" },
+			{ label: "Feedback", href: "/feedback" },
+			{ label: "Terms", href: "/terms" },
+		],
+	},
+];
+
+const socialLinks = [
+	{ label: "Instagram", href: "https://www.instagram.com/atharv_remeshan/", icon: instagramIcon },
+	{ label: "GitHub", href: "https://github.com/atharv-rem/design-index-3.0", icon: githubIcon },
+	{ label: "Threads", href: "https://www.threads.com/@atharv_remeshan", icon: threadsIcon },
+	{ label: "Twitter", href: "https://x.com/atharv_rem", icon: twitterIcon },
+];
 ---
 
-<footer class="relative z-30 mt-8 theme-footer-shell">
-	<div class="mx-auto w-full max-w-7xl px-6 py-8">
-		<div class="flex flex-col justify-between md:flex-row md:items-start space-y-5">
-			<div class="w-full md:max-w-sm">
-				<a href="/" class="font-rethink text-3xl font-semibold theme-text-primary transition-opacity hover:opacity-90">Design Index</a>
-				<p class="mt-2 font-rethink text-sm leading-6 theme-text-soft">Curated design tools, resources, and inspiration.</p>
-
-				<div class="mt-3 flex items-center gap-4">
-					<a href="https://github.com" aria-label="GitHub" class="opacity-75 transition-opacity hover:opacity-100">
-						<img src={githubIcon} alt="" loading="lazy" decoding="async" width="20" height="20" class="h-5 w-5 theme-social-icon" />
-					</a>
-					<a href="https://x.com" aria-label="Twitter" class="opacity-75 transition-opacity hover:opacity-100">
-						<img src={twitterIcon} alt="" loading="lazy" decoding="async" width="20" height="20" class="h-5 w-5 theme-social-icon" />
-					</a>
-					<a href="https://instagram.com" aria-label="Instagram" class="opacity-75 transition-opacity hover:opacity-100">
-						<img src={instagramIcon} alt="" loading="lazy" decoding="async" width="20" height="20" class="h-5 w-5 theme-social-icon" />
-					</a>
-					<a href="https://threads.net" aria-label="Threads" class="opacity-75 transition-opacity hover:opacity-100">
-						<img src={threadsIcon} alt="" loading="lazy" decoding="async" width="20" height="20" class="h-5 w-5 theme-social-icon" />
-					</a>
-				</div>
-
-				<p class="mt-3 inline-flex items-center gap-2 font-rethink text-sm theme-text-muted">
-					<span class="inline-block h-2.5 w-2.5 rounded-full bg-[#9ee38f]"></span>
-					All Systems Normal
+<footer class:list={["relative z-30 theme-footer-shell", !flush && "mt-8"]}>
+	<div class="mx-auto w-full max-w-7xl px-6 pt-10">
+		<div class="flex flex-col gap-6 pb-10 lg:flex-row lg:items-stretch lg:justify-between">
+			<div class="flex flex-col">
+				<a href="/" aria-label="Design Index home" class="lg:-mt-2 inline-flex items-center gap-2.5 transition-opacity hover:opacity-90">
+					<img src="/logo_light.svg" alt="" width="36" height="36" loading="lazy" decoding="async" class="h-9 w-9 rounded-lg dark:hidden" />
+					<img src="/logo_dark.svg" alt="" width="36" height="36" loading="lazy" decoding="async" class="hidden h-9 w-9 rounded-lg dark:block" />
+					<span class="font-(family-name:--font-gatuzo-local) text-xl font-semibold leading-none theme-text-primary">design index</span>
+				</a>
+				<p class="mt-3 max-w-lg text-justify hyphens-auto font-(family-name:--font-inter-stack) text-[13px] font-medium leading-[1.6] theme-text-soft">
+					Design Index is a hand-picked directory of design tools, mockups, icons, fonts, colour palettes, illustrations and UI. Describe what you're building and smart search finds the right tools, or submit one you love to help the index grow. Every listing is reviewed by hand, so you spend less time searching and more time creating.
 				</p>
 			</div>
 
-			<div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 md:max-w-3xl md:grid-cols-3">
-				<div>
-                    <p class="font-rethink text-3xl font-semibold theme-text-primary md:text-2xl">Company</p>
-                    <nav aria-label="Company" class="mt-4 flex flex-col gap-2.5 font-rethink text-sm theme-text-muted">
-                        <a class="transition-colors hover:theme-text-primary" href="/">Home</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/about">About</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/submit-tool">Submit Tool</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/feedback">Feedback</a>
-                    </nav>
-                </div>
-
-				<div>
-                    <p class="font-rethink text-3xl font-semibold theme-text-primary md:text-2xl">Explore</p>
-                    <nav aria-label="Explore" class="mt-4 flex flex-col gap-2.5 font-rethink text-sm theme-text-muted">
-                        <a class="transition-colors hover:theme-text-primary" href="/tools">Tools</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/colours">Colours</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/mockups">Mockups</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/illustrations">Illustrations</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/ui">UI</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/icons">Icons</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/fonts">Fonts</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/design-inspo">Design Inspiration</a>
-                    </nav>
-                </div>
-
-				<div class="md:text-left">
-                    <p class="font-rethink text-3xl font-semibold theme-text-primary md:text-2xl">Support</p>
-                    <nav aria-label="Support" class="mt-4 flex flex-col gap-2.5 font-rethink text-sm theme-text-muted md:items-start">
-                        <a class="transition-colors hover:theme-text-primary" href="/terms">Terms</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/feedback">Help Topics</a>
-                        <a class="transition-colors hover:theme-text-primary" href="/submit-tool">Getting Started</a>
-                    </nav>
-                </div>
-            </div>
+			<div class="lg:max-w-[360px]">
+				<p class="flex items-center gap-2 font-google text-[11px] font-semibold uppercase tracking-[0.08em] theme-text-soft">
+					<HeartHandshake className="size-4" strokeWidth={1.75} aria-hidden="true" />
+					Contribute
+				</p>
+				<p class="mt-2.5 text-pretty font-google text-[13px] leading-[1.6] theme-text-muted">
+					Know a great design resource we're missing? Submit it to the index.
+				</p>
+				<a
+					href="/submit-tool"
+					class="group/cta mt-3.5 inline-flex h-10 items-center gap-2 rounded-xl bg-(--app-text) pr-3 pl-4 font-google text-[13px] font-medium text-(--app-bg) shadow-sm ring-1 ring-(--app-text)/10 transition-all duration-200 ease-out hover:shadow-md hover:opacity-90 active:scale-[0.96]"
+				>
+					Submit a tool
+					<span class="flex size-6 items-center justify-center rounded-lg bg-(--app-bg)/15">
+						<ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" strokeWidth={2} aria-hidden="true" />
+					</span>
+				</a>
+			</div>
 		</div>
 
-		<div class="mt-8 flex flex-col gap-3 border-t border-app-border pt-6 md:flex-row md:items-end md:justify-between">
-			<p class="font-rethink text-sm theme-text-soft">
-				© {year} Design Index. All rights reserved. 
-			</p>
-			<p class="inline-flex items-center gap-2 font-rethink text-sm theme-text-soft">
-				Built with
-				<Image src={loveIcon} alt="love" loading="lazy" decoding="async" width="16" height="16" class="h-4 w-4" />
-				by Atharv
-			</p>
+		<nav aria-label="Footer" class="hidden lg:block">
+			<div class="grid grid-cols-5 gap-x-8">
+				{linkGroups.map((group, index) => (
+					<div class="su-sitemap-column border-t border-app-border pt-5" style={`--su-from: ${index * 7}%`}>
+						<p class="font-google text-[11px] font-semibold uppercase tracking-[0.08em] theme-text-soft">{group.title}</p>
+						<ul class="mt-3.5 space-y-2">
+							{group.links.map((link) => (
+								<li>
+									<a href={link.href} class="group/link font-(family-name:--font-inter-stack) text-[13.5px] leading-normal theme-text-primary">
+										<span class="relative">
+											{link.label}
+											<span aria-hidden="true" class="absolute inset-x-0 -bottom-px h-px origin-left scale-x-0 bg-current transition-transform duration-220 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/link:scale-x-100 motion-reduce:transition-none"></span>
+										</span>
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				))}
+			</div>
+		</nav>
+
+		<nav aria-label="Footer" class="lg:hidden">
+			{linkGroups.map((group, index) => (
+				<details class="group/acc border-b border-app-border" open={index === 0}>
+					<summary class="flex h-12 cursor-pointer list-none items-center justify-between font-google text-[11px] font-semibold uppercase tracking-[0.08em] theme-text-soft [&::-webkit-details-marker]:hidden">
+						{group.title}
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-4 transition-transform duration-220 group-open/acc:rotate-180 motion-reduce:transition-none">
+							<path d="m6 9.5 6 6 6-6"></path>
+						</svg>
+					</summary>
+					<ul class="space-y-2.5 pb-4">
+						{group.links.map((link) => (
+							<li>
+								<a href={link.href} class="font-(family-name:--font-inter-stack) text-[13.5px] theme-text-primary">{link.label}</a>
+							</li>
+						))}
+					</ul>
+				</details>
+			))}
+		</nav>
+
+		<div class="mt-12 flex flex-col gap-5 border-t border-app-border py-6 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+			<div class="flex min-w-0 flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-3">
+				<span class="font-(family-name:--font-inter-stack) text-xs tabular-nums theme-text-soft">© {year} Design Index. All rights reserved.</span>
+			</div>
+
+			<nav aria-labelledby="social-icons-heading" class="flex items-center gap-4">
+				<p id="social-icons-heading" class="sr-only">Follow us on social media</p>
+				{socialLinks.map((social) => (
+					<a href={social.href} target="_blank" rel="noreferrer" aria-label={social.label} class="opacity-75 transition-opacity hover:opacity-100">
+						<img src={social.icon} alt="" loading="lazy" decoding="async" width="20" height="20" class="h-5 w-5 theme-social-icon" />
+					</a>
+				))}
+			</nav>
+		</div>
+	</div>
+
+	<div aria-hidden="true" class="mx-auto w-full max-w-7xl select-none overflow-hidden px-4 sm:px-6">
+		<div class="h-[8.5vw] sm:h-[9.5vw] max-h-[9.5rem] overflow-hidden xl:h-[9.5rem]">
+			<p class="whitespace-nowrap text-center font-(family-name:--font-gatuzo-local) text-[13.5vw] sm:text-[15.5vw] font-semibold leading-none text-(--app-text)/5 xl:text-[13.5rem]">designindex</p>
 		</div>
 	</div>
 </footer>
+
+<style>
+	@keyframes su-footer-rise {
+		from { opacity: 0; transform: translateY(16px); }
+		to { opacity: 1; transform: none; }
+	}
+	@supports (animation-timeline: view()) {
+		@media (prefers-reduced-motion: no-preference) {
+			.su-sitemap-column {
+				animation: su-footer-rise linear both;
+				animation-timeline: view();
+				animation-range: entry var(--su-from) entry calc(var(--su-from) + 48%);
+			}
+		}
+	}
+</style>

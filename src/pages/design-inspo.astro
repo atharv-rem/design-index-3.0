@@ -1,9 +1,11 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
+import { getSponsorCards } from "@/lib/sponsors";
 import { getToolsByCategory } from "@/lib/get-tool-by-category";
 
 const tools = await getToolsByCategory("design_inspiration");
+const sponsors = await getSponsorCards();
 
 if (Astro.cache.enabled) {
 	Astro.cache.set({
@@ -27,7 +29,7 @@ if (Astro.cache.enabled) {
 				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A curated gallery of visual inspiration across web, mobile, print, and branding. Explore standout layouts, creative UI patterns, and bold visuals to spark ideas and fuel your creativity.
 				</p>
-				<ToolsGrid client:load category="design_inspiration" initialTools={tools} />
+				<ToolsGrid client:load category="design_inspiration" initialTools={tools} sponsors={sponsors} />
 			</div>
 		</section>
 	</main>

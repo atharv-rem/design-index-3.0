@@ -1,9 +1,11 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
+import { getSponsorCards } from "@/lib/sponsors";
 import { getToolsByCategory } from "@/lib/get-tool-by-category";
 
 const tools = await getToolsByCategory("icon");
+const sponsors = await getSponsorCards();
 
 if (Astro.cache.enabled) {
 	Astro.cache.set({
@@ -27,7 +29,7 @@ if (Astro.cache.enabled) {
 				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A versatile collection of icon libraries spanning styles and use cases. From minimal lines to bold or animated icons, find the right visuals to enhance clarity and user interaction.
 				</p>
-				<ToolsGrid client:load category="icon" initialTools={tools} />
+				<ToolsGrid client:load category="icon" initialTools={tools} sponsors={sponsors} />
 			</div>
 		</section>
 	</main>

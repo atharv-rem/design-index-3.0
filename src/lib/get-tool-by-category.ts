@@ -1,7 +1,7 @@
 import {
-  CACHE_TTL_SECONDS,
+  categoryCacheKey,
   getCachedJson,
-  setCachedJson,
+  setCachedJsonInBackground,
 } from "@/lib/cache";
 
 import { supabase } from "@/lib/supabase";
@@ -14,16 +14,17 @@ import {
 export async function getToolsByCategory(
   category: string,
 ): Promise<ToolCard[]> {
-  const cacheKey =
-    `design-index:tools:${category}`;
+  const cacheKey = categoryCacheKey(category);
 
-  const cached = await getCachedJson<ToolCard[]>(  cacheKey, );
+  const cached = await getCachedJson<ToolCard[]>(cacheKey);
 
   if (cached) {
-    console.log("cache hit");
+    console.log(`cache hit: ${category} page (${cacheKey})`);
 
     return cached;
   }
+
+  console.log(`cache miss: ${category} page (${cacheKey})`);
 
   const { data, error } = await supabase
     .from("design_index")
@@ -47,13 +48,7 @@ export async function getToolsByCategory(
   const tools =
     normalizeToolCards(data);
 
-  void setCachedJson(
-    cacheKey,
-    tools,
-    CACHE_TTL_SECONDS,
-  );
-
-  console.log("cache miss");
+  setCachedJsonInBackground(cacheKey, tools);
 
   return tools;
 }

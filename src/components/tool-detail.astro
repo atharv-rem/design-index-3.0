@@ -1,0 +1,373 @@
+---
+import { getOptimizedImageUrl } from "@/lib/images";
+import visitLightIcon from "@/assets/visit_light.svg";
+import visitDarkIcon from "@/assets/visit_dark.svg";
+import sharelightIcon from "@/assets/share_light.svg";
+import shareDarkIcon from "@/assets/share_dark.svg";
+import { Badge } from "@/components/ui/badge";
+import { BrowserMockupCard } from "@/components/mockups/browser-mockup-card";
+
+export type SuggestedItem = {
+  href: string;
+  name: string;
+  description: string;
+  og_image_link: string;
+  sponsored?: boolean;
+};
+
+interface Props {
+  name: string;
+  description: string;
+  websiteUrl: string;
+  pricing?: string;
+  sponsored?: boolean;
+  suggested: SuggestedItem[];
+}
+
+const { name, description, websiteUrl, pricing = "", sponsored = false, suggested } = Astro.props;
+---
+
+  <main class="box-border p-4 lg:h-screen">
+    <section class="grid grid-cols-1 gap-4 lg:h-full lg:grid-cols-2 lg:items-stretch lg:overflow-hidden">
+      <aside class="rounded-xl md:p-2 lg:h-full lg:overflow-hidden">
+        <div class="no-scrollbar pb-[20px] lg:-mx-2 lg:-mt-1 lg:h-full lg:overflow-y-auto lg:px-2 lg:pt-1">
+
+          <div class="flex flex-wrap items-center gap-3">
+            <h1 class="theme-text-primary tracking-[0.001rem] font-google font-semibold text-2xl leading-tight md:text-3xl">
+              {name}
+            </h1>
+            <div class="flex flex-wrap items-center gap-2">
+              {
+                sponsored && (
+                  <Badge variant="green" className="py-[12px] px-4 text-[12px] font-semibold rounded-[10px]">
+                    SPONSORED
+                  </Badge>
+                )
+              }
+
+              {
+                pricing.includes(
+                  "free",
+                ) && (
+                  <Badge variant="green" className="py-[12px] px-4 text-[12px] font-semibold rounded-[10px]">
+                    FREE
+                  </Badge>
+                )
+              }
+
+              {
+                pricing.includes(
+                  "paid",
+                ) && (
+                  <Badge variant="red" className="py-[12px] px-4 text-[12px] font-semibold rounded-[10px]">
+                    PAID
+                  </Badge>
+                )
+              }
+            </div>
+          </div>
+
+          <p class="theme-text-muted mt-3 font-(family-name:--font-inter-stack) font-medium text-[15px] leading-[20px] leading-6">
+            {description}
+          </p>
+
+          <div class="mt-5 flex flex-wrap items-center gap-2">
+            <a
+              href={websiteUrl}
+              data-cuelume-tap
+              target="_blank"
+              rel={sponsored ? "sponsored noopener noreferrer" : "noopener"}
+              class="theme-button inline-flex h-10 items-center justify-center rounded-[15px] px-4 font-google text-[15px] font-bold tracking-[0.001rem]"
+            >
+              <img
+                src={visitLightIcon.src}
+                alt=""
+                width={15}
+                height={15}
+                class="mr-2 rounded-sm dark:hidden block"
+              />
+              <img
+                src={visitDarkIcon.src}
+                alt=""
+                width={15}
+                height={15}
+                class="mr-2 rounded-sm dark:block hidden"
+              />
+              <p>visit</p>
+            </a>
+
+            <button
+              type="button"
+              data-share-button
+              data-cuelume-tap
+              data-cuelume-emphasis="subtle"
+              data-share-title={name}
+              class="theme-button inline-flex h-10 items-center justify-center rounded-[15px] px-4 font-google text-[15px] font-bold tracking-[0.001rem]"
+            >
+              <img
+                src={sharelightIcon.src}
+                alt=""
+                width={15}
+                height={15}
+                class="mr-2 rounded-sm dark:hidden block"
+              />
+              <img
+                src={shareDarkIcon.src}
+                alt=""
+                width={15}
+                height={15}
+                class="mr-2 rounded-sm dark:block hidden"
+              />
+              <span data-share-label>share</span>
+            </button>
+          </div>
+
+          <div class="mt-6">
+            <p class="theme-text-soft font-google text-[11px] uppercase font-bold tracking-[0.02rem] opacity-60">
+              Try these tools
+            </p>
+
+            <div class="mt-3 grid grid-cols-1 gap-6 md:grid-cols-2">
+              {
+                suggested.map(
+                  (item) => (
+                    <a
+                      href={item.href}
+                      data-cuelume-navigate
+                      data-cuelume-emphasis="subtle"
+                      class="group relative flex flex-col overflow-hidden rounded-xl bg-[var(--app-surface-soft)] shadow-[0_1px_2px_rgb(0_0_0/0.04)] ring-1 ring-black/5 transition duration-200 hover:-translate-y-1 hover:shadow-[0_8px_24px_-12px_rgb(0_0_0/0.1)] dark:shadow-[0_4px_14px_rgb(0_0_0/0.8),0_14px_36px_-8px_rgb(0_0_0/0.9),inset_0_1px_0_rgb(255_255_255/0.06)] dark:ring-white/10 dark:hover:shadow-[0_6px_18px_rgb(0_0_0/0.85),0_22px_48px_-8px_rgb(0_0_0/1),inset_0_1px_0_rgb(255_255_255/0.08)]"
+                    >
+                      {item.sponsored && (
+                        <span class="absolute left-2.5 top-2.5 z-10 rounded-md bg-[var(--app-bg)]/80 px-2 py-0.5 font-google text-[10px] font-semibold uppercase tracking-[0.1em] theme-text-primary backdrop-blur">
+                          Sponsored
+                        </span>
+                      )}
+                      <div class="overflow-hidden [&_img]:transition-transform [&_img]:duration-500 group-hover:[&_img]:scale-[1.04]">
+                        <img
+                          src={
+                            getOptimizedImageUrl(
+                              item.og_image_link,
+                              { width: 480, quality: 76 },
+                            )
+                          }
+                          alt={item.name}
+                          loading="lazy"
+                          decoding="async"
+                          fetchpriority="low"
+                          referrerpolicy="no-referrer"
+                          width="1200"
+                          height="675"
+                          class="aspect-video w-full object-cover"
+                        />
+                      </div>
+
+                      <div class="flex flex-1 flex-col gap-1.5 p-4">
+                        <h3 class="font-google text-[17px] font-semibold leading-snug theme-text-primary">
+                          {item.name}
+                        </h3>
+
+                        <p class="line-clamp-2 font-google text-sm font-medium leading-5 theme-text-soft">
+                          {item.description}
+                        </p>
+                      </div>
+                    </a>
+                  ),
+                )
+              }
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="hidden rounded-xl p-2 lg:block lg:h-full lg:overflow-hidden">
+        <div class="no-scrollbar flex flex-col gap-2 lg:h-full lg:overflow-y-auto">
+          <BrowserMockupCard
+            theme="auto"
+            url={websiteUrl}
+            className="flex flex-col lg:min-h-0 lg:flex-1"
+            contentClassName="h-auto min-h-0 flex-1"
+          >
+            <div
+              class="relative size-full"
+              data-embed-wrapper
+            >
+              <div
+                class="theme-solid-bg absolute inset-0 z-10 flex items-center justify-center"
+                data-embed-loading
+              >
+                <p class="theme-text-soft font-google text-xs uppercase">
+                  loading website
+                </p>
+              </div>
+
+              <div
+                class="h-full w-full"
+                data-embed-stage
+              >
+                <iframe
+                  src={websiteUrl}
+                  title={`${name} preview`}
+                  loading="lazy"
+                  class="theme-solid-bg h-full w-full"
+                  referrerpolicy="no-referrer"
+                  data-embed-iframe
+                ></iframe>
+              </div>
+            </div>
+          </BrowserMockupCard>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script is:inline>
+  const wrapper =
+    document.querySelector(
+      "[data-embed-wrapper]",
+    );
+
+  const stage =
+    wrapper?.querySelector(
+      "[data-embed-stage]",
+    );
+
+  const iframe =
+    wrapper?.querySelector(
+      "[data-embed-iframe]",
+    );
+
+  const loading =
+    wrapper?.querySelector(
+      "[data-embed-loading]",
+    );
+
+  const shareButton =
+    document.querySelector(
+      "[data-share-button]",
+    );
+
+  if (shareButton) {
+    shareButton.addEventListener(
+      "click",
+      async () => {
+        const shareUrl =
+          shareButton.getAttribute(
+            "data-share-url",
+            ) ??
+          window.location.href;
+
+        const shareTitle =
+          shareButton.getAttribute(
+            "data-share-title",
+          ) ?? document.title;
+
+        try {
+          if (navigator.share) {
+            await navigator.share({
+              title: `${shareTitle} | Design Index`,
+              text: `Check out ${shareTitle} on Design Index`,
+              url: shareUrl,
+            });
+
+            return;
+          }
+
+          await navigator.clipboard.writeText(
+            shareUrl,
+          );
+
+          const labelEl = shareButton.querySelector("[data-share-label]");
+          if (labelEl) {
+            const previousLabel = labelEl.textContent;
+            labelEl.textContent = "Copied";
+            setTimeout(() => {
+              labelEl.textContent = previousLabel;
+            }, 1500);
+          }
+        } catch {
+          // Ignore cancel and clipboard permission errors.
+        }
+      },
+    );
+  }
+
+  if (iframe && loading && stage) {
+    const hideLoading = () =>
+      loading.remove();
+
+    const applyViewportMode =
+      () => {
+        const isDesktop =
+          window.matchMedia(
+            "(min-width: 1024px)",
+          ).matches;
+
+        if (!isDesktop) {
+          iframe.style.transform =
+            "none";
+
+          iframe.style.width =
+            "100%";
+
+          iframe.style.height =
+            "100%";
+
+          return;
+        }
+
+        const desktopWidth = 1280;
+
+        const stageWidth =
+          stage.clientWidth;
+
+        const stageHeight =
+          stage.clientHeight;
+
+        const scale =
+          stageWidth / desktopWidth;
+
+        // Extra width pushes the embedded page's scrollbar past the clipped
+        // edge of the preview, so it scrolls normally without a visible bar.
+        const scrollbarBleed = 24;
+
+        iframe.style.width = `${desktopWidth + scrollbarBleed}px`;
+
+        iframe.style.height = `${stageHeight / scale}px`;
+
+        iframe.style.transformOrigin =
+          "top left";
+
+        iframe.style.transform = `scale(${scale})`;
+      };
+
+    iframe.addEventListener(
+      "load",
+      hideLoading,
+      { once: true },
+    );
+
+    applyViewportMode();
+
+    let resizeTimeout;
+
+    window.addEventListener(
+      "resize",
+      () => {
+        clearTimeout(
+          resizeTimeout,
+        );
+
+        resizeTimeout =
+          setTimeout(
+            applyViewportMode,
+            100,
+          );
+      },
+    );
+
+    setTimeout(
+      hideLoading,
+      8000,
+    );
+  }
+</script>

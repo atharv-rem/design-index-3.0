@@ -1,0 +1,63 @@
+---
+import HomescreenLayout from "@/layouts/homescreen.astro";
+import ToolDetail from "@/components/tool-detail.astro";
+import { getOptimizedImageUrl } from "@/lib/images";
+import { SPONSORS_PAGE_TAG, getSponsors } from "@/lib/sponsors";
+
+export const prerender = false;
+
+if (Astro.cache.enabled) {
+  Astro.cache.set({
+    maxAge: 3600,
+    swr: 1800,
+    tags: [SPONSORS_PAGE_TAG],
+  });
+}
+
+const { slug } = Astro.params;
+
+const sponsors = await getSponsors();
+const sponsor = sponsors.find((item) => item.slug === slug);
+
+if (!sponsor) {
+  return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
+const others = sponsors.filter((item) => item.id !== sponsor.id).slice(0, 3);
+
+const suggested = others.map((item) => ({
+  href: `/sponsors/${item.slug}`,
+  name: item.name,
+  description: item.description,
+  og_image_link: item.og_image_link,
+  sponsored: true,
+}));
+
+const ogImage =
+  getOptimizedImageUrl(sponsor.og_image_link, {
+    width: 1200,
+    height: 630,
+    quality: 82,
+    fit: "cover",
+  }) || undefined;
+---
+
+<HomescreenLayout
+  title={`${sponsor.name} | Design Index`}
+  description={sponsor.extended_description}
+  keywords={`${sponsor.name}, design tool`}
+  ogImage={ogImage}
+  backgroundVariant="slate"
+  showFooter={false}
+  visitUrl={sponsor.website_url}
+  visitSponsored
+  shareTitle={sponsor.name}
+>
+  <ToolDetail
+    name={sponsor.name}
+    description={sponsor.extended_description}
+    websiteUrl={sponsor.website_url}
+    sponsored
+    suggested={suggested}
+  />
+</HomescreenLayout>

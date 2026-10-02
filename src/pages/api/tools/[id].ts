@@ -1,96 +1,44 @@
 import type { APIRoute } from "astro";
-import {
-  CACHE_TTL_SECONDS,
-  getCachedJson,
-  setCachedJson,
-} from "@/lib/cache";
-
-import { supabase } from "@/lib/supabase";
 
 import {
-  normalizeToolDetail,
-  normalizeToolCards,
-  type SupabaseToolRow,
-  type ToolCard,
-  type ToolDetail,
-} from "@/lib/tools";
+  getToolWithSuggestions,
+  isValidToolId,
+} from "@/lib/get-tool";
 
-type ToolDetailPayload = {
-  tool: ToolDetail;
-  suggestedTools: ToolCard[];
-};
+export const prerender = false;
 
 export const GET: APIRoute = async ({
   params,
   cache,
 }) => {
-  const idParam = (params.id ?? "").trim();
+  const toolId = Number((params.id ?? "").trim());
 
-  const toolId = Number(idParam);
-
-  if (!idParam || Number.isNaN(toolId)) {
+  if (!isValidToolId(toolId)) {
     return Response.json(
-      { error: "Missing tool id." },
+      { error: "Invalid tool id." },
       { status: 400 },
     );
   }
 
-  const cacheKey =
-    `design-index:tools:detail:id:${toolId}`;
+  let payload;
 
-  const cachedPayload =
-    await getCachedJson<ToolDetailPayload>(
-      cacheKey,
+  try {
+    payload = await getToolWithSuggestions(toolId);
+  } catch (error) {
+    console.error(`[api/tools] Lookup failed for ${toolId}:`, error);
+
+    return Response.json(
+      { error: "Failed to load tool." },
+      { status: 502 },
     );
-
-  if (cachedPayload) {
-    return Response.json(cachedPayload, {
-      headers: {
-        "x-cache": "hit",
-      },
-    });
   }
 
-  const { data, error } = await supabase
-    .from("design_index")
-    .select(
-      `primary_key, tool_name, category, pricing, description, extended_description, og_image_link, website`,
-    )
-    .gte("primary_key", toolId - 2)
-    .lte("primary_key", toolId + 2)
-    .order("primary_key", {
-      ascending: true,
-    });
-
-  if (error || !data?.length) {
+  if (!payload) {
     return Response.json(
       { error: "Tool not found." },
       { status: 404 },
     );
   }
-
-  const toolRow = data.find(
-    (item) => item.primary_key === toolId,
-  );
-
-  if (!toolRow) {
-    return Response.json(
-      { error: "Tool not found." },
-      { status: 404 },
-    );
-  }
-
-  const suggestionRows = data
-    .filter(
-      (item) =>
-        item.primary_key !== toolId,
-    )
-    .slice(0, 3);
-
-  const payload: ToolDetailPayload = {
-    tool: normalizeToolDetail( toolRow as SupabaseToolRow,),
-    suggestedTools: normalizeToolCards(suggestionRows as SupabaseToolRow[],),
-  };
 
   if (cache.enabled) {
     cache.set({
@@ -99,18 +47,10 @@ export const GET: APIRoute = async ({
     });
   }
 
-  void setCachedJson(
-    cacheKey,
-    payload,
-    CACHE_TTL_SECONDS,
-  );
-
   return Response.json(payload, {
     headers: {
       "Cache-Control":
         "public, s-maxage=86400, stale-while-revalidate=43200",
-
-      "x-cache": "miss",
     },
   });
 };

@@ -9,13 +9,6 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Tooltip,
@@ -181,14 +174,30 @@ function Sidebar({
 
   if (isMobile) {
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetContent
+      <>
+        <div
+          data-slot="sidebar-mobile-overlay"
+          aria-hidden="true"
+          onClick={() => setOpenMobile(false)}
+          className={cn(
+            "fixed inset-0 z-50 bg-black/30 transition-opacity duration-300 ease-out supports-backdrop-filter:backdrop-blur-xs",
+            openMobile ? "opacity-100" : "pointer-events-none opacity-0"
+          )}
+        />
+        <div
           dir={dir}
+          role="dialog"
+          aria-modal={openMobile}
+          aria-label="Sidebar"
+          inert={!openMobile}
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
+          data-state={openMobile ? "open" : "closed"}
+          data-sidebar-mobile-panel=""
           className={cn(
-            "w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden",
+            "shadow-everywhere fixed inset-y-0 left-0 z-50 flex h-full w-(--sidebar-width) max-w-[85vw] flex-col bg-sidebar text-sidebar-foreground transition-[translate,visibility] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
+            openMobile ? "visible translate-x-0" : "invisible -translate-x-full",
             className
           )}
           style={
@@ -197,15 +206,11 @@ function Sidebar({
               ...style,
             } as React.CSSProperties
           }
-          side={side}
+          {...props}
         >
-          <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
+        </div>
+      </>
     )
   }
 
@@ -254,6 +259,138 @@ function Sidebar({
       </div>
     </div>
   )
+}
+
+const SWIPE_EDGE_PX = 48
+const SWIPE_LOCK_PX = 8
+const SWIPE_FLING_PX_PER_MS = 0.5
+
+// Mobile only: the sidebar panel follows your finger. Drag right from the left edge to open it,
+// drag left anywhere to close it. On release it settles open or closed based on distance and speed.
+function SidebarSwipe() {
+  const { isMobile, openMobile, setOpenMobile } = useSidebar()
+
+  React.useEffect(() => {
+    if (!isMobile) return
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && openMobile) setOpenMobile(false)
+    }
+    document.addEventListener("keydown", onKeyDown)
+
+    type Gesture = {
+      startX: number
+      startY: number
+      locked: boolean
+      lastX: number
+      lastT: number
+      velocity: number
+      x: number
+      width: number
+      panel: HTMLElement
+      overlay: HTMLElement | null
+    }
+    let g: Gesture | null = null
+
+    const setPosition = (gesture: Gesture, x: number) => {
+      gesture.x = Math.min(0, Math.max(-gesture.width, x))
+      gesture.panel.style.translate = `${gesture.x}px 0`
+      if (gesture.overlay) {
+        gesture.overlay.style.opacity = String(1 + gesture.x / gesture.width)
+      }
+    }
+
+    const release = (gesture: Gesture, shouldOpen: boolean) => {
+      // Clearing the inline styles lets the CSS transition finish the motion from the current position.
+      gesture.panel.style.transition = ""
+      gesture.panel.style.translate = ""
+      gesture.panel.style.visibility = ""
+      if (gesture.overlay) {
+        gesture.overlay.style.transition = ""
+        gesture.overlay.style.opacity = ""
+      }
+      setOpenMobile(shouldOpen)
+    }
+
+    const onTouchStart = (e: TouchEvent) => {
+      g = null
+      if (e.touches.length !== 1) return
+      const { clientX, clientY } = e.touches[0]
+      if (!openMobile && clientX > SWIPE_EDGE_PX) return
+
+      const panel = document.querySelector<HTMLElement>("[data-sidebar-mobile-panel]")
+      if (!panel) return
+
+      g = {
+        startX: clientX,
+        startY: clientY,
+        locked: false,
+        lastX: clientX,
+        lastT: e.timeStamp,
+        velocity: 0,
+        x: openMobile ? 0 : -panel.offsetWidth,
+        width: panel.offsetWidth,
+        panel,
+        overlay: document.querySelector<HTMLElement>("[data-slot='sidebar-mobile-overlay']"),
+      }
+    }
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!g || e.touches.length !== 1) return
+      const { clientX, clientY } = e.touches[0]
+      const dx = clientX - g.startX
+      const dy = clientY - g.startY
+
+      if (!g.locked) {
+        if (Math.abs(dx) < SWIPE_LOCK_PX && Math.abs(dy) < SWIPE_LOCK_PX) return
+        // Vertical gesture (scrolling), or wrong direction for the current state: not ours.
+        if (Math.abs(dy) > Math.abs(dx) || (openMobile ? dx > 0 : dx < 0)) {
+          g = null
+          return
+        }
+        g.locked = true
+        g.panel.style.transition = "none"
+        g.panel.style.visibility = "visible"
+        if (g.overlay) g.overlay.style.transition = "none"
+      }
+
+      const dt = e.timeStamp - g.lastT
+      if (dt > 0) g.velocity = (clientX - g.lastX) / dt
+      g.lastX = clientX
+      g.lastT = e.timeStamp
+
+      if (e.cancelable) e.preventDefault()
+      setPosition(g, (openMobile ? 0 : -g.width) + dx)
+    }
+
+    const onTouchEnd = () => {
+      if (!g) return
+      const gesture = g
+      g = null
+      if (!gesture.locked) return
+
+      const progress = 1 + gesture.x / gesture.width
+      const shouldOpen =
+        Math.abs(gesture.velocity) > SWIPE_FLING_PX_PER_MS
+          ? gesture.velocity > 0
+          : progress > 0.5
+      release(gesture, shouldOpen)
+    }
+
+    document.addEventListener("touchstart", onTouchStart, { passive: true })
+    document.addEventListener("touchmove", onTouchMove, { passive: false })
+    document.addEventListener("touchend", onTouchEnd, { passive: true })
+    document.addEventListener("touchcancel", onTouchEnd, { passive: true })
+    return () => {
+      document.removeEventListener("keydown", onKeyDown)
+      document.removeEventListener("touchstart", onTouchStart)
+      document.removeEventListener("touchmove", onTouchMove)
+      document.removeEventListener("touchend", onTouchEnd)
+      document.removeEventListener("touchcancel", onTouchEnd)
+    }
+  }, [isMobile, openMobile, setOpenMobile])
+
+  return null
 }
 
 function SidebarTrigger({
@@ -703,6 +840,7 @@ export {
   SidebarProvider,
   SidebarRail,
   SidebarSeparator,
+  SidebarSwipe,
   SidebarTrigger,
   useSidebar,
   SidebarContext,

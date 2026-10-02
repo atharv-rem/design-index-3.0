@@ -3,8 +3,27 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Sheet (mobile sidebar) slide + overlay fade. The offset comes from --sheet-x / --sheet-y. */
+@keyframes sheet-in {
+  from { transform: translate(var(--sheet-x, 0), var(--sheet-y, 0)); }
+  to { transform: translate(0, 0); }
+}
+@keyframes sheet-out {
+  from { transform: translate(0, 0); }
+  to { transform: translate(var(--sheet-x, 0), var(--sheet-y, 0)); }
+}
+@keyframes sheet-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes sheet-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
 :root {
-  --font-rethink: var(--font-rethink-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-gatuzo: var(--font-gatuzo-local), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-rethink: var(--font-gatuzo);
   --font-google: var(--font-google-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --shadow-everywhere: inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.1), 0 4px 4px rgba(0, 0, 0, 0.1), 0 8px 8px rgba(0, 0, 0, 0.1);
   --app-bg: #ffffff;
@@ -56,9 +75,26 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --destructive-foreground: var(--color-red-700);
+}
+
+/* Everything uses Google Sans + Inter; Gatuzo is kept only for the home page hero heading */
+html {
+  --font-inter-stack: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-rethink: var(--font-inter-stack);
+  --font-sans: var(--font-inter-stack);
+  --font-heading: var(--font-inter-stack);
+}
+
+html[data-font-scope="app"] {
+  --font-gatuzo: var(--font-inter-stack);
 }
 
 @layer utilities {
+
+  .font-gatuzo {
+    @apply font-gatuzo;
+  }
 
   .font-rethink {
     @apply font-rethink;
@@ -75,7 +111,7 @@
       0 12px 30px -10px rgba(0, 0, 0, 0.06),
       0 4px 12px -4px rgba(0, 0, 0, 0.03);
     border: 1px solid rgba(0, 0, 0, 0.06);
-    
+
     @variant dark {
       box-shadow: 
         inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
@@ -127,7 +163,6 @@
     @apply border border-app-border bg-app-surface backdrop-blur-[16px];
   }
 
-
   .theme-card {
     @apply border border-app-border bg-app-surface backdrop-blur-[14px];
   }
@@ -152,7 +187,6 @@
   .theme-button:hover {
     @apply border-app-border-strong bg-app-surface-strong;
   }
-
 
   .theme-nav-control {
     @apply text-app-text transition-all duration-200 hover:bg-app-sidebar-accent;
@@ -229,7 +263,7 @@
   /* Unified App Custom Color/Typography Tokens */
   --color-app-bg: var(--app-bg);
   --color-app-bg-dark: #141416;
-  
+
   --color-app-solid-bg: var(--app-solid-bg);
   --color-app-solid-bg-dark: #101012;
 
@@ -287,8 +321,10 @@
   --color-app-sidebar-ring: var(--app-sidebar-ring);
   --color-app-sidebar-ring-dark: rgba(255, 255, 255, 0.22);
 
-  --font-rethink: var(--font-rethink-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-gatuzo: var(--font-gatuzo-local), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-rethink: var(--font-gatuzo);
   --font-google: var(--font-google-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --color-destructive-foreground: var(--destructive-foreground);
 }
 
 .dark {
@@ -340,6 +376,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --destructive-foreground: var(--color-red-400);
 }
 
 @layer base {
@@ -356,4 +393,37 @@
   html {
     @apply font-sans;
   }
+}
+
+/* Search result skeleton shimmer */
+.skeleton-shimmer {
+  background-color: rgba(0, 0, 0, 0.06);
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.65) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.dark .skeleton-shimmer {
+  background-color: rgba(255, 255, 255, 0.07);
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.09) 50%,
+    transparent 70%
+  );
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -100% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer { animation: none; }
 }

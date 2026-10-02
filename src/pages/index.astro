@@ -5,6 +5,10 @@ import githubIcon from "../assets/github.svg?url";
 import threadsIcon from "../assets/threads.svg?url";
 import twitterIcon from "../assets/twitter.svg?url";
 import SearchBar from "../components/searchbar";
+import { ArcBandsBackground } from "../components/arc-bands-background";
+import { getSponsorCards } from "@/lib/sponsors";
+
+const sponsors = await getSponsorCards();
 
 const socialLinks = [
 	{ label: "Instagram", href: "https://www.instagram.com/atharv_remeshan/", icon: instagramIcon },
@@ -21,7 +25,6 @@ const socialLinks = [
 	showDefaultSidebarTrigger={false}
 	floatingNavbarSocialLinks={socialLinks}
 >
-	<div class="relative min-h-screen w-full bg-dots">
-		<SearchBar client:load />
-	</div>
-</HomescreenLayout>
+	<ArcBandsBackground className="min-h-screen w-full">
+		<SearchBar client:load sponsors={sponsors} />
+	</ArcBandsBackground></HomescreenLayout>

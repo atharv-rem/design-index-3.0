@@ -1,9 +1,11 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
+import { getSponsorCards } from "@/lib/sponsors";
 import { getToolsByCategory } from "@/lib/get-tool-by-category";
 
 const tools = await getToolsByCategory("ui");
+const sponsors = await getSponsorCards();
 
 if (Astro.cache.enabled) {
 	Astro.cache.set({
@@ -27,7 +29,7 @@ if (Astro.cache.enabled) {
 				<p class="block md:hidden mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">
 					A curated library of user interface kits, design systems, and components. Speed up your design and development workflow with premium UI resources.
 				</p>
-				<ToolsGrid client:load category="ui" initialTools={tools} />
+				<ToolsGrid client:load category="ui" initialTools={tools} sponsors={sponsors} />
 			</div>
 		</section>
 	</main>
