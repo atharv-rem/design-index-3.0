@@ -57,13 +57,13 @@ if (decodeURIComponent(slug ?? "") !== tool.tool_name) {
 }
 
 // One sponsor is placed first in the suggestions, rotated by tool id.
-const sponsors = await sponsorsPromise;
+const sponsors = (await sponsorsPromise).filter((item) => !item.homepage_only);
 const sponsor = sponsors.length ? sponsors[Number(id) % sponsors.length] : undefined;
 
 const suggested = [
   ...(sponsor
     ? [{
-        href: `/sponsors/${sponsor.slug}`,
+        href: sponsor.website_url,
         name: sponsor.name,
         description: sponsor.description,
         og_image_link: sponsor.og_image_link,

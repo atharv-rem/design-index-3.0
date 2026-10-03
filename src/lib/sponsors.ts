@@ -4,20 +4,22 @@ import { supabase } from "@/lib/supabase";
 
 export type Sponsor = {
   id: number;
-  slug: string;
   name: string;
   description: string;
-  extended_description: string;
   og_image_link: string;
   website_url: string;
   priority: number;
   starts_at: string | null;
   ends_at: string | null;
+  /** Shown only in the homepage strip, never in grids or on tool pages. */
+  homepage_only: boolean;
+  /** Test rows: visible in `npm run dev` only. */
+  development: boolean;
 };
 
 export type SponsorCard = Pick<
   Sponsor,
-  "id" | "slug" | "name" | "description" | "og_image_link"
+  "id" | "name" | "description" | "og_image_link" | "website_url" | "homepage_only"
 >;
 
 type SupabaseSponsorRow = Partial<Sponsor>;
@@ -27,20 +29,20 @@ export const SPONSORS_CACHE_TTL_SECONDS = 60 * 60 * 24 * 30;
 
 const normalizeSponsor = (row: SupabaseSponsorRow): Sponsor => ({
   id: row.id ?? 0,
-  slug: row.slug?.trim() || "",
   name: row.name?.trim() || "Sponsor",
   description: row.description?.trim() || "",
-  extended_description:
-    row.extended_description?.trim() || row.description?.trim() || "",
   og_image_link: row.og_image_link || "",
   website_url: row.website_url || "",
   priority: row.priority ?? 0,
   starts_at: row.starts_at ?? null,
   ends_at: row.ends_at ?? null,
+  homepage_only: row.homepage_only ?? false,
+  development: row.development ?? false,
 });
 
 // Date windows are checked on read so an expired ad drops out of a cached payload.
 const isLive = (sponsor: Sponsor, now = Date.now()) =>
+  (import.meta.env.DEV || !sponsor.development) &&
   (!sponsor.starts_at || Date.parse(sponsor.starts_at) <= now) &&
   (!sponsor.ends_at || Date.parse(sponsor.ends_at) > now);
 
@@ -49,7 +51,7 @@ export async function refreshSponsors(): Promise<Sponsor[] | null> {
   const { data, error } = await supabase
     .from("sponsors")
     .select(
-      "id, slug, name, description, extended_description, og_image_link, website_url, priority, starts_at, ends_at",
+      "id, name, description, og_image_link, website_url, priority, starts_at, ends_at, homepage_only, development",
     )
     .eq("active", true)
     .order("priority", { ascending: false })
@@ -61,7 +63,7 @@ export async function refreshSponsors(): Promise<Sponsor[] | null> {
 
   const sponsors = (data ?? [])
     .map(normalizeSponsor)
-    .filter((sponsor) => sponsor.slug && sponsor.website_url);
+    .filter((sponsor) => sponsor.website_url);
 
   await setCachedJson(SPONSORS_CACHE_KEY, sponsors, SPONSORS_CACHE_TTL_SECONDS);
 
@@ -95,11 +97,14 @@ export async function getSponsors(): Promise<Sponsor[]> {
 export async function getSponsorCards(): Promise<SponsorCard[]> {
   const sponsors = await getSponsors();
 
-  return sponsors.map(({ id, slug, name, description, og_image_link }) => ({
-    id,
-    slug,
-    name,
-    description,
-    og_image_link,
-  }));
+  return sponsors.map(
+    ({ id, name, description, og_image_link, website_url, homepage_only }) => ({
+      id,
+      name,
+      description,
+      og_image_link,
+      website_url,
+      homepage_only,
+    }),
+  );
 }

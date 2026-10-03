@@ -9,6 +9,9 @@ import dualmark from '@dualmark/astro';
 export default defineConfig({
   output: "server",
   prefetch:true,
+  redirects: {
+    "/sponsors/[slug]": "/",
+  },
   site:"https://designindex.xyz",
   integrations: [
     react(),

@@ -23,7 +23,7 @@ const resultTabClassName = segmentedControlItemVariants({
 // One sponsored card after every N results.
 const SPONSOR_INTERVAL = 8;
 
-export default function SearchBar({ sponsors = [] }: { sponsors?: SponsorCard[] }) {
+export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: SponsorCard[] }) {
   const {
     inputValue,
     activeQuery,
@@ -116,6 +116,7 @@ export default function SearchBar({ sponsors = [] }: { sponsors?: SponsorCard[] 
   const otherResults = activeTab === "relevant" ? similarResults : relevantResults;
 
   const gridEntries = (() => {
+    const sponsors = allSponsors.filter((sponsor) => !sponsor.homepage_only);
     const entries: (
       | { kind: "tool"; item: (typeof displayedResults)[number] }
       | { kind: "sponsor"; sponsor: SponsorCard; key: string }
@@ -297,7 +298,7 @@ export default function SearchBar({ sponsors = [] }: { sponsors?: SponsorCard[] 
 
   // Strip: 4 equal-width cells (1 row of 4 on desktop, 2x2 on mobile).
   const SPONSOR_SLOTS = 4;
-  const stripSponsors = sponsors.slice(0, SPONSOR_SLOTS);
+  const stripSponsors = allSponsors.slice(0, SPONSOR_SLOTS);
 
   const sponsorCellClassName =
     "col-span-1 flex min-h-[56px] min-w-0 items-center justify-center sm:min-h-0";
@@ -365,8 +366,9 @@ export default function SearchBar({ sponsors = [] }: { sponsors?: SponsorCard[] 
         {stripSponsors.map((sponsor) => (
           <a
             key={sponsor.id}
-            href={`/sponsors/${sponsor.slug}`}
-            data-cuelume-navigate
+            href={sponsor.website_url}
+            target="_blank"
+            rel="sponsored noopener noreferrer"
             data-cuelume-emphasis="subtle"
             title={sponsor.description || sponsor.name}
             className={`${sponsorCellClassName} gap-1.5 px-2 sm:gap-1 sm:px-3 theme-text-soft hover:theme-text-primary transition`}
@@ -520,7 +522,7 @@ export default function SearchBar({ sponsors = [] }: { sponsors?: SponsorCard[] 
                     const card = isSponsor
                       ? {
                           key: entry.key,
-                          href: `/sponsors/${entry.sponsor.slug}`,
+                          href: entry.sponsor.website_url,
                           name: entry.sponsor.name,
                           description: entry.sponsor.description,
                           og_image_link: entry.sponsor.og_image_link,
@@ -537,7 +539,9 @@ export default function SearchBar({ sponsors = [] }: { sponsors?: SponsorCard[] 
                     <a
                       key={card.key}
                       href={card.href}
-                      data-cuelume-navigate
+                      {...(isSponsor
+                        ? { target: "_blank", rel: "sponsored noopener noreferrer" }
+                        : { "data-cuelume-navigate": true })}
                       data-cuelume-emphasis="subtle"
                       className="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-[#141416] shadow-[0_1px_2px_rgb(0_0_0/0.04)] ring-1 ring-black/5 transition duration-200 hover:-translate-y-1 hover:shadow-[0_8px_24px_-12px_rgb(0_0_0/0.1)] dark:shadow-[0_4px_14px_rgb(0_0_0/0.8),0_14px_36px_-8px_rgb(0_0_0/0.9),inset_0_1px_0_rgb(255_255_255/0.06)] dark:ring-white/10 dark:hover:shadow-[0_6px_18px_rgb(0_0_0/0.85),0_22px_48px_-8px_rgb(0_0_0/1),inset_0_1px_0_rgb(255_255_255/0.08)]"
                     >

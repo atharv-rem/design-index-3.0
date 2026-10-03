@@ -40,7 +40,11 @@ const filters: { value: PricingFilter; label: string }[] = [
 ];
 
 
-export default function ToolsGrid({ category, initialTools, sponsors = [] }: ToolsGridProps) {
+export default function ToolsGrid({ category, initialTools, sponsors: allSponsors = [] }: ToolsGridProps) {
+  const sponsors = useMemo(
+    () => allSponsors.filter((sponsor) => !sponsor.homepage_only),
+    [allSponsors],
+  );
   const [items, setItems] = useState<PricingFilter>("all");
   const tools = initialTools;
 
@@ -120,7 +124,7 @@ export default function ToolsGrid({ category, initialTools, sponsors = [] }: Too
             const item = isSponsor
               ? {
                   key: entry.key,
-                  href: `/sponsors/${entry.sponsor.slug}`,
+                  href: entry.sponsor.website_url,
                   name: entry.sponsor.name,
                   description: entry.sponsor.description,
                   og_image_link: entry.sponsor.og_image_link,
@@ -137,7 +141,9 @@ export default function ToolsGrid({ category, initialTools, sponsors = [] }: Too
               <a
                 key={item.key}
                 href={item.href}
-                data-astro-prefetch="viewport"
+                {...(isSponsor
+                  ? { target: "_blank", rel: "sponsored noopener noreferrer" }
+                  : { "data-astro-prefetch": "viewport" })}
                 className="group relative flex flex-col overflow-hidden rounded-xl bg-[var(--app-surface-soft)] shadow-[0_1px_2px_rgb(0_0_0/0.04)] ring-1 ring-black/5 transition duration-200 hover:-translate-y-1 hover:shadow-[0_8px_24px_-12px_rgb(0_0_0/0.1)] dark:shadow-[0_4px_14px_rgb(0_0_0/0.8),0_14px_36px_-8px_rgb(0_0_0/0.9),inset_0_1px_0_rgb(255_255_255/0.06)] dark:ring-white/10 dark:hover:shadow-[0_6px_18px_rgb(0_0_0/0.85),0_22px_48px_-8px_rgb(0_0_0/1),inset_0_1px_0_rgb(255_255_255/0.08)]"
               >
                 {isSponsor && (
