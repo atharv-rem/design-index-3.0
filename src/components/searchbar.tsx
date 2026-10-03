@@ -11,6 +11,7 @@ import { Kbd } from "@/components/ui/kbd";
 import { RadioGroupPrimitive, RadioPrimitive } from "@/components/ui/radio-group";
 import { segmentedControlItemVariants, segmentedControlRootClassName } from "@/lib/segmented-control";
 import type { SponsorCard } from "@/lib/sponsors";
+import encrataLogo from "@/assets/encrata_logo.svg?url";
 
 
 import { useSearchStore } from "../zustand_store/useSearchStore";
@@ -19,6 +20,9 @@ const resultTabClassName = segmentedControlItemVariants({
   className: "font-google",
   state: "checked",
 });
+
+// Sponsors with a bundled logo use it instead of the remote og image (keyed by lowercase name).
+const LOCAL_SPONSOR_LOGOS: Record<string, string> = { encrata: encrataLogo };
 
 // One sponsored card after every N results.
 const SPONSOR_INTERVAL = 8;
@@ -373,20 +377,21 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
             title={sponsor.description || sponsor.name}
             className={`${sponsorCellClassName} gap-1.5 px-2 sm:gap-1 sm:px-3 theme-text-soft hover:theme-text-primary transition`}
           >
-            {sponsor.og_image_link && (
+            {(LOCAL_SPONSOR_LOGOS[sponsor.name.toLowerCase()] || sponsor.og_image_link) && (
               <img
                 src={
+                  LOCAL_SPONSOR_LOGOS[sponsor.name.toLowerCase()] ||
                   getOptimizedImageUrl(sponsor.og_image_link, { width: 64, quality: 76 }) ||
                   "/favicon.ico"
                 }
                 alt=""
-                width={24}
-                height={24}
+                width={32}
+                height={32}
                 loading="lazy"
-                className="size-7 rounded-[4px] object-cover shrink-0 sm:size-6"
+                className={`shrink-0 ${LOCAL_SPONSOR_LOGOS[sponsor.name.toLowerCase()] ? "mr-[5px] h-auto w-6 object-contain sm:w-5" : "size-9 rounded-[4px] object-cover sm:size-8"}`}
               />
             )}
-            <span className="truncate text-[17px] font-semibold sm:text-[15px]">{sponsor.name}</span>
+            <span className="truncate text-[20px] font-semibold sm:text-[18px]">{sponsor.name}</span>
           </a>
         ))}
 
