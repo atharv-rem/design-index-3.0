@@ -1,0 +1,59 @@
+---
+import HomescreenLayout from "@/layouts/homescreen.astro";
+import ArticleIndexSection from "@/components/article-index-section.astro";
+import { PAGE_YEAR, SITE_URL, getIconPages, jsonLd } from "@/lib/icon-pages";
+
+export const prerender = false;
+
+const { roundups } = await getIconPages();
+
+if (Astro.cache.enabled) {
+  Astro.cache.set({ maxAge: 3600, swr: 86400, tags: ["icon-articles"] });
+}
+
+const roundupItems = roundups.map((page) => ({
+  href: page.path,
+  title: page.title,
+  description: `${page.tools.length} icon libraries, including ${page.tools.slice(0, 3).map((tool) => tool.name).join(", ")}`,
+}));
+---
+
+<HomescreenLayout
+  title={`Best Icon Libraries (${PAGE_YEAR}): ${roundups.length} Curated Lists`}
+  description={`The best icon libraries by type: free, open-source, animated, 3D, premium, pixel art and niche. ${roundups.length} curated lists with pricing and links to every library.`}
+  keywords="best icon libraries, free icon libraries, animated icon libraries, 3D icon packs, open source icons"
+  backgroundVariant="slate"
+>
+  <script type="application/ld+json" set:html={jsonLd({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Design Index", "item": SITE_URL },
+          { "@type": "ListItem", "position": 2, "name": "Icons", "item": `${SITE_URL}/icons` },
+          { "@type": "ListItem", "position": 3, "name": "Best icon lists", "item": `${SITE_URL}/best` },
+        ],
+      },
+      {
+        "@type": "ItemList",
+        "name": "Best icon lists",
+        "numberOfItems": roundups.length,
+        "itemListElement": roundups.map((page, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": page.title,
+          "url": `${SITE_URL}${page.path}`,
+        })),
+      },
+    ],
+  })} />
+
+  <main class="mt-[12px] px-[20px] pb-20">
+    <div class="w-full">
+      <h1 class="font-google font-medium text-4xl leading-none theme-text-primary md:text-[40px] tracking-[0.05rem]">Best icon libraries</h1>
+      <p class="mt-3 font-rethink text-[15px] leading-[18px] theme-text-muted md:text-base font-medium">Curated lists of the best icon libraries by type, from free and open-source to animated, 3D and premium sets, each with pricing and a link to the official site.</p>
+      <ArticleIndexSection heading="Best icon lists" items={roundupItems} />
+    </div>
+  </main>
+</HomescreenLayout>

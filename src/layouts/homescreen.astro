@@ -44,7 +44,8 @@ const {
 
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.md';
 
-const canonicalUrl =new URL(Astro.url.pathname, Astro.site || 'https://designindex.xyz').href;
+// Prerendered pages have a trailing slash in their pathname; canonicals never do.
+const canonicalUrl = new URL(Astro.url.pathname.replace(/(.)\/+$/, '$1'), Astro.site || 'https://designindex.xyz').href;
 const faviconVersion = '20260331';
 const faviconIco = `/favicon.ico?v=${faviconVersion}`;
 

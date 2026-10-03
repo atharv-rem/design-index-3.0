@@ -30,6 +30,9 @@ if (!isValidToolId(toolId)) {
   return new Response(null, { status: 404, statusText: "Not Found" });
 }
 
+// Sponsors don't depend on the tool, so load them while the tool is being fetched.
+const sponsorsPromise = getSponsors().catch(() => []);
+
 let payload;
 
 try {
@@ -54,7 +57,7 @@ if (decodeURIComponent(slug ?? "") !== tool.tool_name) {
 }
 
 // One sponsor is placed first in the suggestions, rotated by tool id.
-const sponsors = await getSponsors();
+const sponsors = await sponsorsPromise;
 const sponsor = sponsors.length ? sponsors[Number(id) % sponsors.length] : undefined;
 
 const suggested = [

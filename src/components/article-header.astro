@@ -1,0 +1,33 @@
+---
+interface Props {
+  code: string;
+  title: string;
+  author: string;
+  date: { iso: string; label: string };
+}
+
+const { code, title, author, date } = Astro.props;
+---
+
+<div>
+  <header class="flex items-center justify-between border-b border-app-border pb-3">
+    <a href="/" aria-label="Design Index home" class="inline-flex items-center gap-2">
+      <img src="/logo_light.svg" alt="" width="20" height="20" class="h-5 w-5 rounded-md dark:hidden" />
+      <img src="/logo_dark.svg" alt="" width="20" height="20" class="hidden h-5 w-5 rounded-md dark:block" />
+      <span class="font-(family-name:--font-gatuzo-local) text-[17px] font-semibold leading-none theme-text-soft">designindex</span>
+    </a>
+    <span class="font-google text-[15px] font-medium tabular-nums theme-text-soft">{code}</span>
+  </header>
+
+  <h1 class="mt-12 font-(family-name:--font-gatuzo-local) text-[40px] font-semibold leading-[1.04] tracking-[-0.01em] theme-text-primary sm:text-[52px] md:mt-16 md:text-[60px]">
+    {title}
+  </h1>
+
+  <div class="mt-7 flex items-center justify-between gap-4">
+    <div class="flex min-w-0 items-center gap-3">
+      <span aria-hidden="true" class="size-8 shrink-0 rounded-full bg-black/[0.07] dark:bg-white/10"></span>
+      <a href="/about" rel="author" class="truncate font-google text-[17px] font-medium theme-text-soft hover:underline">{author}</a>
+    </div>
+    <time datetime={date.iso} class="shrink-0 font-google text-[17px] font-medium tabular-nums theme-text-soft">{date.label}</time>
+  </div>
+</div>

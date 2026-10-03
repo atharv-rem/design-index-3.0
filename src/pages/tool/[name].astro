@@ -1,0 +1,25 @@
+---
+import { supabase } from "@/lib/supabase";
+
+export const prerender = false;
+
+// Legacy URL format from the previous version of the site: /tool/{name}
+const name = (Astro.params.name ?? "").trim();
+
+if (name) {
+  // Escape LIKE wildcards so the lookup is an exact, case-insensitive match.
+  const pattern = name.replace(/[\%_]/g, "\$&");
+  const { data } = await supabase
+    .from("design_index")
+    .select("primary_key, tool_name")
+    .ilike("tool_name", pattern)
+    .limit(1)
+    .maybeSingle();
+
+  if (data?.primary_key && data.tool_name) {
+    return Astro.redirect(`/${data.primary_key}/${encodeURIComponent(data.tool_name)}`, 301);
+  }
+}
+
+return new Response(null, { status: 404, statusText: "Not Found" });
+---

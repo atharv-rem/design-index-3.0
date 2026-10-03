@@ -1,0 +1,52 @@
+---
+import { ArrowUpRight } from "lucide-react";
+
+export type ArticleIndexItem = {
+  href: string;
+  title: string;
+  description: string;
+};
+
+interface Props {
+  heading: string;
+  items: ArticleIndexItem[];
+}
+
+const { heading, items } = Astro.props;
+const headingId = `section-${heading.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+---
+
+<section aria-labelledby={headingId} class="mt-10 first-of-type:mt-8">
+  <div class="flex items-center gap-4">
+    <h2 id={headingId} class="shrink-0 font-google text-[17px] font-medium theme-text-muted">{heading}</h2>
+    <span aria-hidden="true" class="h-px flex-1 border-t border-dashed border-app-border"></span>
+    <span class="shrink-0 font-google text-[17px] font-medium tabular-nums theme-text-muted">
+      {items.length} {items.length === 1 ? "article" : "articles"}
+    </span>
+  </div>
+
+  <ul class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+    {items.map((item) => (
+      <li class="flex">
+        <a
+          href={item.href}
+          data-astro-prefetch
+          class="group flex min-h-[260px] w-full flex-col rounded-2xl border border-app-border bg-app-solid-bg p-5 transition duration-200 hover:-translate-y-1 hover:border-black/15 dark:bg-white/[0.04] dark:hover:border-white/20"
+        >
+          <h3 class="font-(family-name:--font-gatuzo-local) text-[28px] font-semibold leading-[1.1] lg:text-[23px] 2xl:text-[28px] tracking-[-0.01em] theme-text-primary">
+            {item.title}
+          </h3>
+          <p class="mt-4 font-google text-[15px] font-medium leading-snug theme-text-soft">{item.description}</p>
+          <span class="mt-auto flex justify-end pt-6">
+            <span
+              aria-hidden="true"
+              class="flex size-8 items-center justify-center rounded-lg bg-black/[0.06] theme-text-primary transition-colors group-hover:bg-black/10 dark:bg-white/10 dark:group-hover:bg-white/20"
+            >
+              <ArrowUpRight className="size-4" strokeWidth={2} aria-hidden="true" />
+            </span>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>

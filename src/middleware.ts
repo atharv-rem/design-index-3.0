@@ -144,6 +144,36 @@ export const onRequest = defineMiddleware(async (context, next) => {
   return response;
 });
 
+// Turns every <table> into a markdown table (first row becomes the header row).
+function convertTables(html: string): string {
+  const cellText = (cell: string) =>
+    cell
+      .replace(/<a[^>]*href=["']([^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi, (_, href, text) => {
+        const clean = text.replace(/<[^>]*>/g, "").trim();
+        return clean ? `[${clean}](${href})` : "";
+      })
+      .replace(/<[^>]*>/g, "")
+      .replace(/&amp;/g, "&")
+      .replace(/&nbsp;/g, " ")
+      .replace(/\s+/g, " ")
+      .replace(/\|/g, "\\|")
+      .trim();
+
+  return html.replace(/<table[^>]*>([\s\S]*?)<\/table>/gi, (_, inner: string) => {
+    const rows = [...inner.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)]
+      .map((row) => [...row[1].matchAll(/<t[hd][^>]*>([\s\S]*?)<\/t[hd]>/gi)].map((cell) => cellText(cell[1])))
+      .filter((cells) => cells.length > 0);
+
+    if (!rows.length) return "";
+
+    const width = Math.max(...rows.map((cells) => cells.length));
+    const line = (cells: string[]) =>
+      `| ${[...cells, ...Array(width - cells.length).fill("")].join(" | ")} |`;
+
+    return `\n${[line(rows[0]), line(Array(width).fill("---")), ...rows.slice(1).map(line)].join("\n")}\n`;
+  });
+}
+
 function htmlToMarkdown(html: string): string {
   let content = html;
   
@@ -164,7 +194,10 @@ function htmlToMarkdown(html: string): string {
   content = content.replace(/<header[^>]*>[\s\S]*?<\/header>/gi, "");
   content = content.replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, "");
   content = content.replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, "");
-  
+
+  // Tables must be converted before the generic tag stripping below flattens them
+  content = convertTables(content);
+
   // Format HTML headings and paragraphs into markdown equivalents
   content = content.replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, "\n# $1\n");
   content = content.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/gi, "\n## $1\n");

@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { supabase } from "@/lib/supabase";
+import { getIconPages } from "@/lib/icon-pages";
 
 export const prerender = false;
 
@@ -17,7 +18,20 @@ const staticPages = [
   "/terms",
   "/tools",
   "/ui",
+  "/alternatives",
+  "/best",
 ];
+
+// Only pages that actually render; pages skipped at build time would 404.
+const getIconPagePaths = async (): Promise<string[]> => {
+  try {
+    const { alternatives, roundups } = await getIconPages();
+    return [...alternatives, ...roundups].map((page) => page.path);
+  } catch (err) {
+    console.error("Sitemap icon pages error:", err);
+    return [];
+  }
+};
 
 export const GET: APIRoute = async () => {
   try {
@@ -42,7 +56,8 @@ export const GET: APIRoute = async () => {
         .join("");
     }
 
-    const staticUrls = staticPages
+    const iconPaths = await getIconPagePaths();
+    const staticUrls = [...staticPages, ...iconPaths]
       .map((path) => `  <url><loc>https://designindex.xyz${path}</loc></url>\n`)
       .join("");
 

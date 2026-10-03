@@ -1,0 +1,92 @@
+---
+// Same card as src/components/tools-grid.tsx. The title link is stretched over
+// the whole card, so the pills inside it (links to the articles this tool is
+// part of) are separate links and not nested anchors.
+import {
+  ArrowRightLeft,
+  Box,
+  Clapperboard,
+  Code,
+  Compass,
+  Crown,
+  Download,
+  Gift,
+  PencilLine,
+  Shapes,
+} from "lucide-react";
+import { getOptimizedImageUrl } from "@/lib/images";
+import ToolImage from "@/components/tool-image";
+import type { ArticleIcon, IconTool } from "@/lib/icon-pages";
+
+interface Props {
+  tool: IconTool;
+  priority?: boolean;
+  /** Path of the page showing this card, so a pill never links to itself. */
+  currentPath?: string;
+}
+
+const { tool, priority = false, currentPath } = Astro.props;
+
+const icons: Record<ArticleIcon, typeof Box> = {
+  alternatives: ArrowRightLeft,
+  free: Gift,
+  "open-source": Code,
+  animated: Clapperboard,
+  "3d": Box,
+  premium: Crown,
+  download: Download,
+  logos: Shapes,
+  "hand-drawn": PencilLine,
+  niche: Compass,
+};
+
+const MAX_PILLS = 3;
+
+// Alternatives first, then specific roundups. The broad "free" list only shows when nothing else applies.
+const candidates = tool.articles.filter((article) => article.href !== currentPath);
+const specific = candidates.filter((article) => article.icon !== "free");
+const pills = (specific.length ? specific : candidates).slice(0, MAX_PILLS);
+---
+
+<div
+  class="group relative flex w-full flex-col overflow-hidden rounded-xl bg-[var(--app-surface-soft)] shadow-[0_1px_2px_rgb(0_0_0/0.04)] ring-1 ring-black/5 transition duration-200 hover:-translate-y-1 hover:shadow-[0_8px_24px_-12px_rgb(0_0_0/0.1)] dark:shadow-[0_4px_14px_rgb(0_0_0/0.8),0_14px_36px_-8px_rgb(0_0_0/0.9),inset_0_1px_0_rgb(255_255_255/0.06)] dark:ring-white/10 dark:hover:shadow-[0_6px_18px_rgb(0_0_0/0.85),0_22px_48px_-8px_rgb(0_0_0/1),inset_0_1px_0_rgb(255_255_255/0.08)]"
+>
+  <div class="overflow-hidden [&_img]:transition-transform [&_img]:duration-500 group-hover:[&_img]:scale-[1.04]">
+    <ToolImage
+      client:visible
+      alt={tool.name}
+      priority={priority}
+      width={1200}
+      height={675}
+      src={getOptimizedImageUrl(tool.ogImage, { width: 640, quality: 78 }) || undefined}
+    />
+  </div>
+  <div class="flex flex-1 flex-col gap-1.5 p-4">
+    <h3 class="font-google text-[17px] font-semibold leading-snug theme-text-primary">
+      <a href={tool.detailHref} data-astro-prefetch class="after:absolute after:inset-0 after:content-['']">{tool.name}</a>
+    </h3>
+    {tool.description && (
+      <p class="line-clamp-2 font-google text-sm font-medium leading-5 theme-text-soft">{tool.description}</p>
+    )}
+
+    {pills.length > 0 && (
+      <ul class="relative z-10 mt-auto flex flex-wrap gap-2 pt-2" aria-label={`Articles about ${tool.name}`}>
+        {pills.map((pill) => {
+          const Icon = icons[pill.icon];
+          return (
+            <li>
+              <a
+                href={pill.href}
+                data-astro-prefetch
+                class="inline-flex items-center gap-1.5 rounded-full bg-black/[0.04] px-2.5 py-1 font-google text-[12px] font-semibold theme-text-muted ring-1 ring-black/10 transition-colors hover:text-(--app-text) hover:ring-black/25 dark:bg-white/[0.06] dark:ring-white/15 dark:hover:ring-white/30"
+              >
+                <Icon className="size-3.5 shrink-0" strokeWidth={2} aria-hidden="true" />
+                {pill.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    )}
+  </div>
+</div>

@@ -65,7 +65,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      include: ["wink-nlp", "wink-eng-lite-web-model", "motion/react"],
+      include: ["wink-nlp", "wink-eng-lite-web-model", "motion/react", "@base-ui/react/accordion"],
     },
   }
 });
