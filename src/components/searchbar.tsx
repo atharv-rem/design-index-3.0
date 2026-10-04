@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, Hammer, MousePointerClick, SearchX, Users, X } from "lucide-react";
 import { getOptimizedImageUrl } from "@/lib/images";
 import { searchTools } from "@/lib/search";
+import { withUtm } from "@/lib/utm";
 import ToolImage from "@/components/tool-image";
 import { Kbd } from "@/components/ui/kbd";
 import { RadioGroupPrimitive, RadioPrimitive } from "@/components/ui/radio-group";
@@ -370,7 +371,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
         {stripSponsors.map((sponsor) => (
           <a
             key={sponsor.id}
-            href={sponsor.website_url}
+            href={withUtm(sponsor.website_url, { content: "sponsor-strip" })}
             target="_blank"
             rel="sponsored noopener noreferrer"
             data-cuelume-emphasis="subtle"

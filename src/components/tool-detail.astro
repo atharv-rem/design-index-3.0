@@ -1,5 +1,6 @@
 ---
 import { getOptimizedImageUrl } from "@/lib/images";
+import { withUtm } from "@/lib/utm";
 import visitLightIcon from "@/assets/visit_light.svg";
 import visitDarkIcon from "@/assets/visit_dark.svg";
 import sharelightIcon from "@/assets/share_light.svg";
@@ -74,7 +75,7 @@ const { name, description, websiteUrl, pricing = "", sponsored = false, suggeste
 
           <div class="mt-5 flex flex-wrap items-center gap-2">
             <a
-              href={websiteUrl}
+              href={withUtm(websiteUrl, { content: "tool-page" })}
               data-cuelume-tap
               target="_blank"
               rel={sponsored ? "sponsored noopener noreferrer" : "noopener"}
