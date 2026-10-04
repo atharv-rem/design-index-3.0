@@ -23,6 +23,7 @@
   },
   "registries": {
     "@coss": "https://coss.com/ui/r/{name}.json",
-    "@spectrumui": "https://ui.spectrumhq.in/r/{name}.json"
+    "@spectrumui": "https://ui.spectrumhq.in/r/{name}.json",
+    "@componentry": "https://componentry.fun/r/{name}.json"
   }
 }

@@ -6,6 +6,7 @@ import githubIcon from "../assets/github.svg?url";
 import threadsIcon from "../assets/threads.svg?url";
 import twitterIcon from "../assets/twitter.svg?url";
 import { ArrowUpRight, HeartHandshake } from "lucide-react";
+import TextLoop from "./text-loop";
 
 const linkGroups = [
 	{
@@ -40,6 +41,15 @@ const linkGroups = [
 		],
 	},
 	{
+		title: "Articles",
+		links: [
+			{ label: "Best Icon Libraries", href: "/best" },
+			{ label: "Best Free Icon Libraries", href: "/best/best-free-icon-libraries" },
+			{ label: "Font Awesome Alternatives", href: "/alternatives/font-awesome-alternatives" },
+			{ label: "Lucide Alternatives", href: "/alternatives/lucide-alternatives" },
+		],
+	},
+	{
 		title: "Support",
 		links: [
 			{ label: "Submit Tool", href: "/submit-tool" },
@@ -57,7 +67,25 @@ const socialLinks = [
 ];
 ---
 
-<footer class:list={["relative z-30 theme-footer-shell", !flush && "mt-8"]}>
+<footer class:list={["relative z-30 theme-footer-shell border-t-0!", !flush && "mt-8"]}>
+	<div class="w-full overflow-hidden pt-4 font-google">
+		<div class="-my-[33%] -ml-[60%] w-[220%] sm:mx-0 sm:-my-[15%] sm:w-full">
+			<TextLoop
+				client:visible
+				text="Find the best design tools"
+				separator="✦"
+				shape="wave"
+				curviness={25}
+				fontSize={28}
+				fontWeight={700}
+				ribbonWidth={48}
+				speed={80}
+				color="#ffffff"
+				ribbonColor="#101dbd"
+			/>
+		</div>
+	</div>
+
 	<div class="mx-auto w-full max-w-7xl px-6 pt-10">
 		<div class="flex flex-col gap-6 pb-10 lg:flex-row lg:items-stretch lg:justify-between">
 			<div class="flex flex-col">
@@ -92,7 +120,7 @@ const socialLinks = [
 		</div>
 
 		<nav aria-label="Footer" class="hidden lg:block">
-			<div class="grid grid-cols-5 gap-x-8">
+			<div class="grid grid-cols-6 gap-x-8">
 				{linkGroups.map((group, index) => (
 					<div class="su-sitemap-column border-t border-app-border pt-5" style={`--su-from: ${index * 7}%`}>
 						<p class="font-google text-[11px] font-semibold uppercase tracking-[0.08em] theme-text-soft">{group.title}</p>

@@ -6,6 +6,8 @@ import threadsIcon from "../assets/threads.svg?url";
 import twitterIcon from "../assets/twitter.svg?url";
 import SearchBar from "../components/searchbar";
 import { ArcBandsBackground } from "../components/arc-bands-background";
+import HomeFeatures from "../components/home-features.astro";
+import RecentlyAddedTools from "../components/recently-added-tools.astro";
 import { getSponsorCards } from "@/lib/sponsors";
 
 const sponsors = await getSponsorCards();
@@ -27,4 +29,7 @@ const socialLinks = [
 >
 	<ArcBandsBackground className="min-h-screen w-full">
 		<SearchBar client:load sponsors={sponsors} />
-	</ArcBandsBackground></HomescreenLayout>
+	</ArcBandsBackground>
+	<HomeFeatures />
+	<RecentlyAddedTools />
+</HomescreenLayout>
