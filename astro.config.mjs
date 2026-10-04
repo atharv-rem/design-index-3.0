@@ -67,6 +67,11 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    ssr: {
+      // gsap ships ESM in a .js file without "type": "module", so Node loads it as CJS and
+      // `import { gsap }` throws at runtime on Vercel. Bundle it instead of leaving it external.
+      noExternal: ["gsap"],
+    },
     optimizeDeps: {
       include: ["wink-nlp", "wink-eng-lite-web-model", "motion/react", "@base-ui/react/accordion"],
     },

@@ -8,5 +8,5 @@ if (toolId && slug) {
   return Astro.redirect(`/${toolId}/${slug}`, 301);
 }
 
-return Astro.redirect("/", 301);
+return Astro.rewrite("/404");
 ---
