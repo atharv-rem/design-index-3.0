@@ -1,17 +1,13 @@
 'use client';
 
-import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import { gsap } from 'gsap';
+import { useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 
 export type TextLoopShape = 'wave' | 'circle' | 'infinity' | 'arch' | 'line';
-export type TextLoopDirection = 'forward' | 'reverse';
 
 export interface TextLoopProps {
   text?: string;
   shape?: TextLoopShape;
   path?: string;
-  speed?: number;
-  direction?: TextLoopDirection;
   separator?: string;
   curviness?: number;
   fontSize?: number;
@@ -22,7 +18,6 @@ export interface TextLoopProps {
   ribbon?: boolean;
   ribbonColor?: string;
   ribbonWidth?: number;
-  pauseOnHover?: boolean;
   className?: string;
   style?: CSSProperties;
 }
@@ -77,8 +72,6 @@ const TextLoop = ({
   text = 'React ✦ Bits',
   shape = 'wave',
   path,
-  speed = 90,
-  direction = 'forward',
   separator = '✦',
   curviness = 90,
   fontSize = 46,
@@ -89,15 +82,11 @@ const TextLoop = ({
   ribbon = true,
   ribbonColor = '#5227FF',
   ribbonWidth = 86,
-  pauseOnHover = true,
   className = '',
   style = {}
 }: TextLoopProps) => {
-  const rootRef = useRef<HTMLDivElement | null>(null);
   const pathRef = useRef<SVGPathElement | null>(null);
   const measureRef = useRef<SVGTextElement | null>(null);
-  const headRef = useRef<SVGTextPathElement | null>(null);
-  const tailRef = useRef<SVGTextPathElement | null>(null);
 
   const [metrics, setMetrics] = useState<Metrics>({ length: 0, reps: 1 });
 
@@ -150,56 +139,11 @@ const TextLoop = ({
     };
   }, [d, unit, fontSize, fontWeight, letterSpacing]);
 
-  useEffect(() => {
-    const { length } = metrics;
-    const head = headRef.current;
-    const tail = tailRef.current;
-    if (!head || !tail || !length) return undefined;
-
-    const apply = (offset: number) => {
-      const partner = offset >= 0 ? offset - length : offset + length;
-      head.setAttribute('startOffset', String(offset));
-      tail.setAttribute('startOffset', String(partner));
-    };
-
-    apply(0);
-
-    const prefersReduced =
-      typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced || speed <= 0) return undefined;
-
-    const state = { offset: 0 };
-    const tween = gsap.to(state, {
-      offset: direction === 'reverse' ? -length : length,
-      duration: length / speed,
-      ease: 'none',
-      repeat: -1,
-      onUpdate: () => apply(state.offset)
-    });
-
-    const root = rootRef.current;
-    const pause = () => tween.pause();
-    const resume = () => tween.resume();
-
-    if (pauseOnHover && root) {
-      root.addEventListener('pointerenter', pause);
-      root.addEventListener('pointerleave', resume);
-    }
-
-    return () => {
-      tween.kill();
-      if (pauseOnHover && root) {
-        root.removeEventListener('pointerenter', pause);
-        root.removeEventListener('pointerleave', resume);
-      }
-    };
-  }, [metrics, speed, direction, pauseOnHover]);
-
   const loopText = unit.repeat(metrics.reps);
   const fitLength = metrics.length || undefined;
 
   return (
-    <div ref={rootRef} className={`relative w-full overflow-hidden ${className}`.trim()} style={style}>
+    <div className={`relative w-full overflow-hidden ${className}`.trim()} style={style}>
       <svg
         className="block w-full h-auto"
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -231,21 +175,7 @@ const TextLoop = ({
           textLength={fitLength}
           lengthAdjust="spacing"
         >
-          <textPath ref={headRef} href={`#${pathId}`} startOffset={0}>
-            {loopText}
-          </textPath>
-        </text>
-
-        <text
-          className="select-none"
-          style={textStyle}
-          fill={color}
-          dominantBaseline="central"
-          aria-hidden="true"
-          textLength={fitLength}
-          lengthAdjust="spacing"
-        >
-          <textPath ref={tailRef} href={`#${pathId}`} startOffset={0}>
+          <textPath href={`#${pathId}`} startOffset={0}>
             {loopText}
           </textPath>
         </text>
