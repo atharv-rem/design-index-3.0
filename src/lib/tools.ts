@@ -70,12 +70,23 @@ export const normalizeToolDetail = (
     og_image_link:
       item.og_image_link || "",
 
-    website_url:
+    website_url: ensureProtocol(
       item.website_url ||
       item.website ||
       "",
+    ),
   };
 };
+
+// A scheme-less value like "uiarc.dev/?ref=x" is treated as a relative path by
+// iframes and anchors, so it resolves against our own site instead of the tool's.
+function ensureProtocol(url: string): string {
+  const trimmed = url.trim();
+  if (!trimmed || /^[a-z][a-z\d+.-]*:/i.test(trimmed) || trimmed.startsWith("//")) {
+    return trimmed;
+  }
+  return `https://${trimmed}`;
+}
 
 
 export const normalizeToolCard = (

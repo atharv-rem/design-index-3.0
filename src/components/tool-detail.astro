@@ -1,6 +1,6 @@
 ---
 import { getOptimizedImageUrl } from "@/lib/images";
-import { withUtm } from "@/lib/utm";
+import { withShareUtm, withUtm } from "@/lib/utm";
 import visitLightIcon from "@/assets/visit_light.svg";
 import visitDarkIcon from "@/assets/visit_dark.svg";
 import sharelightIcon from "@/assets/share_light.svg";
@@ -104,6 +104,7 @@ const { name, description, websiteUrl, pricing = "", sponsored = false, suggeste
               data-cuelume-tap
               data-cuelume-emphasis="subtle"
               data-share-title={name}
+              data-share-url={withShareUtm(Astro.url.href, { content: "tool-page" })}
               class="theme-button inline-flex h-10 items-center justify-center rounded-[15px] px-4 font-google text-[15px] font-bold tracking-[0.001rem]"
             >
               <img

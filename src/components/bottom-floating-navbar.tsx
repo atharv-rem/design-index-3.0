@@ -2,6 +2,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Suspense, lazy, useEffect, useState } from "react"
 import { ArrowUpRight, Check, Moon, Search, Share2, Sun } from "lucide-react"
+import { withShareUtm, withUtm } from "@/lib/utm"
 
 // Loaded on demand so the search model and UI only ship once someone opens search.
 const loadCommandSearch = () => import("@/components/command-search")
@@ -74,7 +75,7 @@ export default function BottomFloatingNavbar({
   }
 
   const handleShare = async () => {
-    const url = window.location.href
+    const url = withShareUtm(window.location.href, { content: "floating-navbar" })
     const title = shareTitle || document.title
     try {
       if (navigator.share) {
@@ -139,7 +140,7 @@ export default function BottomFloatingNavbar({
       {hasVisitActions && (
         <>
           <a
-            href={visitUrl}
+            href={withUtm(visitUrl, { content: "floating-navbar" })}
             data-cuelume-tap
             target="_blank"
             rel={visitSponsored ? "sponsored noopener noreferrer" : "noopener"}

@@ -1,6 +1,4 @@
 ---
-import logoUrl from "../../public/logo_light.svg?url";
-import logoDarkUrl from "../../public/logo_dark.svg?url";
 import logoBlue from "../assets/logo_blue.png";
 import RotatingPlaceholder from "./rotating-placeholder.tsx";
 import { KineticTextReveal } from "./ui/kinetic-text-reveal";
@@ -19,8 +17,8 @@ const title = "font-(family-name:--font-gatuzo-local) font-semibold leading-[0.9
 		<!-- Logo -->
 		<div data-hf="card" class={`${card} flex h-[200px] items-center justify-center md:h-[296px]`}>
 			<div data-hf="logo" class="size-[110px] md:size-[135px]">
-				<img src={logoUrl} alt="Design Index logo" class="size-full dark:hidden" />
-				<img src={logoDarkUrl} alt="Design Index logo" class="hidden size-full dark:block" />
+				<img src="/logo_light.svg" alt="Design Index logo" class="size-full dark:hidden" />
+				<img src="/logo_dark.svg" alt="Design Index logo" class="hidden size-full dark:block" />
 			</div>
 		</div>
 
