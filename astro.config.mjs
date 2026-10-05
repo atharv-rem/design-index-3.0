@@ -21,6 +21,37 @@ export default defineConfig({
         enabled: true,
         brandName: "Design Index",
         description: "Curated design tools, mockups, icons, fonts, color resources, and inspiration.",
+        sections: [
+          {
+            title: "Browse Categories",
+            description: "Curated, hand-picked design resources grouped by type.",
+            links: [
+              { title: "All Tools", href: "https://designindex.xyz/tools", description: "Every design tool in the index" },
+              { title: "Mockups", href: "https://designindex.xyz/mockups", description: "Device, print and packaging mockups" },
+              { title: "Icons", href: "https://designindex.xyz/icons", description: "Icon sets and libraries" },
+              { title: "Fonts", href: "https://designindex.xyz/fonts", description: "Web fonts and typefaces" },
+              { title: "Colours", href: "https://designindex.xyz/colours", description: "Color palettes and generators" },
+              { title: "Illustrations", href: "https://designindex.xyz/illustrations", description: "Illustration packs and generators" },
+              { title: "UI Components", href: "https://designindex.xyz/ui", description: "UI kits and component libraries" },
+              { title: "Design Inspiration", href: "https://designindex.xyz/design-inspo", description: "Galleries and inspiration sources" },
+            ],
+          },
+          {
+            title: "Agent Resources",
+            links: [
+              { title: "Search API", href: "https://designindex.xyz/api/search?keywords=minimal,portfolio", description: "GET with comma-separated keywords; returns ranked tools as JSON" },
+              { title: "Agent Skill", href: "https://designindex.xyz/SKILL.md", description: "design-search skill instructions" },
+              { title: "Sitemap", href: "https://designindex.xyz/sitemap-index.xml" },
+            ],
+          },
+          {
+            title: "About",
+            links: [
+              { title: "About Design Index", href: "https://designindex.xyz/about" },
+              { title: "Submit a Tool", href: "https://designindex.xyz/submit-tool" },
+            ],
+          },
+        ],
       },
     }),
   ],
