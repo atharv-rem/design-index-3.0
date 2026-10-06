@@ -49,11 +49,25 @@ const canonicalUrl = new URL(Astro.url.pathname.replace(/(.)\/+$/, '$1'), Astro.
 const faviconVersion = '20260331';
 const faviconIco = `/favicon.ico?v=${faviconVersion}`;
 
-const defaultOgImage = new URL(
-    `/api/og.png?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`,
-    Astro.url
-).href;
-const ogImage = customOgImage || defaultOgImage;
+const pageOgImages: Record<string, string> = {
+    '/about': '/about-og-image.webp',
+    '/alternatives': '/alternatives-og-image.webp',
+    '/colours': '/colour-og-image.webp',
+    '/design-inspo': '/inspo-og-image.webp',
+    '/fonts': '/font-og-image.webp',
+    '/icons': '/icon-og-image.webp',
+    '/illustrations': '/illustration-og-image.webp',
+    '/mockups': '/mockup-og-image.webp',
+    '/sponsor': '/sponsor-og-image.webp',
+    '/terms': '/terms-og-image.webp',
+    '/tools': '/tool-og-image.webp',
+    '/ui': '/ui-og-image.webp',
+};
+
+// Sub-pages (e.g. /alternatives/figma) inherit their section's image.
+const section = '/' + (Astro.url.pathname.split('/')[1] ?? '');
+const pageOgImage = pageOgImages[section] ?? '/og-image.webp';
+const ogImage = new URL(customOgImage || pageOgImage, canonicalUrl).href;
 ---
 
 <html lang="en" data-font-scope={isHome ? 'home' : 'app'}>
@@ -93,6 +107,9 @@ const ogImage = customOgImage || defaultOgImage;
                 },
                 image: {
                     alt: 'Design Index',
+                    type: 'image/webp',
+                    width: 1200,
+                    height: 630,
                 }
             }}
             twitter={{
