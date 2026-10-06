@@ -5,6 +5,7 @@ import {
   deleteCached,
   toolCacheKey,
 } from "@/lib/cache";
+import { RECENT_TOOLS_CACHE_KEY } from "@/lib/recent-tools";
 
 export const prerender = false;
 
@@ -62,6 +63,9 @@ const getStaleKeys = ({ type, record, old_record }: WebhookPayload): string[] =>
     type !== "UPDATE" || !record || !old_record || cardChanged(old_record, record);
 
   if (listChanged) {
+    // The homepage "recently added" list is built from the same card fields.
+    keys.add(RECENT_TOOLS_CACHE_KEY);
+
     for (const row of [record, old_record]) {
       if (row?.category) {
         keys.add(categoryCacheKey(row.category));

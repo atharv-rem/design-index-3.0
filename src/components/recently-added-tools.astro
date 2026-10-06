@@ -1,17 +1,11 @@
 ---
-import { supabase } from "@/lib/supabase";
+import { getRecentTools } from "@/lib/recent-tools";
 import { getOptimizedImageUrl } from "@/lib/images";
 
-const { data } = await supabase
-	.from("design_index")
-	.select("primary_key, tool_name, description, og_image_link")
-	.order("date", { ascending: false, nullsFirst: false })
-	.limit(10);
-
-const tools = (data ?? []).map((row) => ({
-	name: row.tool_name as string,
+const tools = (await getRecentTools()).map((row) => ({
+	name: row.tool_name,
 	href: `/${row.primary_key}/${encodeURIComponent(row.tool_name)}`,
-	description: (row.description as string | null)?.trim() || null,
+	description: row.description?.trim() || null,
 	image: getOptimizedImageUrl(row.og_image_link, { width: 400, height: 210 }),
 }));
 ---
