@@ -14,11 +14,11 @@ export default function ToolsGridSkeleton() {
         <Skeleton className="h-8 w-14 rounded-[10px] bg-[var(--app-border-strong)]" />
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-8 pb-10 lg:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-3 pb-10 sm:gap-8 lg:grid-cols-4">
         {placeholderCards.map((_, index) => (
           <div key={index} className="overflow-hidden rounded-[8px] border border-[var(--app-border)] bg-[var(--app-surface-soft)]">
             <Skeleton className="aspect-video w-full rounded-none bg-[var(--app-border-strong)]" />
-            <div className="space-y-3 p-4">
+            <div className="space-y-3 p-3 sm:p-4">
               <Skeleton className="h-5 w-3/4 bg-[var(--app-border-strong)]" />
               <Skeleton className="h-4 w-full bg-[var(--app-border-strong)]" />
               <Skeleton className="h-4 w-5/6 bg-[var(--app-border-strong)]" />

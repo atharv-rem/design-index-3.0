@@ -3,7 +3,7 @@ import logoBlue from "../assets/logo_blue.png";
 import RotatingPlaceholder from "./rotating-placeholder.tsx";
 import { KineticTextReveal } from "./ui/kinetic-text-reveal";
 
-const card = "relative overflow-hidden rounded-[28px] border border-black/10 bg-white dark:border-white/10 dark:bg-[#18181b]";
+const card = "relative overflow-hidden rounded-xl border border-black/10 bg-white dark:border-white/10 dark:bg-[#18181b]";
 const title = "font-(family-name:--font-gatuzo-local) font-semibold leading-[0.95] tracking-[-0.02em] text-[#2b2b2b] dark:text-neutral-100";
 ---
 
@@ -13,27 +13,27 @@ const title = "font-(family-name:--font-gatuzo-local) font-semibold leading-[0.9
 		<KineticTextReveal client:visible text="just a calm place to discover great design" className="block text-neutral-400 dark:text-neutral-500" maskClassName="pb-0" stagger={0.05} delay={0.35} />
 	</h2>
 
-	<div data-hf-grid class="mt-8 grid grid-cols-1 gap-4 md:mt-10 md:grid-cols-[1fr_3fr] md:gap-5 lg:grid-cols-[296px_1fr]">
+	<div data-hf-grid class="mt-8 grid grid-cols-2 gap-3 md:mt-10 md:grid-cols-[1fr_3fr] md:gap-5 lg:grid-cols-[296px_1fr]">
 		<!-- Logo -->
-		<div data-hf="card" class={`${card} flex h-[200px] items-center justify-center md:h-[296px]`}>
-			<div data-hf="logo" class="size-[110px] md:size-[135px]">
+		<div data-hf="card" class={`${card} flex h-[180px] items-center justify-center md:h-[296px]`}>
+			<div data-hf="logo" class="size-[84px] md:size-[135px]">
 				<img src="/logo_light.svg" alt="Design Index logo" class="size-full dark:hidden" />
 				<img src="/logo_dark.svg" alt="Design Index logo" class="hidden size-full dark:block" />
 			</div>
 		</div>
 
 		<!-- Categories + browser mock -->
-		<a href="/tools" data-hf="card" class={`${card} flex h-[296px] items-end`}>
-			<div class="relative z-10 p-6 md:p-8">
-				<p class={`${title} text-[28px] md:text-[34px]`}><span class="font-google text-[40px] md:text-[48px]">5+</span><br />categories</p>
-				<p class="mt-2 font-(family-name:--font-inter-stack) text-[15px] font-semibold text-neutral-600 dark:text-neutral-400 md:text-base">Browse by topic</p>
+		<a href="/tools" data-hf="card" class={`${card} flex h-[180px] items-end md:h-[296px]`}>
+			<div class="relative z-10 p-4 md:p-8">
+				<p class={`${title} text-[22px] md:text-[34px]`}><span class="font-google text-[32px] md:text-[48px]">5+</span><br />categories</p>
+				<p class="mt-2 font-(family-name:--font-inter-stack) text-[12px] font-semibold text-neutral-600 dark:text-neutral-400 md:text-base">Browse by topic</p>
 			</div>
-			<div data-hf="slide-x" class="absolute bottom-0 right-0 top-12 hidden w-[68%] rounded-tl-[32px] border-l border-t border-black/5 bg-[#fafafa] p-3.5 dark:border-white/10 dark:bg-[#1f1f23] sm:block">
+			<div data-hf="slide-x" class="absolute bottom-0 right-0 top-12 hidden w-[68%] rounded-tl-xl border-l border-t border-black/5 bg-[#fafafa] p-3.5 dark:border-white/10 dark:bg-[#1f1f23] sm:block">
 				<div data-hf="row" class="flex items-center gap-3">
-					<div class="flex h-[78px] w-[78px] shrink-0 items-center justify-center rounded-2xl bg-white dark:bg-[#2a2a2f]">
+					<div class="flex h-[78px] w-[78px] shrink-0 items-center justify-center rounded-lg bg-white dark:bg-[#2a2a2f]">
 						<svg class="text-[#222] dark:text-neutral-100" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg>
 					</div>
-					<div class="flex h-[78px] flex-1 items-center gap-4 rounded-2xl bg-white px-4 dark:bg-[#2a2a2f]">
+					<div class="flex h-[78px] flex-1 items-center gap-4 rounded-lg bg-white px-4 dark:bg-[#2a2a2f]">
 						<img src={logoBlue.src} alt="" width="52" height="52" class="size-[52px] shrink-0 rounded-xl" />
 						<span class="font-(family-name:--font-inter-stack) text-[22px] font-medium tracking-[-0.01em] text-[#222] dark:text-neutral-100">Design Index</span>
 					</div>
@@ -42,22 +42,22 @@ const title = "font-(family-name:--font-gatuzo-local) font-semibold leading-[0.9
 					<svg class="text-[#222] dark:text-neutral-100" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M19 12H5" /></svg>
 					<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
 					<svg class="text-[#222] dark:text-neutral-100" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8m0-5v5h-5" /></svg>
-					<div class="flex-1 rounded-2xl bg-[#f3f3f3] px-8 py-5 dark:bg-[#2a2a2f] font-(family-name:--font-inter-stack) text-2xl text-neutral-400">designindex.xyz</div>
+					<div class="flex-1 rounded-lg bg-[#f3f3f3] px-8 py-5 dark:bg-[#2a2a2f] font-(family-name:--font-inter-stack) text-2xl text-neutral-400">designindex.xyz</div>
 				</div>
 			</div>
 		</a>
 	</div>
 
-	<div data-hf-grid class="mt-4 grid grid-cols-1 gap-4 md:mt-5 md:grid-cols-[1.9fr_1fr_1fr] md:gap-5">
+	<div data-hf-grid class="mt-3 grid grid-cols-2 gap-3 md:mt-5 md:grid-cols-[1.9fr_1fr_1fr] md:gap-5">
 		<!-- Natural language search -->
-		<a href="/" data-hf="card" class={`${card} flex h-[296px] flex-col justify-between p-6 md:p-8`}>
+		<a href="/" data-hf="card" class={`${card} col-span-2 flex h-[220px] flex-col justify-between p-6 md:col-span-1 md:h-[296px] md:p-8`}>
 			<p class={`${title} text-[34px] md:text-[40px]`}>Search in<br />natural language</p>
-			<div data-hf="slide-x" class="-mr-6 rounded-l-2xl border border-r-0 border-black/5 bg-[#fafafa] px-6 py-5 dark:border-white/10 dark:bg-[#1f1f23] font-(family-name:--font-inter-stack) text-lg text-neutral-400 md:-mr-8"><RotatingPlaceholder client:visible /></div>
+			<div data-hf="slide-x" class="-mr-6 rounded-l-lg border border-r-0 border-black/5 bg-[#fafafa] px-6 py-5 dark:border-white/10 dark:bg-[#1f1f23] font-(family-name:--font-inter-stack) text-lg text-neutral-400 md:-mr-8"><RotatingPlaceholder client:visible /></div>
 		</a>
 
 		<!-- Handpicked tools -->
-		<a href="/tools" data-hf="card" data-graphic-hover class={`${card} flex h-[296px] flex-col justify-between pl-6 pt-6 md:pl-8 md:pt-8`}>
-			<p class={`${title} text-[34px] md:text-[40px]`}><span class="font-google text-[40px] md:text-[48px]">400+</span><br />handpicked<br />tools</p>
+		<a href="/tools" data-hf="card" data-graphic-hover class={`${card} flex h-[220px] flex-col justify-between pl-4 pt-4 md:h-[296px] md:pl-8 md:pt-8`}>
+			<p class={`${title} text-[24px] md:text-[40px]`}><span class="font-google text-[32px] md:text-[48px]">400+</span><br />handpicked<br />tools</p>
 			<div data-hf="slide-y" class="flex items-center gap-3 rounded-tl-xl border border-b-0 border-r-0 border-black/10 bg-white px-3 py-3 dark:border-white/10 dark:bg-[#1f1f23]">
 				<div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -74,12 +74,12 @@ const title = "font-(family-name:--font-gatuzo-local) font-semibold leading-[0.9
 		</a>
 
 		<!-- Writings -->
-		<a href="/alternatives" data-hf="card" data-graphic-hover class={`${card} flex h-[296px] flex-col justify-between pl-6 pt-6 md:pl-8 md:pt-8`}>
+		<a href="/alternatives" data-hf="card" data-graphic-hover class={`${card} flex h-[220px] flex-col justify-between pl-4 pt-4 md:h-[296px] md:pl-8 md:pt-8`}>
 			<div>
-				<p class={`${title} text-[34px] md:text-[40px]`}>Our<br />writings</p>
-				<p class="mt-2 pr-4 font-(family-name:--font-inter-stack) text-base font-medium leading-tight text-neutral-600 dark:text-neutral-400">Deep dives into better alternatives</p>
+				<p class={`${title} text-[24px] md:text-[40px]`}>Our<br />writings</p>
+				<p class="mt-2 pr-3 font-(family-name:--font-inter-stack) text-[12px] md:text-base font-medium leading-tight text-neutral-600 dark:text-neutral-400">Deep dives into better alternatives</p>
 			</div>
-			<div data-hf="slide-y" class="ml-0 h-[100px] rounded-t-xl border border-b-0 border-black/10 bg-white p-4 dark:border-white/10 dark:bg-[#1f1f23]">
+			<div data-hf="slide-y" class="ml-0 h-[80px] md:h-[100px] rounded-t-xl border border-b-0 border-black/10 bg-white p-4 dark:border-white/10 dark:bg-[#1f1f23]">
 				<div data-hf="bar" class="h-3 w-3/4 origin-left rounded bg-neutral-200 dark:bg-neutral-700"></div>
 				<div data-hf="bar" class="mt-3 h-2 w-full origin-left rounded bg-neutral-100 dark:bg-neutral-800"></div>
 				<div data-hf="bar" class="mt-2 h-2 w-2/3 origin-left rounded bg-neutral-100 dark:bg-neutral-800"></div>

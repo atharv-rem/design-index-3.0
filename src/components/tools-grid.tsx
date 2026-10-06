@@ -117,7 +117,7 @@ export default function ToolsGrid({ category, initialTools, sponsors: allSponsor
       </RadioGroupPrimitive>
 
       {filtered.length > 0 ? (
-        <div className="mt-6 grid grid-cols-1 gap-6 pb-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-3 pb-10 sm:gap-6 lg:grid-cols-4">
           {entries.map((entry, index) => {
             const isPriority = index < PRIORITY_IMAGE_COUNT;
             const isSponsor = entry.kind === "sponsor";
@@ -165,9 +165,9 @@ export default function ToolsGrid({ category, initialTools, sponsors: allSponsor
                     }
                   />
                 </div>
-                <div className="flex flex-1 flex-col gap-1.5 p-4">
-                  <h3 className="font-google text-[17px] font-semibold leading-snug theme-text-primary">{item.name}</h3>
-                  <p className="line-clamp-2 font-google text-sm font-medium leading-5 theme-text-soft">{item.description}</p>
+                <div className="flex flex-1 flex-col gap-1 p-3 sm:gap-1.5 sm:p-4">
+                  <h3 className="font-google text-[14px] font-semibold leading-snug sm:text-[17px] theme-text-primary">{item.name}</h3>
+                  <p className="line-clamp-2 font-google text-xs font-medium leading-4 sm:text-sm sm:leading-5 theme-text-soft">{item.description}</p>
                 </div>
               </a>
             );

@@ -16,7 +16,7 @@ const tools = (await getRecentTools()).map((row) => ({
 			Recently added tools
 		</h2>
 
-		<ul class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-10 md:grid-cols-3 md:gap-5 lg:grid-cols-5">
+		<ul class="mt-8 grid grid-cols-2 gap-3 md:mt-10 md:grid-cols-3 md:gap-5 lg:grid-cols-5">
 			{tools.map((tool) => (
 				<li class="flex">
 					<a
@@ -35,10 +35,10 @@ const tools = (await getRecentTools()).map((row) => ({
 								class="aspect-[1.9/1] w-full object-cover"
 							/>
 						)}
-						<div class="p-4">
-							<h3 class="font-google text-[17px] font-medium leading-tight tracking-[-0.01em] text-[#2b2b2b] dark:text-neutral-100">{tool.name}</h3>
+						<div class="p-3 md:p-4">
+							<h3 class="font-google text-[14px] font-medium leading-tight md:text-[17px] tracking-[-0.01em] text-[#2b2b2b] dark:text-neutral-100">{tool.name}</h3>
 							{tool.description && (
-								<p class="mt-1.5 line-clamp-3 font-(family-name:--font-inter-stack) text-[13px] font-normal leading-snug text-neutral-600 dark:text-neutral-400">{tool.description}</p>
+								<p class="mt-1 line-clamp-2 font-(family-name:--font-inter-stack) text-[11px] md:mt-1.5 md:line-clamp-3 md:text-[13px] font-normal leading-snug text-neutral-600 dark:text-neutral-400">{tool.description}</p>
 							)}
 						</div>
 					</a>

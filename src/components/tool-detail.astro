@@ -130,7 +130,7 @@ const { name, description, websiteUrl, pricing = "", sponsored = false, suggeste
               Try these tools
             </p>
 
-            <div class="mt-3 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div class="mt-3 grid grid-cols-2 gap-3 md:gap-6">
               {
                 suggested.map(
                   (item) => (
@@ -162,12 +162,12 @@ const { name, description, websiteUrl, pricing = "", sponsored = false, suggeste
                         />
                       </div>
 
-                      <div class="flex flex-1 flex-col gap-1.5 p-4">
-                        <h3 class="font-google text-[17px] font-semibold leading-snug theme-text-primary">
+                      <div class="flex flex-1 flex-col gap-1 p-3 md:gap-1.5 md:p-4">
+                        <h3 class="font-google text-[14px] font-semibold leading-snug theme-text-primary md:text-[17px]">
                           {item.name}
                         </h3>
 
-                        <p class="line-clamp-2 font-google text-sm font-medium leading-5 theme-text-soft">
+                        <p class="line-clamp-2 font-google text-xs font-medium leading-4 theme-text-soft md:text-sm md:leading-5">
                           {item.description}
                         </p>
                       </div>
