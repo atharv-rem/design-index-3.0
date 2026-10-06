@@ -50,23 +50,23 @@ const faviconVersion = '20260331';
 const faviconIco = `/favicon.ico?v=${faviconVersion}`;
 
 const pageOgImages: Record<string, string> = {
-    '/about': '/about-og-image.webp',
-    '/alternatives': '/alternatives-og-image.webp',
-    '/colours': '/colour-og-image.webp',
-    '/design-inspo': '/inspo-og-image.webp',
-    '/fonts': '/font-og-image.webp',
-    '/icons': '/icon-og-image.webp',
-    '/illustrations': '/illustration-og-image.webp',
-    '/mockups': '/mockup-og-image.webp',
-    '/sponsor': '/sponsor-og-image.webp',
-    '/terms': '/terms-og-image.webp',
-    '/tools': '/tool-og-image.webp',
-    '/ui': '/ui-og-image.webp',
+    '/about': '/about-og-image.jpg',
+    '/alternatives': '/alternatives-og-image.jpg',
+    '/colours': '/colour-og-image.jpg',
+    '/design-inspo': '/inspo-og-image.jpg',
+    '/fonts': '/font-og-image.jpg',
+    '/icons': '/icon-og-image.jpg',
+    '/illustrations': '/illustration-og-image.jpg',
+    '/mockups': '/mockup-og-image.jpg',
+    '/sponsor': '/sponsor-og-image.jpg',
+    '/terms': '/terms-og-image.jpg',
+    '/tools': '/tool-og-image.jpg',
+    '/ui': '/ui-og-image.jpg',
 };
 
 // Sub-pages (e.g. /alternatives/figma) inherit their section's image.
 const section = '/' + (Astro.url.pathname.split('/')[1] ?? '');
-const pageOgImage = pageOgImages[section] ?? '/og-image.webp';
+const pageOgImage = pageOgImages[section] ?? '/og-image.jpg';
 const ogImage = new URL(customOgImage || pageOgImage, canonicalUrl).href;
 ---
 
@@ -107,13 +107,14 @@ const ogImage = new URL(customOgImage || pageOgImage, canonicalUrl).href;
                 },
                 image: {
                     alt: 'Design Index',
-                    type: 'image/webp',
+                    type: customOgImage ? undefined : 'image/jpeg',
                     width: 1200,
                     height: 630,
                 }
             }}
             twitter={{
                 card: 'summary_large_image',
+                site: '@atharv_rem',
                 title: title,
                 description: description,
                 image: ogImage,
