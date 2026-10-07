@@ -446,7 +446,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
               Searching...
             </p>
 
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3" aria-hidden="true">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}
@@ -457,7 +457,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
                     style={{ animationDelay: `${i * 120}ms` }}
                   />
 
-                  <div className="flex flex-col gap-2.5 p-4">
+                  <div className="flex flex-col gap-2.5 p-3 sm:p-4">
                     <div
                       className="skeleton-shimmer h-[17px] w-2/3 rounded-md"
                       style={{ animationDelay: `${i * 120 + 60}ms` }}
@@ -522,7 +522,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
               </div>
 
               {displayedResults.length > 0 ? (
-                <div className="grid grid-cols-1 gap-6 pb-10 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-2 gap-3 pb-10 sm:gap-6 lg:grid-cols-3">
                   {gridEntries.map((entry) => {
                     const isSponsor = entry.kind === "sponsor";
                     const card = isSponsor
@@ -569,9 +569,9 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
                           }
                         />
                       </div>
-                      <div className="flex flex-1 flex-col gap-1.5 p-4">
-                        <h3 className="font-google text-[17px] font-semibold leading-snug theme-text-primary">{card.name}</h3>
-                        <p className="line-clamp-2 font-google text-sm font-medium leading-5 theme-text-soft">{card.description}</p>
+                      <div className="flex flex-1 flex-col gap-1.5 p-3 sm:p-4">
+                        <h3 className="font-google text-[15px] font-semibold leading-snug theme-text-primary sm:text-[17px]">{card.name}</h3>
+                        <p className="line-clamp-2 font-google text-[13px] font-medium leading-5 theme-text-soft sm:text-sm">{card.description}</p>
                       </div>
                     </a>
                     );
