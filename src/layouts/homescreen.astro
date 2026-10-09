@@ -6,6 +6,7 @@ import SiteFooter from '../components/site-footer.astro';
 import { SEO } from 'astro-seo';
 import { getImage } from 'astro:assets';
 import { Font } from 'astro:assets';
+import Analytics from '@vercel/analytics/astro';
 import heartIcon from '../assets/love.svg';
 
 const optimizedHeart = await getImage({ src: heartIcon, width: 20, height: 20 });
@@ -76,6 +77,7 @@ const ogImage = new URL(customOgImage || pageOgImage, canonicalUrl).href;
         <Font cssVariable="--font-gatuzo-local" preload={isHome ? [{ style: "normal", weight: "400" }] : undefined} />
         <Font cssVariable="--font-google-sans" />
         <Font cssVariable="--font-inter" />
+        <Analytics />
         <script
           src="https://cdn.databuddy.cc/databuddy.js"
           data-client-id="CzkF34Qr773cOXFFoHjzM"

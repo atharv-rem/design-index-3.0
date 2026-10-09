@@ -26,6 +26,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@upstash/redis": "^1.37.0",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/functions": "^3.9.9",
     "@vercel/routing-utils": "^6.1.1",
     "astro": "^7.3.5",
