@@ -19,6 +19,8 @@ import {
 import { Drawer, DrawerPopup } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { searchTools } from "@/lib/search";
+import type { SponsorCard } from "@/lib/sponsors";
+import { withUtm } from "@/lib/utm";
 import type { ToolResult } from "@/zustand_store/useSearchStore";
 
 type SearchItem = {
@@ -26,6 +28,7 @@ type SearchItem = {
   label: string;
   href: string;
   description?: string;
+  sponsored?: boolean;
 };
 
 type SearchGroup = {
@@ -50,6 +53,33 @@ const browseGroup: SearchGroup = {
   ],
 };
 
+// Fetched once per page load, and only once the palette is first used.
+let sponsorsPromise: Promise<SponsorCard[]> | undefined;
+
+function loadSponsors(): Promise<SponsorCard[]> {
+  sponsorsPromise ??= fetch("/api/sponsors")
+    .then((res) => (res.ok ? res.json() : { sponsors: [] }))
+    .then((data: { sponsors?: SponsorCard[] }) =>
+      (data.sponsors ?? []).filter((sponsor) => !sponsor.homepage_only && sponsor.website_url),
+    )
+    .catch(() => {
+      sponsorsPromise = undefined;
+      return [];
+    });
+
+  return sponsorsPromise;
+}
+
+function toSponsorItem(sponsor: SponsorCard): SearchItem {
+  return {
+    value: `sponsor-${sponsor.id}`,
+    label: sponsor.name,
+    description: sponsor.description,
+    href: withUtm(sponsor.website_url, { content: "command-search" }),
+    sponsored: true,
+  };
+}
+
 function toItem(tool: ToolResult): SearchItem {
   return {
     value: String(tool.id),
@@ -64,6 +94,17 @@ function SearchPanel({ showHints = false }: { showHints?: boolean }) {
   const [results, setResults] = useState<ToolResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [sponsors, setSponsors] = useState<SponsorCard[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadSponsors().then((list) => {
+      if (!cancelled) setSponsors(list);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const trimmed = query.trim();
 
@@ -107,11 +148,18 @@ function SearchPanel({ showHints = false }: { showHints?: boolean }) {
     const relevant = results.filter((item) => item.matchedKeywordsCount > 1);
     const similar = results.filter((item) => item.matchedKeywordsCount === 1);
 
-    return [
+    const found = [
       { value: "Relevant", items: relevant.slice(0, MAX_ITEMS_PER_GROUP).map(toItem) },
       { value: "Similar", items: similar.slice(0, MAX_ITEMS_PER_GROUP).map(toItem) },
     ].filter((group) => group.items.length > 0);
-  }, [trimmed, results]);
+
+    // A sponsor is pinned as the top result whenever the search has matches.
+    if (found.length > 0 && sponsors.length > 0) {
+      return [{ value: "Sponsored", items: [toSponsorItem(sponsors[0])] }, ...found];
+    }
+
+    return found;
+  }, [trimmed, results, sponsors]);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col font-google **:data-[slot=scroll-area-viewport]:touch-pan-y">
@@ -135,9 +183,19 @@ function SearchPanel({ showHints = false }: { showHints?: boolean }) {
                       key={item.value}
                       onClick={(event) => {
                         event.preventDefault();
-                        window.location.assign(item.href);
+                        if (item.sponsored) {
+                          window.open(item.href, "_blank", "noopener,noreferrer");
+                        } else {
+                          window.location.assign(item.href);
+                        }
                       }}
-                      render={<a href={item.href} />}
+                      render={
+                        item.sponsored ? (
+                          <a href={item.href} rel="sponsored noopener noreferrer" target="_blank" />
+                        ) : (
+                          <a href={item.href} />
+                        )
+                      }
                       value={item}
                     >
                       <div className="flex min-w-0 flex-col">

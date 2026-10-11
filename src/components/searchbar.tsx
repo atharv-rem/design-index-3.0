@@ -13,6 +13,7 @@ import { RadioGroupPrimitive, RadioPrimitive } from "@/components/ui/radio-group
 import { segmentedControlItemVariants, segmentedControlRootClassName } from "@/lib/segmented-control";
 import type { SponsorCard } from "@/lib/sponsors";
 import encrataLogo from "@/assets/encrata_logo.svg?url";
+import shadcnLabsLogo from "@/assets/shadcn-labs-logo.svg?url";
 
 
 import { useSearchStore } from "../zustand_store/useSearchStore";
@@ -23,7 +24,14 @@ const resultTabClassName = segmentedControlItemVariants({
 });
 
 // Sponsors with a bundled logo use it instead of the remote og image (keyed by lowercase name).
-const LOCAL_SPONSOR_LOGOS: Record<string, string> = { encrata: encrataLogo };
+const LOCAL_SPONSOR_LOGOS: Record<string, string> = {
+  encrata: encrataLogo,
+  "shadcn labs": shadcnLabsLogo,
+  "shadcn/labs": shadcnLabsLogo,
+};
+
+// Logos that already contain the sponsor's name: shown alone, without the text label.
+const WORDMARK_SPONSORS = new Set(["shadcn labs", "shadcn/labs"]);
 
 // One sponsored card after every N results.
 const SPONSOR_INTERVAL = 8;
@@ -128,6 +136,13 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
     )[] = [];
     let sponsorCount = 0;
 
+    // The first slot is always a sponsor (when there are results), then one per interval.
+    if (sponsors.length > 0 && displayedResults.length > 0) {
+      const sponsor = sponsors[0];
+      entries.push({ kind: "sponsor", sponsor, key: `sponsor-${sponsor.id}-0` });
+      sponsorCount += 1;
+    }
+
     displayedResults.forEach((item, index) => {
       entries.push({ kind: "tool", item });
 
@@ -137,12 +152,6 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
         sponsorCount += 1;
       }
     });
-
-    // Fewer results than one full interval: still show a single sponsor at the end.
-    if (sponsors.length > 0 && displayedResults.length > 0 && displayedResults.length < SPONSOR_INTERVAL) {
-      const sponsor = sponsors[0];
-      entries.push({ kind: "sponsor", sponsor, key: `sponsor-${sponsor.id}-0` });
-    }
 
     return entries;
   })();
@@ -368,7 +377,11 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
         <line x1="50%" x2="50%" y1="52.5%" y2="97.5%" />
       </svg>
       <div className="grid grid-cols-2 font-(family-name:--font-inter-stack) sm:h-[64px] sm:grid-cols-4">
-        {stripSponsors.map((sponsor) => (
+        {stripSponsors.map((sponsor) => {
+          const sponsorKey = sponsor.name.toLowerCase();
+          const logo = LOCAL_SPONSOR_LOGOS[sponsorKey];
+          const isWordmark = Boolean(logo) && WORDMARK_SPONSORS.has(sponsorKey);
+          return (
           <a
             key={sponsor.id}
             href={withUtm(sponsor.website_url, { content: "sponsor-strip" })}
@@ -378,23 +391,41 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
             title={sponsor.description || sponsor.name}
             className={`${sponsorCellClassName} gap-1.5 px-2 sm:gap-1 sm:px-3 theme-text-soft hover:theme-text-primary transition`}
           >
-            {(LOCAL_SPONSOR_LOGOS[sponsor.name.toLowerCase()] || sponsor.og_image_link) && (
-              <img
-                src={
-                  LOCAL_SPONSOR_LOGOS[sponsor.name.toLowerCase()] ||
-                  getOptimizedImageUrl(sponsor.og_image_link, { width: 64, quality: 76 }) ||
-                  "/favicon.ico"
-                }
-                alt=""
-                width={32}
-                height={32}
-                loading="lazy"
-                className={`shrink-0 ${LOCAL_SPONSOR_LOGOS[sponsor.name.toLowerCase()] ? "mr-[5px] h-auto w-6 object-contain sm:w-5" : "size-9 rounded-[4px] object-cover sm:size-8"}`}
+            {isWordmark ? (
+              // Masked so the wordmark takes the link's text colour (soft, then primary on hover) in both themes.
+              <span
+                role="img"
+                aria-label={sponsor.name}
+                className="block h-[14px] w-full max-w-[128px] bg-current transition sm:h-[15px] sm:max-w-[139px]"
+                style={{
+                  maskImage: `url(${logo})`,
+                  WebkitMaskImage: `url(${logo})`,
+                  maskRepeat: "no-repeat",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskPosition: "center",
+                  WebkitMaskPosition: "center",
+                  maskSize: "contain",
+                  WebkitMaskSize: "contain",
+                }}
               />
+            ) : (
+              <>
+                {(logo || sponsor.og_image_link) && (
+                  <img
+                    src={logo || getOptimizedImageUrl(sponsor.og_image_link, { width: 64, quality: 76 }) || "/favicon.ico"}
+                    alt=""
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                    className={`shrink-0 ${logo ? "mr-[5px] h-auto w-6 object-contain sm:w-5" : "size-9 rounded-[4px] object-cover sm:size-8"}`}
+                  />
+                )}
+                <span className="truncate text-[20px] font-semibold sm:text-[18px]">{sponsor.name}</span>
+              </>
             )}
-            <span className="truncate text-[20px] font-semibold sm:text-[18px]">{sponsor.name}</span>
           </a>
-        ))}
+          );
+        })}
 
         {Array.from({ length: SPONSOR_SLOTS - stripSponsors.length }).map((_, i) => (
           <a
@@ -528,7 +559,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
                     const card = isSponsor
                       ? {
                           key: entry.key,
-                          href: entry.sponsor.website_url,
+                          href: withUtm(entry.sponsor.website_url, { content: "search-results" }),
                           name: entry.sponsor.name,
                           description: entry.sponsor.description,
                           og_image_link: entry.sponsor.og_image_link,

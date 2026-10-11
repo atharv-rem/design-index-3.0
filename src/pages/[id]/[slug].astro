@@ -1,6 +1,7 @@
 ---
 import HomescreenLayout from "@/layouts/homescreen.astro";
 import { getOptimizedImageUrl } from "@/lib/images";
+import { withUtm } from "@/lib/utm";
 import ToolDetail from "@/components/tool-detail.astro";
 import { SPONSORS_PAGE_TAG, getSponsors } from "@/lib/sponsors";
 import { getToolWithSuggestions, isValidToolId } from "@/lib/get-tool";
@@ -63,7 +64,7 @@ const sponsor = sponsors.length ? sponsors[Number(id) % sponsors.length] : undef
 const suggested = [
   ...(sponsor
     ? [{
-        href: sponsor.website_url,
+        href: withUtm(sponsor.website_url, { content: "tool-page-suggested" }),
         name: sponsor.name,
         description: sponsor.description,
         og_image_link: sponsor.og_image_link,

@@ -7,6 +7,7 @@ import { getOptimizedImageUrl } from "@/lib/images";
 import ToolImage from "@/components/tool-image";
 import type { ToolCard } from "@/lib/tools";
 import type { SponsorCard } from "@/lib/sponsors";
+import { withUtm } from "@/lib/utm";
 
 
 type PricingFilter = "free" | "paid" | "freemium" | "all";
@@ -82,6 +83,13 @@ export default function ToolsGrid({ category, initialTools, sponsors: allSponsor
     const result: GridEntry[] = [];
     let sponsorCount = 0;
 
+    // The first slot is always a sponsor (when there are tools), then one per interval.
+    if (sponsors.length > 0 && filtered.length > 0) {
+      const sponsor = sponsors[0];
+      result.push({ kind: "sponsor", sponsor, key: `sponsor-${sponsor.id}-0` });
+      sponsorCount += 1;
+    }
+
     filtered.forEach((tool, index) => {
       result.push({ kind: "tool", tool });
 
@@ -124,7 +132,7 @@ export default function ToolsGrid({ category, initialTools, sponsors: allSponsor
             const item = isSponsor
               ? {
                   key: entry.key,
-                  href: entry.sponsor.website_url,
+                  href: withUtm(entry.sponsor.website_url, { content: "category-grid" }),
                   name: entry.sponsor.name,
                   description: entry.sponsor.description,
                   og_image_link: entry.sponsor.og_image_link,
