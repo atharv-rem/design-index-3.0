@@ -130,6 +130,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // If the client wants markdown, convert the HTML response inline to markdown
   if (wantsMarkdown && contentType.toLowerCase().includes("text/html")) {
+    // The CDN caches by URL only, so a cached markdown reply would be served to browsers too.
+    // Keep it out of the shared cache; the page's normal HTML is what gets cached.
+    context.cache.set(false);
+
     const html = await response.text();
     const markdown = htmlToMarkdown(html);
     return markdownResponse(markdown, { noindex: true });

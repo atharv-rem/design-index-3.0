@@ -5,7 +5,6 @@ import { play } from "cuelume";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, Hammer, MousePointerClick, SearchX, Users, X } from "lucide-react";
 import { getOptimizedImageUrl } from "@/lib/images";
-import { searchTools } from "@/lib/search";
 import { withUtm } from "@/lib/utm";
 import ToolImage from "@/components/tool-image";
 import { Kbd } from "@/components/ui/kbd";
@@ -35,6 +34,10 @@ const WORDMARK_SPONSORS = new Set(["shadcn labs", "shadcn/labs"]);
 
 // One sponsored card after every N results.
 const SPONSOR_INTERVAL = 8;
+
+// The search module bundles the Wink NLP model (~1 MB gzipped), so it is fetched
+// when the search box is focused instead of on page load. Repeat calls reuse the module.
+const loadSearch = () => import("@/lib/search");
 
 export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: SponsorCard[] }) {
   const {
@@ -118,7 +121,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
       if (trimmed !== activeQuery) {
         handleSearch(inputValue);
       }
-    }, 1000);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [inputValue, activeQuery]);
@@ -213,6 +216,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
     setActiveQuery(trimmed);
 
     try {
+      const { searchTools } = await loadSearch();
       const data = await searchTools(trimmed);
 
       setResults(data);
@@ -266,6 +270,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
           data-cuelume-type
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          onFocus={() => void loadSearch()}
           onKeyDown={handleKeyDown}
           className="font-google text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] z-10"
         />

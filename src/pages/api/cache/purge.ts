@@ -7,6 +7,7 @@ import {
   deleteCached,
   toolCacheKey,
 } from "@/lib/cache";
+import { TOOL_DATA_TAG, categoryTag, purgePageTags, toolTag } from "@/lib/page-cache";
 
 export const prerender = false;
 
@@ -28,7 +29,7 @@ const asArray = (value: unknown): unknown[] =>
 // Call after editing the `design_index` table. Body (all optional):
 //   { "ids": [12, 40], "categories": ["font"] } or { "all": true }
 // Editing a tool: pass its id and its category (the category list embeds the card).
-// Only the Redis copy is cleared; page HTML cached at the edge expires on its own TTL.
+// Clears the Redis copies, then the edge-cached pages built from them.
 export const POST: APIRoute = async ({ request }) => {
   if (!purgeToken || request.headers.get("authorization") !== `Bearer ${purgeToken}`) {
     return Response.json({ error: "Unauthorized." }, { status: 401 });
@@ -54,13 +55,26 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
+  let deleted: number;
+
   try {
-    const deleted = body.all === true
+    deleted = body.all === true
       ? await deleteCached([], [TOOL_KEY_PREFIX, CATEGORY_KEY_PREFIX])
       : await deleteCached([...ids.map(toolCacheKey), ...categories.map(categoryCacheKey)]);
-
-    return Response.json({ deleted });
   } catch {
     return Response.json({ error: "Failed to purge cache." }, { status: 502 });
   }
+
+  // After Redis: a page re-rendered before the delete would re-cache the old rows.
+  const pagesPurged = await purgePageTags(
+    body.all === true
+      ? [TOOL_DATA_TAG]
+      : [...ids.map(toolTag), ...categories.map(categoryTag)],
+  );
+
+  if (!pagesPurged) {
+    return Response.json({ error: "Failed to purge cached pages.", deleted }, { status: 502 });
+  }
+
+  return Response.json({ deleted, pagesPurged });
 };

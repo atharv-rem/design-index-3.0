@@ -5,14 +5,14 @@ import { withUtm } from "@/lib/utm";
 import ToolDetail from "@/components/tool-detail.astro";
 import { SPONSORS_PAGE_TAG, getSponsors } from "@/lib/sponsors";
 import { getToolWithSuggestions, isValidToolId } from "@/lib/get-tool";
+import { PAGE_CACHE, TOOL_DATA_TAG, categoryTag, toolTag } from "@/lib/page-cache";
 
 export const prerender = false;
 
 if (Astro.cache.enabled) {
   Astro.cache.set({
-    maxAge: 86400,
-    swr: 43200,
-    tags: [SPONSORS_PAGE_TAG],
+    ...PAGE_CACHE,
+    tags: [SPONSORS_PAGE_TAG, TOOL_DATA_TAG],
   });
 }
 
@@ -31,6 +31,11 @@ if (!isValidToolId(toolId)) {
   return new Response(null, { status: 404, statusText: "Not Found" });
 }
 
+// Tagged before the lookup so a cached 404 is purged when this id is later inserted.
+if (Astro.cache.enabled) {
+  Astro.cache.set({ tags: [toolTag(toolId)] });
+}
+
 // Sponsors don't depend on the tool, so load them while the tool is being fetched.
 const sponsorsPromise = getSponsors().catch(() => []);
 
@@ -40,6 +45,12 @@ try {
   payload = await getToolWithSuggestions(toolId);
 } catch (error) {
   Astro.logger.error(`Failed to load tool ${id}: ${error}`);
+
+  // Don't let a transient database failure sit in the edge cache for a day.
+  if (Astro.cache.enabled) {
+    Astro.cache.set(false);
+  }
+
   return new Response(null, { status: 502, statusText: "Bad Gateway" });
 }
 
@@ -49,6 +60,11 @@ if (!payload) {
 }
 
 const { tool, suggestedTools } = payload;
+
+// Suggestions come from this category, so a change to any of its tools stales this page.
+if (Astro.cache.enabled && tool.category) {
+  Astro.cache.set({ tags: [categoryTag(tool.category)] });
+}
 
 // Normalize/redirect to expected slug if it doesn't match (comparing decoded strings to prevent infinite loops)
 if (decodeURIComponent(slug ?? "") !== tool.tool_name) {

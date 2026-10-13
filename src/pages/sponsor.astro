@@ -1,9 +1,16 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
+import { PAGE_CACHE } from "@/lib/page-cache";
 import { actions } from "astro:actions";
 import { GET as getStats } from "./api/stats";
 
 export const prerender = false;
+
+// Form results only exist on the POST submit (never cached) or on ?success=true (its own cache entry).
+// The visitor stats refresh hourly.
+if (Astro.cache.enabled && Astro.request.method === "GET") {
+  Astro.cache.set({ ...PAGE_CACHE, maxAge: 3600 });
+}
 
 const result = Astro.getActionResult(actions.submitSponsor);
 

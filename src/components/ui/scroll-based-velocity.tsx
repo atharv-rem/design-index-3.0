@@ -10,7 +10,7 @@ import {
     useVelocity,
     useAnimationFrame,
     wrap,
-} from "framer-motion";
+} from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface ScrollBasedVelocityProps {

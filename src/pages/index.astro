@@ -8,9 +8,18 @@ import SearchBar from "../components/searchbar";
 import { ArcBandsBackground } from "../components/arc-bands-background";
 import HomeFeatures from "../components/home-features.astro";
 import RecentlyAddedTools from "../components/recently-added-tools.astro";
-import { getSponsorCards } from "@/lib/sponsors";
+import { SPONSORS_PAGE_TAG, getSponsorCards } from "@/lib/sponsors";
+import { PAGE_CACHE, RECENT_TOOLS_TAG, TOOL_DATA_TAG } from "@/lib/page-cache";
 
 const sponsors = await getSponsorCards();
+
+// Shows sponsors and the "recently added" list; both purge this page when they change.
+if (Astro.cache.enabled) {
+	Astro.cache.set({
+		...PAGE_CACHE,
+		tags: [SPONSORS_PAGE_TAG, TOOL_DATA_TAG, RECENT_TOOLS_TAG],
+	});
+}
 
 const socialLinks = [
 	{ label: "Instagram", href: "https://www.instagram.com/atharv_remeshan/", icon: instagramIcon },

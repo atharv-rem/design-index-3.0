@@ -3,14 +3,14 @@ import HomescreenLayout from "../layouts/homescreen.astro";
 import ToolsGrid from "../components/tools-grid";
 import { getSponsorCards } from "@/lib/sponsors";
 import { getToolsByCategory } from "@/lib/get-tool-by-category";
+import { PAGE_CACHE, TOOL_DATA_TAG, categoryTag } from "@/lib/page-cache";
 
 const tools = await getToolsByCategory("illustration");
 const sponsors = await getSponsorCards();
 if (Astro.cache.enabled) {
 	Astro.cache.set({
-		maxAge: 86400,
-		swr: 43200,
-		tags: ["illustrations-page"],
+		...PAGE_CACHE,
+		tags: [TOOL_DATA_TAG, categoryTag("illustration")],
 	});
 }
 ---

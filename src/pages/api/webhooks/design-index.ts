@@ -5,6 +5,7 @@ import {
   deleteCached,
   toolCacheKey,
 } from "@/lib/cache";
+import { RECENT_TOOLS_TAG, categoryTag, purgePageTags, toolTag } from "@/lib/page-cache";
 import { RECENT_TOOLS_CACHE_KEY } from "@/lib/recent-tools";
 
 export const prerender = false;
@@ -47,13 +48,15 @@ const CARD_FIELDS = [
 const cardChanged = (before: ToolRow, after: ToolRow) =>
   CARD_FIELDS.some((field) => before[field] !== after[field]);
 
-/** Works out the minimal set of Redis keys a row change makes stale. */
-const getStaleKeys = ({ type, record, old_record }: WebhookPayload): string[] => {
+/** Works out the minimal Redis keys and page tags a row change makes stale. */
+const getStale = ({ type, record, old_record }: WebhookPayload) => {
   const keys = new Set<string>();
+  const tags = new Set<string>();
 
   for (const row of [record, old_record]) {
     if (row?.primary_key) {
       keys.add(toolCacheKey(row.primary_key));
+      tags.add(toolTag(row.primary_key));
     }
   }
 
@@ -65,20 +68,22 @@ const getStaleKeys = ({ type, record, old_record }: WebhookPayload): string[] =>
   if (listChanged) {
     // The homepage "recently added" list is built from the same card fields.
     keys.add(RECENT_TOOLS_CACHE_KEY);
+    tags.add(RECENT_TOOLS_TAG);
 
     for (const row of [record, old_record]) {
       if (row?.category) {
         keys.add(categoryCacheKey(row.category));
+        tags.add(categoryTag(row.category));
       }
     }
   }
 
-  return [...keys];
+  return { keys: [...keys], tags: [...tags] };
 };
 
 // Point a Supabase Database Webhook (INSERT/UPDATE/DELETE on `design_index`) here, with
 // header `Authorization: Bearer <SUPABASE_WEBHOOK_SECRET>`.
-// Only Redis is cleared; edge-cached page HTML expires on its own TTL.
+// Clears the Redis copies first, then the edge-cached pages built from them.
 export const POST: APIRoute = async ({ request }) => {
   if (!webhookSecret || request.headers.get("authorization") !== `Bearer ${webhookSecret}`) {
     return Response.json({ error: "Unauthorized." }, { status: 401 });
@@ -96,20 +101,31 @@ export const POST: APIRoute = async ({ request }) => {
     return Response.json({ error: "Not a design_index change." }, { status: 400 });
   }
 
-  const keys = getStaleKeys(payload);
+  const { keys, tags } = getStale(payload);
 
   if (!keys.length) {
-    return Response.json({ deleted: 0, keys });
+    return Response.json({ deleted: 0, keys, tags });
   }
 
+  let deleted: number;
+
   try {
-    const deleted = await deleteCached(keys);
-
-    console.log(`[webhook] ${payload.type} design_index -> purged ${keys.join(", ")}`);
-
-    return Response.json({ deleted, keys });
+    deleted = await deleteCached(keys);
   } catch {
     // Non-2xx lets Supabase surface the failed delivery.
     return Response.json({ error: "Failed to purge cache." }, { status: 502 });
   }
+
+  // After Redis: a page re-rendered before the delete would re-cache the old rows.
+  const pagesPurged = await purgePageTags(tags);
+
+  console.log(
+    `[webhook] ${payload.type} design_index -> purged ${keys.join(", ")}; pages ${tags.join(", ")} (${pagesPurged ? "ok" : "failed"})`,
+  );
+
+  if (!pagesPurged) {
+    return Response.json({ error: "Failed to purge cached pages.", deleted, keys, tags }, { status: 502 });
+  }
+
+  return Response.json({ deleted, keys, tags });
 };

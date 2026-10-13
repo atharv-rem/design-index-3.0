@@ -8,6 +8,7 @@ import { getImage } from 'astro:assets';
 import { Font } from 'astro:assets';
 import Analytics from '@vercel/analytics/astro';
 import heartIcon from '../assets/love.svg';
+import { IMAGE_CDN_ORIGIN } from '../lib/images';
 
 const optimizedHeart = await getImage({ src: heartIcon, width: 20, height: 20 });
 
@@ -47,7 +48,7 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.md';
 
 // Prerendered pages have a trailing slash in their pathname; canonicals never do.
 const canonicalUrl = new URL(Astro.url.pathname.replace(/(.)\/+$/, '$1'), Astro.site || 'https://designindex.xyz').href;
-const faviconVersion = '20260331';
+const faviconVersion = '20261014';
 const faviconIco = `/favicon.ico?v=${faviconVersion}`;
 
 const pageOgImages: Record<string, string> = {
@@ -74,6 +75,8 @@ const ogImage = new URL(customOgImage || pageOgImage, canonicalUrl).href;
 <html lang="en" data-font-scope={isHome ? 'home' : 'app'}>
     <head>
         <meta charset="utf-8" />
+        <!-- Tool images are plain (non-CORS) requests, so no crossorigin attribute. -->
+        <link rel="preconnect" href={IMAGE_CDN_ORIGIN} />
         <Font cssVariable="--font-gatuzo-local" preload={isHome ? [{ style: "normal", weight: "400" }] : undefined} />
         <Font cssVariable="--font-google-sans" />
         <Font cssVariable="--font-inter" />

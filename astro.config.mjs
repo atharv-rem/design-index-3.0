@@ -57,7 +57,8 @@ export default defineConfig({
   ],
   adapter: vercel(),
   build: {
-    inlineStylesheets: 'always'
+    // Small stylesheets are inlined; the large shared one becomes a cached file.
+    inlineStylesheets: 'auto'
   },
   cache: {
     provider: cacheVercel(),

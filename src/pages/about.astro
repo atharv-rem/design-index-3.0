@@ -1,7 +1,12 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
+import { PAGE_CACHE } from "@/lib/page-cache";
 
 export const prerender = false;
+
+if (Astro.cache.enabled) {
+	Astro.cache.set(PAGE_CACHE);
+}
 
 const title = "About | Design Index";
 const description =

@@ -4,6 +4,8 @@ const imageCdnUrl = (
   import.meta.env.PUBLIC_IMAGE_CDN_URL || DEFAULT_IMAGE_CDN_URL
 ).replace(/\/+$/, "");
 
+export const IMAGE_CDN_ORIGIN = new URL(imageCdnUrl).origin;
+
 type ImageTransformOptions = {
   width?: number;
   height?: number;
