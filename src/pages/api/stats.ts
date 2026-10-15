@@ -8,12 +8,14 @@ type StatsPayload = {
   visitors: number;
 };
 
-const CACHE_KEY = "design-index:databuddy:stats";
+const DATABUDDY_CACHE_KEY = "design-index:databuddy:stats";
+const VERCEL_CACHE_KEY = "design-index:vercel:stats";
 const CACHE_TTL_SECONDS = 3600; // 1 hour
+const WINDOW_DAYS = 30;
 
-// Databuddy is paused, so its numbers no longer grow. Vercel Analytics (last 30 days,
-// snapshot taken 2026-10-13) is added on top of whatever Databuddy still reports.
-const VERCEL_ANALYTICS_SNAPSHOT: StatsPayload = {
+// Last-resort fallback if the Vercel API is unreachable or not configured
+// (Vercel Analytics, last 30 days, snapshot taken 2026-10-13).
+const VERCEL_FALLBACK: StatsPayload = {
   pageviews: 2090,
   visitors: 842,
 };
@@ -23,10 +25,28 @@ const JSON_HEADERS = {
   "Cache-Control": "public, max-age=3600, stale-while-revalidate=1800",
 };
 
-function withVercelAnalytics(stats: StatsPayload): StatsPayload {
+async function fetchVercelStats(token: string, projectId: string, teamId?: string): Promise<StatsPayload> {
+  const until = new Date();
+  const since = new Date(until.getTime() - WINDOW_DAYS * 24 * 60 * 60 * 1000);
+  const params = new URLSearchParams({
+    projectId,
+    since: since.toISOString(),
+    until: until.toISOString(),
+  });
+  if (teamId) params.set("teamId", teamId);
+
+  const response = await fetch(`https://api.vercel.com/v1/query/web-analytics/visits/count?${params}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Vercel Analytics API responded with ${response.status}`);
+  }
+
+  const { data } = await response.json();
   return {
-    pageviews: stats.pageviews + VERCEL_ANALYTICS_SNAPSHOT.pageviews,
-    visitors: stats.visitors + VERCEL_ANALYTICS_SNAPSHOT.visitors,
+    pageviews: Number(data?.pageviews) || 0,
+    visitors: Number(data?.visitors) || 0,
   };
 }
 
@@ -76,43 +96,63 @@ async function fetchDatabuddyStats(apiKey: string, websiteId: string): Promise<S
   };
 }
 
-export async function GET() {
+async function getVercelStats(): Promise<StatsPayload> {
+  const token = import.meta.env.VERCEL_API_TOKEN;
+  const projectId = import.meta.env.VERCEL_PROJECT_ID;
+  const teamId = import.meta.env.VERCEL_TEAM_ID;
+
+  const cached = await getCachedJson<StatsPayload>(VERCEL_CACHE_KEY);
+  if (cached) return cached;
+
+  if (!token || !projectId) {
+    note("Vercel Analytics is not set up here, so the saved Vercel numbers were used.");
+    return VERCEL_FALLBACK;
+  }
+
+  try {
+    const stats = await fetchVercelStats(token, projectId, teamId);
+    setCachedJsonInBackground(VERCEL_CACHE_KEY, stats, CACHE_TTL_SECONDS);
+    return stats;
+  } catch (error) {
+    note("Vercel Analytics could not be reached, so the saved Vercel numbers were used.");
+    logSet({
+      stats: { vercelError: error instanceof Error ? error.message : String(error) },
+    });
+    return VERCEL_FALLBACK;
+  }
+}
+
+async function getDatabuddyStats(): Promise<StatsPayload> {
   const apiKey = import.meta.env.DATABUDDY_API_KEY;
   const websiteId = import.meta.env.DATABUDDY_WEBSITE_ID;
 
-  // The cache holds the raw Databuddy numbers; the Vercel offset is applied on the way out.
-  const cachedStats = await getCachedJson<StatsPayload>(CACHE_KEY);
-  if (cachedStats) {
-    note("Used the saved visitor numbers from the cache.");
+  const cached = await getCachedJson<StatsPayload>(DATABUDDY_CACHE_KEY);
+  if (cached) return cached;
 
-    return new Response(
-      JSON.stringify(withVercelAnalytics(cachedStats)),
-      { status: 200, headers: { ...JSON_HEADERS, "x-cache": "hit" } }
-    );
+  if (!apiKey || !websiteId) return { pageviews: 0, visitors: 0 };
+
+  try {
+    const stats = await fetchDatabuddyStats(apiKey, websiteId);
+    setCachedJsonInBackground(DATABUDDY_CACHE_KEY, stats, CACHE_TTL_SECONDS);
+    return stats;
+  } catch (error) {
+    // Databuddy is paused/unavailable: expected, so recorded as context rather than a warning.
+    note("Databuddy could not be reached (it is paused), so only the Vercel Analytics numbers were used.");
+    logSet({
+      stats: { databuddyError: error instanceof Error ? error.message : String(error) },
+    });
+    return { pageviews: 0, visitors: 0 };
   }
+}
 
-  let databuddyStats: StatsPayload = { pageviews: 0, visitors: 0 };
-
-  if (apiKey && websiteId) {
-    try {
-      databuddyStats = await fetchDatabuddyStats(apiKey, websiteId);
-      // Cache result in Redis without delaying the response
-      setCachedJsonInBackground(CACHE_KEY, databuddyStats, CACHE_TTL_SECONDS);
-      note("Fetched fresh visitor numbers from Databuddy and added the Vercel Analytics numbers.");
-    } catch (error) {
-      // Databuddy is paused/unavailable: fall back to the Vercel Analytics numbers alone.
-      // Expected, so recorded as context rather than a warning.
-      note("Databuddy could not be reached (it is paused), so only the Vercel Analytics numbers were used.");
-      logSet({
-        stats: { databuddyError: error instanceof Error ? error.message : String(error) },
-      });
-    }
-  } else {
-    note("Databuddy is not set up here, so only the Vercel Analytics numbers were used.");
-  }
+export async function GET() {
+  const [databuddy, vercel] = await Promise.all([getDatabuddyStats(), getVercelStats()]);
 
   return new Response(
-    JSON.stringify(withVercelAnalytics(databuddyStats)),
-    { status: 200, headers: { ...JSON_HEADERS, "x-cache": "miss" } }
+    JSON.stringify({
+      pageviews: databuddy.pageviews + vercel.pageviews,
+      visitors: databuddy.visitors + vercel.visitors,
+    }),
+    { status: 200, headers: JSON_HEADERS }
   );
 }
