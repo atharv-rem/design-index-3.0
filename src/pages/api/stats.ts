@@ -1,4 +1,5 @@
 import { getCachedJson, setCachedJsonInBackground } from "@/lib/cache";
+import { logSet, note } from "@/lib/logger";
 
 export const prerender = false;
 
@@ -82,6 +83,8 @@ export async function GET() {
   // The cache holds the raw Databuddy numbers; the Vercel offset is applied on the way out.
   const cachedStats = await getCachedJson<StatsPayload>(CACHE_KEY);
   if (cachedStats) {
+    note("Used the saved visitor numbers from the cache.");
+
     return new Response(
       JSON.stringify(withVercelAnalytics(cachedStats)),
       { status: 200, headers: { ...JSON_HEADERS, "x-cache": "hit" } }
@@ -95,10 +98,17 @@ export async function GET() {
       databuddyStats = await fetchDatabuddyStats(apiKey, websiteId);
       // Cache result in Redis without delaying the response
       setCachedJsonInBackground(CACHE_KEY, databuddyStats, CACHE_TTL_SECONDS);
+      note("Fetched fresh visitor numbers from Databuddy and added the Vercel Analytics numbers.");
     } catch (error) {
       // Databuddy is paused/unavailable: fall back to the Vercel Analytics numbers alone.
-      console.error("Databuddy stats unavailable:", error);
+      // Expected, so recorded as context rather than a warning.
+      note("Databuddy could not be reached (it is paused), so only the Vercel Analytics numbers were used.");
+      logSet({
+        stats: { databuddyError: error instanceof Error ? error.message : String(error) },
+      });
     }
+  } else {
+    note("Databuddy is not set up here, so only the Vercel Analytics numbers were used.");
   }
 
   return new Response(

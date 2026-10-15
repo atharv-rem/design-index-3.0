@@ -7,6 +7,7 @@
 // `design_index` table at build time. Nothing here writes to Supabase.
 
 import articlesJson from "@/data/icon_articles.json";
+import { logWarn, timed } from "@/lib/logger";
 import { supabase } from "@/lib/supabase";
 
 export const SITE_URL = "https://designindex.xyz";
@@ -357,12 +358,14 @@ let toolsPromise: Promise<{ tools: Map<number, IconTool>; skipped: { id: number;
 
 const loadIconTools = () => {
   toolsPromise ??= (async () => {
-    const { data, error } = await supabase
-      .from("design_index")
-      .select(
-        "primary_key, tool_name, pricing, website, description, extended_description, og_image_link, seo_keywords",
-      )
-      .eq("category", "icon");
+    const { data, error } = await timed("db", "the icon tools", () =>
+      supabase
+        .from("design_index")
+        .select(
+          "primary_key, tool_name, pricing, website, description, extended_description, og_image_link, seo_keywords",
+        )
+        .eq("category", "icon"),
+    );
 
     if (error) {
       throw new Error(`Failed to load icon tools from Supabase: ${error.message}`);
@@ -551,7 +554,11 @@ const buildPages = async (): Promise<IconPages> => {
     const alternatives = article.alternatives.flatMap((entry) => {
       const tool = tools.get(entry.primary_key);
       if (!tool && !skippedToolIds.has(entry.primary_key)) {
-        console.warn(`[icon-pages] primary_key ${entry.primary_key} (${entry.tool_name}) not found in design_index`);
+        logWarn(
+          "iconArticles",
+          `${entry.tool_name} (tool ${entry.primary_key}) is mentioned in an article but is not in the database.`,
+          { primaryKey: entry.primary_key, toolName: entry.tool_name },
+        );
       }
       return tool ? [tool] : [];
     });
@@ -684,9 +691,17 @@ const buildPages = async (): Promise<IconPages> => {
     }
   }
 
-  if (skippedPages.length) console.warn(`[icon-pages] skipped pages: ${skippedPages.join("; ")}`);
+  if (skippedPages.length) {
+    logWarn("iconArticles", `These article pages were skipped: ${skippedPages.join("; ")}.`, { skippedPages });
+  }
   if (skipped.length) {
-    console.warn(`[icon-pages] tools without copy left out: ${skipped.map((tool) => `${tool.name} (${tool.id})`).join(", ")}`);
+    logWarn(
+      "iconArticles",
+      `These tools were left out because they have no article text yet: ${skipped
+        .map((tool) => `${tool.name} (tool ${tool.id})`)
+        .join(", ")}.`,
+      { skippedTools: skipped.map((tool) => ({ id: tool.id, name: tool.name })) },
+    );
   }
 
   return { alternatives, roundups, skippedTools: skipped, skippedPages };

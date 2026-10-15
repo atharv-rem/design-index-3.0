@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { supabase } from "@/lib/supabase";
 import { getIconPages } from "@/lib/icon-pages";
+import { logError, logWarn, note, timed } from "@/lib/logger";
 
 export const prerender = false;
 
@@ -28,18 +29,32 @@ const getIconPagePaths = async (): Promise<string[]> => {
     const { alternatives, roundups } = await getIconPages();
     return [...alternatives, ...roundups].map((page) => page.path);
   } catch (err) {
-    console.error("Sitemap icon pages error:", err);
+    logWarn("sitemap", "Could not load the icon article pages, so the sitemap leaves them out.", {
+      error: err instanceof Error ? err.message : String(err),
+    });
     return [];
   }
 };
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ locals }) => {
+  const { log } = locals;
+
   try {
     // Fetch dynamic tools from Supabase to include in sitemap
-    const { data: tools, error } = await supabase
-      .from("design_index")
-      .select("primary_key, tool_name")
-      .order("primary_key", { ascending: true });
+    const { data: tools, error } = await timed("db", "every tool name", () =>
+      supabase
+        .from("design_index")
+        .select("primary_key, tool_name")
+        .order("primary_key", { ascending: true }),
+    );
+
+    if (error) {
+      logWarn(
+        "sitemap",
+        "Could not load the tools from the database, so the sitemap only lists the fixed pages.",
+        { databaseErrorCode: error.code },
+      );
+    }
 
     let dynamicUrls = "";
     if (!error && tools) {
@@ -61,6 +76,14 @@ export const GET: APIRoute = async () => {
       .map((path) => `  <url><loc>https://designindex.xyz${path}</loc></url>\n`)
       .join("");
 
+    log.set({
+      sitemap: {
+        fixedPages: staticPages.length + iconPaths.length,
+        toolPages: tools?.length ?? 0,
+      },
+    });
+    note(`Listed ${staticPages.length + iconPaths.length} fixed pages and ${tools?.length ?? 0} tool pages.`);
+
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 ${staticUrls}${dynamicUrls}</urlset>`;
@@ -72,7 +95,7 @@ ${staticUrls}${dynamicUrls}</urlset>`;
       },
     });
   } catch (err) {
-    console.error("Sitemap generation error:", err);
+    logError("Could not build the full sitemap, so only the fixed pages are listed.", err);
     // Fallback sitemap containing only static pages
     const staticUrls = staticPages
       .map((path) => `  <url><loc>https://designindex.xyz${path}</loc></url>\n`)

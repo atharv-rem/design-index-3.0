@@ -8,6 +8,8 @@ import dualmark from '@dualmark/astro';
 
 export default defineConfig({
   output: "server",
+  // Hides Astro's "[200] /path" request lines; evlog (src/middleware.ts) logs every request itself.
+  logger: { entrypoint: "./src/lib/astro-logger.js" },
   prefetch:true,
   redirects: {
     "/sponsors/[slug]": "/",

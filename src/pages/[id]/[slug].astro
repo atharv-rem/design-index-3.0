@@ -1,5 +1,6 @@
 ---
 import HomescreenLayout from "@/layouts/homescreen.astro";
+import { logError, logWarn, note } from "@/lib/logger";
 import { getOptimizedImageUrl } from "@/lib/images";
 import { withUtm } from "@/lib/utm";
 import ToolDetail from "@/components/tool-detail.astro";
@@ -19,11 +20,11 @@ if (Astro.cache.enabled) {
 const { id, slug } = Astro.params;
 
 if (!id) {
-  Astro.logger.error("Missing ID parameter in URL params.");
+  logWarn("request", "The address had no tool id, so the visitor was sent to the home page.");
   return Astro.redirect("/");
 }
 
-Astro.logger.info(`Rendering tool page for ID: ${id}, slug: ${slug}`);
+Astro.locals.log.set({ tool: { id } });
 
 const toolId = Number(id);
 
@@ -44,7 +45,7 @@ let payload;
 try {
   payload = await getToolWithSuggestions(toolId);
 } catch (error) {
-  Astro.logger.error(`Failed to load tool ${id}: ${error}`);
+  logError(`Could not load tool ${id} from the database.`, error, { tool: { id } });
 
   // Don't let a transient database failure sit in the edge cache for a day.
   if (Astro.cache.enabled) {
@@ -55,11 +56,16 @@ try {
 }
 
 if (!payload) {
-  Astro.logger.warn(`Tool not found for ID: ${id}`);
+  Astro.locals.log.set({ tool: { found: false } });
+  note(`Tool ${id} does not exist.`);
   return new Response(null, { status: 404, statusText: "Not Found" });
 }
 
 const { tool, suggestedTools } = payload;
+
+Astro.locals.log.set({
+  tool: { name: tool.tool_name, category: tool.category, similarTools: suggestedTools.length },
+});
 
 // Suggestions come from this category, so a change to any of its tools stales this page.
 if (Astro.cache.enabled && tool.category) {
@@ -69,9 +75,14 @@ if (Astro.cache.enabled && tool.category) {
 // Normalize/redirect to expected slug if it doesn't match (comparing decoded strings to prevent infinite loops)
 if (decodeURIComponent(slug ?? "") !== tool.tool_name) {
   const canonicalSlug = encodeURIComponent(tool.tool_name);
-  Astro.logger.warn(`Non-canonical slug matched '${slug}'. Redirecting to canonical slug: '${canonicalSlug}'`);
+  Astro.locals.log.set({ tool: { canonicalSlug } });
+  note(`The address used the wrong name ("${slug}"), so the visitor was sent to the correct one.`);
   return Astro.redirect(`/${id}/${canonicalSlug}`, 301);
 }
+
+note(
+  `Showing tool ${id} (${tool.tool_name}${tool.category ? `, ${tool.category}` : ""}) with ${suggestedTools.length} similar tools.`,
+);
 
 // One sponsor is placed first in the suggestions, rotated by tool id.
 const sponsors = (await sponsorsPromise).filter((item) => !item.homepage_only);

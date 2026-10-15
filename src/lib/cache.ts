@@ -1,5 +1,6 @@
 import { Redis } from "@upstash/redis";
 import { waitUntil } from "@vercel/functions";
+import { logWarn, recordCache, timed, warnOnce } from "@/lib/logger";
 
 const redisUrl = import.meta.env?.UPSTASH_REDIS_REST_URL ?? (typeof process !== "undefined" ? process.env?.UPSTASH_REDIS_REST_URL : undefined);
 const redisToken = import.meta.env?.UPSTASH_REDIS_REST_TOKEN ?? (typeof process !== "undefined" ? process.env?.UPSTASH_REDIS_REST_TOKEN : undefined);
@@ -19,20 +20,47 @@ export const CATEGORY_KEY_PREFIX = "design-index:tools:";
 export const toolCacheKey = (id: number) => `${TOOL_KEY_PREFIX}${id}`;
 export const categoryCacheKey = (category: string) => `${CATEGORY_KEY_PREFIX}${category}`;
 
-const logCacheError = (action: string, key: string, error: unknown) => {
-  console.error(`[cache] ${action} failed for "${key}":`, error);
+/** A cache key in words, for logs: "design-index:tool:5" becomes "tool 5". */
+export const describeCacheKey = (key: string): string => {
+  if (key.startsWith(TOOL_KEY_PREFIX)) return `tool ${key.slice(TOOL_KEY_PREFIX.length)}`;
+  // Same key as RECENT_TOOLS_CACHE_KEY in recent-tools.ts (which imports this file).
+  if (key === "design-index:tools:recent") return "the recently added tools";
+  if (key.startsWith(CATEGORY_KEY_PREFIX)) return `the ${key.slice(CATEGORY_KEY_PREFIX.length)} category list`;
+  if (key.startsWith("design-index:sponsors:")) return "the sponsor list";
+  if (key === "design-index:databuddy:stats") return "the visitor stats";
+  return key;
+};
+
+const CACHE_FAILURE_TEXT = {
+  read: (what: string) => `Could not read ${what} from the cache, so it was loaded from the database instead.`,
+  save: (what: string) => `Could not save ${what} to the cache. This visit worked, but the next one will be slower.`,
+  clear: (what: string) => `Could not clear ${what} from the cache.`,
+} as const;
+
+// Reads and saves are always worked around (the caller falls back to the database), so they only warn.
+const logCacheError = (action: keyof typeof CACHE_FAILURE_TEXT, what: string, error: unknown) => {
+  logWarn("cache", CACHE_FAILURE_TEXT[action](what), {
+    problem: error instanceof Error ? error.message : String(error),
+  });
 };
 
 export const getCachedJson = async <T>(key: string): Promise<T | null> => {
   if (!redisClient) {
+    // Everything now comes from the database, which is a real fallback rather than a normal miss.
+    warnOnce("cache-not-configured", "cache", "The cache is not configured, so everything came straight from the database.");
     return null;
   }
 
+  const label = describeCacheKey(key);
+
   try {
-    const cached = await redisClient.get<T>(key);
+    const cached = await timed("cache", label, () => redisClient.get<T>(key));
+
+    recordCache(label, Boolean(cached));
+
     return cached ?? null;
   } catch (error) {
-    logCacheError("get", key, error);
+    logCacheError("read", label, error);
     return null;
   }
 };
@@ -46,7 +74,7 @@ export const setCachedJson = async <T>(key: string, value: T, ttlSeconds = CACHE
     await redisClient.set(key, value, { ex: ttlSeconds });
   } catch (error) {
     // Cache failures should not block API responses.
-    logCacheError("set", key, error);
+    logCacheError("save", describeCacheKey(key), error);
   }
 };
 
@@ -70,23 +98,25 @@ export const deleteCached = async (keys: string[], prefixes: string[] = []): Pro
   const toDelete = new Set(keys);
 
   try {
-    for (const prefix of prefixes) {
-      let cursor = "0";
+    return await timed("cache", "cache entries to clear", async () => {
+      for (const prefix of prefixes) {
+        let cursor = "0";
 
-      do {
-        const [next, found]: [string, string[]] = await redisClient.scan(cursor, { match: `${prefix}*`, count: 200 });
-        cursor = String(next);
-        found.forEach((key) => toDelete.add(key));
-      } while (cursor !== "0");
-    }
+        do {
+          const [next, found]: [string, string[]] = await redisClient.scan(cursor, { match: `${prefix}*`, count: 200 });
+          cursor = String(next);
+          found.forEach((key) => toDelete.add(key));
+        } while (cursor !== "0");
+      }
 
-    if (!toDelete.size) {
-      return 0;
-    }
+      if (!toDelete.size) {
+        return 0;
+      }
 
-    return await redisClient.del(...toDelete);
+      return await redisClient.del(...toDelete);
+    });
   } catch (error) {
-    logCacheError("delete", [...toDelete].join(","), error);
+    logCacheError("clear", `${toDelete.size} cached entries`, error);
     throw error;
   }
 };

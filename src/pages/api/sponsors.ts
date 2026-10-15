@@ -5,12 +5,16 @@ import {
   getSponsors,
 } from "@/lib/sponsors";
 import { getCachedJson } from "@/lib/cache";
+import { note } from "@/lib/logger";
 
 export const prerender = false;
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ locals }) => {
   const wasCached = Boolean(await getCachedJson(SPONSORS_CACHE_KEY));
   const sponsors = await getSponsors();
+
+  locals.log.set({ sponsors: { count: sponsors.length } });
+  note(`Sent ${sponsors.length} active sponsors.`);
 
   return Response.json(
     { sponsors },

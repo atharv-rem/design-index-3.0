@@ -1,4 +1,5 @@
 import { dangerouslyDeleteByTag } from "@vercel/functions";
+import { logError, logSet, note } from "@/lib/logger";
 
 // Tags for edge-cached pages built from `design_index` rows (see Astro.cache.set({ tags })).
 // Redis holds the data, these tags hold the rendered HTML; both must be cleared on a change.
@@ -34,9 +35,13 @@ export async function purgePageTags(tags: string[]): Promise<boolean> {
 
   try {
     await dangerouslyDeleteByTag(tags);
+    note(`Cleared the CDN's saved copies of pages tagged: ${tags.join(", ")}.`);
+    logSet({ pageCopiesCleared: tags });
     return true;
   } catch (error) {
-    console.error(`[page-cache] Failed to purge ${tags.join(", ")}:`, error);
+    logError(`Could not clear the CDN's saved copies of pages tagged: ${tags.join(", ")}.`, error, {
+      pageCopiesFailed: tags,
+    });
     return false;
   }
 }

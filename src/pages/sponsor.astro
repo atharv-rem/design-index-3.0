@@ -1,5 +1,6 @@
 ---
 import HomescreenLayout from "../layouts/homescreen.astro";
+import { logWarn } from "@/lib/logger";
 import { PAGE_CACHE } from "@/lib/page-cache";
 import { actions } from "astro:actions";
 import { GET as getStats } from "./api/stats";
@@ -28,8 +29,11 @@ try {
 		const data = await statsResponse.json();
 		if (data.pageviews > 0 || data.visitors > 0) stats = data;
 	}
-} catch {
+} catch (error) {
 	// Analytics unavailable: the section is simply hidden.
+	logWarn("stats", "Could not load the visitor stats for the sponsor page, so that section is hidden.", {
+		problem: error instanceof Error ? error.message : String(error),
+	});
 }
 
 const formatter = new Intl.NumberFormat("en-US");

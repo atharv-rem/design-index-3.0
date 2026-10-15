@@ -1,5 +1,6 @@
 ---
 import HomescreenLayout from "@/layouts/homescreen.astro";
+import { logError, note } from "@/lib/logger";
 import IconToolCard from "@/components/icon-tool-card.astro";
 import ArticleHeader from "@/components/article-header.astro";
 import ArticleCompareTable from "@/components/article-compare-table";
@@ -19,13 +20,15 @@ let pages;
 try {
   pages = await getIconPages();
 } catch (error) {
-  Astro.logger.error(`Failed to load icon articles: ${error}`);
+  logError("Could not load the icon articles.", error, { iconArticles: { slug: Astro.params.slug } });
   return new Response(null, { status: 502, statusText: "Bad Gateway" });
 }
 
 const page = pages.roundups.find((item) => item.slug === Astro.params.slug);
 
 if (!page) {
+  Astro.locals.log.set({ iconArticles: { slug: Astro.params.slug, found: false } });
+  note(`There is no article called "${Astro.params.slug}".`);
   return new Response(null, { status: 404, statusText: "Not Found" });
 }
 

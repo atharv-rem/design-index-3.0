@@ -3,6 +3,7 @@ import {
   setCachedJsonInBackground,
 } from "@/lib/cache";
 
+import { logError, timed } from "@/lib/logger";
 import { supabase } from "@/lib/supabase";
 
 export type RecentTool = {
@@ -23,14 +24,16 @@ export async function getRecentTools(): Promise<RecentTool[]> {
     return cached;
   }
 
-  const { data, error } = await supabase
-    .from("design_index")
-    .select("primary_key, tool_name, description, og_image_link")
-    .order("date", { ascending: false, nullsFirst: false })
-    .limit(RECENT_TOOLS_COUNT);
+  const { data, error } = await timed("db", "the recently added tools", () =>
+    supabase
+      .from("design_index")
+      .select("primary_key, tool_name, description, og_image_link")
+      .order("date", { ascending: false, nullsFirst: false })
+      .limit(RECENT_TOOLS_COUNT),
+  );
 
   if (error) {
-    console.error("[recent-tools] Failed to fetch:", error.message);
+    logError("Could not load the recently added tools from the database, so that list is empty.", error);
     return [];
   }
 

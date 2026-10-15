@@ -7,6 +7,7 @@ import {
   deleteCached,
   toolCacheKey,
 } from "@/lib/cache";
+import { logError, logWarn, note } from "@/lib/logger";
 import { TOOL_DATA_TAG, categoryTag, purgePageTags, toolTag } from "@/lib/page-cache";
 
 export const prerender = false;
@@ -30,8 +31,14 @@ const asArray = (value: unknown): unknown[] =>
 //   { "ids": [12, 40], "categories": ["font"] } or { "all": true }
 // Editing a tool: pass its id and its category (the category list embeds the card).
 // Clears the Redis copies, then the edge-cached pages built from them.
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  const { log } = locals;
+
   if (!purgeToken || request.headers.get("authorization") !== `Bearer ${purgeToken}`) {
+    logWarn("auth", "Someone tried to clear the cache without a valid token.", {
+      tokenConfigured: Boolean(purgeToken),
+    });
+
     return Response.json({ error: "Unauthorized." }, { status: 401 });
   }
 
@@ -48,6 +55,13 @@ export const POST: APIRoute = async ({ request }) => {
     (category): category is string => typeof category === "string" && category.length > 0,
   );
 
+  log.set({ purge: { everything: body.all === true, toolIds: ids, categories } });
+  note(
+    body.all === true
+      ? "Asked to clear all cached tool data."
+      : `Asked to clear tools [${ids.join(", ")}] and categories [${categories.join(", ")}].`,
+  );
+
   if (body.all !== true && !ids.length && !categories.length) {
     return Response.json(
       { error: "Provide ids, categories, or all: true." },
@@ -61,7 +75,9 @@ export const POST: APIRoute = async ({ request }) => {
     deleted = body.all === true
       ? await deleteCached([], [TOOL_KEY_PREFIX, CATEGORY_KEY_PREFIX])
       : await deleteCached([...ids.map(toolCacheKey), ...categories.map(categoryCacheKey)]);
-  } catch {
+  } catch (error) {
+    logError("Could not clear the data cache.", error);
+
     return Response.json({ error: "Failed to purge cache." }, { status: 502 });
   }
 
@@ -72,7 +88,12 @@ export const POST: APIRoute = async ({ request }) => {
       : [...ids.map(toolTag), ...categories.map(categoryTag)],
   );
 
+  log.set({ purge: { entriesCleared: deleted, pageCopiesCleared: pagesPurged } });
+  note(`Cleared ${deleted} cached entries.`);
+
   if (!pagesPurged) {
+    logError("The data cache was cleared, but the CDN's saved page copies could not be.", "CDN purge failed");
+
     return Response.json({ error: "Failed to purge cached pages.", deleted }, { status: 502 });
   }
 

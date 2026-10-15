@@ -1,9 +1,12 @@
 import type { APIRoute } from "astro";
+import { logError, note, timed } from "@/lib/logger";
 import { supabase } from "@/lib/supabase";
 
 export const prerender = false;
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, locals }) => {
+  const { log } = locals;
+
   try {
     const keywordsParam = url.searchParams.get("keywords") || "";
 
@@ -12,7 +15,10 @@ export const GET: APIRoute = async ({ url }) => {
       .map((k) => k.trim().toLowerCase())
       .filter(Boolean);
 
+    log.set({ search: { words: keywords } });
+
     if (keywords.length === 0) {
+      note("No search words were given, so nothing was searched.");
       return Response.json([], {
         headers: {
           "Content-Type": "application/json",
@@ -22,18 +28,25 @@ export const GET: APIRoute = async ({ url }) => {
     }
 
     // PostgreSQL keyword overlap search
-    const { data, error } = await supabase.rpc("search_tools", {
-      search_keywords: keywords,
-    });
+    const { data, error } = await timed("db", "the keyword search", () =>
+      supabase.rpc("search_tools", {
+        search_keywords: keywords,
+      }),
+    );
 
     if (error) {
-      console.error("Supabase RPC search error:", error);
+      logError("The database search failed.", new Error(error.message), {
+        search: { databaseErrorCode: error.code },
+      });
 
       return Response.json(
         { error: "Failed to search tools." },
         { status: 500 }
       );
     }
+
+    log.set({ search: { matches: data?.length ?? 0 } });
+    note(`Searched for "${keywords.join(", ")}" and found ${data?.length ?? 0} tools.`);
 
     if (!data || data.length === 0) {
       return Response.json([], {
@@ -64,7 +77,7 @@ export const GET: APIRoute = async ({ url }) => {
       },
     });
   } catch (err) {
-    console.error("Unhandled search API error:", err);
+    logError("The search crashed unexpectedly.", err);
 
     return Response.json(
       { error: "An unexpected error occurred." },

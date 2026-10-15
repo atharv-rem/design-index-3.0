@@ -1,4 +1,5 @@
 ---
+import { logError, note, timed } from "@/lib/logger";
 import { supabase } from "@/lib/supabase";
 
 export const prerender = false;
@@ -9,17 +10,26 @@ const name = (Astro.params.name ?? "").trim();
 if (name) {
   // Escape LIKE wildcards so the lookup is an exact, case-insensitive match.
   const pattern = name.replace(/[\%_]/g, "\$&");
-  const { data } = await supabase
-    .from("design_index")
-    .select("primary_key, tool_name")
-    .ilike("tool_name", pattern)
-    .limit(1)
-    .maybeSingle();
+  const { data, error } = await timed("db", `the tool called "${name}"`, () =>
+    supabase
+      .from("design_index")
+      .select("primary_key, tool_name")
+      .ilike("tool_name", pattern)
+      .limit(1)
+      .maybeSingle(),
+  );
+
+  if (error) {
+    logError(`Could not look up the old-style address "${name}".`, new Error(error.message));
+  }
 
   if (data?.primary_key && data.tool_name) {
+    note(`The old-style address "${name}" matched tool ${data.primary_key}, so the visitor was redirected.`);
     return Astro.redirect(`/${data.primary_key}/${encodeURIComponent(data.tool_name)}`, 301);
   }
 }
+
+note(`No tool is called "${name}".`);
 
 return new Response(null, { status: 404, statusText: "Not Found" });
 ---

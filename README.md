@@ -33,6 +33,24 @@ All operations are managed through `npm` from the root directory:
 | `npm run build` | Builds the production bundle optimized for Vercel |
 | `npm run preview` | Previews the built production site locally |
 
+### Logging
+
+Request logging is **development-only** (see `AGENTS.md`, section 8); nothing is logged in production. By default the dev terminal shows every request, and a prefetched request gets one short line. Choose what to see with `LOG_LEVEL`:
+
+| `LOG_LEVEL` | What the dev terminal shows |
+| :--- | :--- |
+| *(unset)* | **Every request** as the full event, plus **one short line per prefetch**: `09:19:03 prefetched #193 Uncut (font)` |
+| `requests` | Every request as the full event; successful prefetches are left out |
+| `all` | Every request as the full event, prefetches included in full |
+
+| Shell | Example |
+| :--- | :--- |
+| PowerShell | `$env:LOG_LEVEL = "all"; npm run dev` |
+| cmd.exe | `set LOG_LEVEL=all && npm run dev` |
+| macOS / Linux / Git Bash | `LOG_LEVEL=all npm run dev` |
+
+Set `NO_COLOR=1` to turn the terminal colours off.
+
 ### Caching Setup (Upstash Redis)
 
 API routes (`src/pages/api/tools.ts` and `src/pages/api/tools/[slug].ts`) support low-latency caching powered by Upstash Redis.

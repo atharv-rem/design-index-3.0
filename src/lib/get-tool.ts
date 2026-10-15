@@ -5,6 +5,7 @@ import {
 } from "@/lib/cache";
 
 import { getToolsByCategory } from "@/lib/get-tool-by-category";
+import { logError, timed } from "@/lib/logger";
 import { supabase } from "@/lib/supabase";
 
 import {
@@ -32,20 +33,18 @@ const getToolDetail = async (id: number): Promise<ToolDetail | null> => {
   const cached = await getCachedJson<ToolDetail>(cacheKey);
 
   if (cached) {
-    console.log(`cache hit: tool page ${id} (${cacheKey})`);
-
     return cached;
   }
 
-  console.log(`cache miss: tool page ${id} (${cacheKey})`);
-
-  const { data, error } = await supabase
-    .from("design_index")
-    .select(
-      `primary_key, tool_name, category, pricing, description, extended_description, og_image_link, website`,
-    )
-    .eq("primary_key", id)
-    .maybeSingle();
+  const { data, error } = await timed("db", `tool ${id}`, () =>
+    supabase
+      .from("design_index")
+      .select(
+        `primary_key, tool_name, category, pricing, description, extended_description, og_image_link, website`,
+      )
+      .eq("primary_key", id)
+      .maybeSingle(),
+  );
 
   if (error) {
     throw new Error(`Failed to fetch tool ${id}: ${error.message}`);
@@ -76,7 +75,7 @@ const getSuggestedTools = async (tool: ToolDetail): Promise<ToolCard[]> => {
       .sort((a, b) => Math.abs(a.id - tool.id) - Math.abs(b.id - tool.id) || a.id - b.id)
       .slice(0, SUGGESTION_COUNT);
   } catch (error) {
-    console.error(`[tools] Failed to load suggestions for tool ${tool.id}:`, error);
+    logError(`Could not load similar tools for tool ${tool.id}, so the page shows none.`, error);
     return [];
   }
 };

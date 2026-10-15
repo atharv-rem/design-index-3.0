@@ -1,5 +1,17 @@
 import { defineAction } from 'astro:actions';
 import { z } from 'astro/zod';
+import type { RequestLogger } from 'evlog';
+import { note } from '@/lib/logger';
+
+// Records the failure on the request's wide event before throwing (Astro turns the throw
+// into an INTERNAL_SERVER_ERROR result, so the middleware never sees the cause).
+// `plain` is the sentence for the request summary; `message` is the technical error.
+function fail(log: RequestLogger, message: string, plain: string): never {
+  const error = new Error(message);
+  note(plain);
+  log.error(error);
+  throw error;
+}
 
 export const server = {
   submitFeedback: defineAction({
@@ -9,17 +21,30 @@ export const server = {
       email: z.string().email("Invalid email address").transform(s => s.trim()),
       feedback: z.string().min(1, "Feedback is required").transform(s => s.trim()),
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
+      const log = context.locals.log;
       const { name, email, feedback } = input;
+
+      // Never log the submitter's email or message body.
+      note("Someone submitted the feedback form.");
+      log.set({ form: { name: 'feedback', messageLength: feedback.length } });
 
       const resendApiKey = import.meta.env.RESEND_API_KEY;
       const adminEmail = import.meta.env.ADMIN_EMAIL;
 
       if (!resendApiKey) {
-        throw new Error("RESEND_API_KEY is not configured in the server environment variables.");
+        fail(
+          log,
+          "RESEND_API_KEY is not configured in the server environment variables.",
+          "The email service key is missing, so the message could not be sent.",
+        );
       }
       if (!adminEmail) {
-        throw new Error("ADMIN_EMAIL is not configured in the server environment variables.");
+        fail(
+          log,
+          "ADMIN_EMAIL is not configured in the server environment variables.",
+          "The admin email address is not set up, so the message could not be sent.",
+        );
       }
 
       const emailResponse = await fetch("https://api.resend.com/emails", {
@@ -56,10 +81,14 @@ export const server = {
         }),
       });
 
+      log.set({ resend: { status: emailResponse.status } });
+
       if (!emailResponse.ok) {
         const errorText = await emailResponse.text();
-        throw new Error(`Email service returned error: ${errorText}`);
+        fail(log, `Email service returned error: ${errorText}`, "The email service refused the message.");
       }
+
+      note("The message was emailed to the site admin.");
 
       return { success: true };
     },
@@ -74,17 +103,29 @@ export const server = {
       email: z.string().email("Invalid email address").transform(s => s.trim()),
       reason: z.string().min(1, "Submission reason is required").transform(s => s.trim()),
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
+      const log = context.locals.log;
       const { toolName, toolUrl, category, email, reason } = input;
+
+      note(`Someone suggested a tool: ${toolName}.`);
+      log.set({ form: { name: 'tool suggestion', toolName, toolUrl, category, reasonLength: reason.length } });
 
       const resendApiKey = import.meta.env.RESEND_API_KEY;
       const adminEmail = import.meta.env.ADMIN_EMAIL;
 
       if (!resendApiKey) {
-        throw new Error("RESEND_API_KEY is not configured in the server environment variables.");
+        fail(
+          log,
+          "RESEND_API_KEY is not configured in the server environment variables.",
+          "The email service key is missing, so the message could not be sent.",
+        );
       }
       if (!adminEmail) {
-        throw new Error("ADMIN_EMAIL is not configured in the server environment variables.");
+        fail(
+          log,
+          "ADMIN_EMAIL is not configured in the server environment variables.",
+          "The admin email address is not set up, so the message could not be sent.",
+        );
       }
 
       const emailResponse = await fetch("https://api.resend.com/emails", {
@@ -129,10 +170,14 @@ export const server = {
         }),
       });
 
+      log.set({ resend: { status: emailResponse.status } });
+
       if (!emailResponse.ok) {
         const errorText = await emailResponse.text();
-        throw new Error(`Email service returned error: ${errorText}`);
+        fail(log, `Email service returned error: ${errorText}`, "The email service refused the message.");
       }
+
+      note("The message was emailed to the site admin.");
 
       return { success: true };
     },
@@ -146,17 +191,29 @@ export const server = {
       email: z.string().email("Invalid email address").transform(s => s.trim()),
       message: z.string().min(1, "Message is required").transform(s => s.trim()),
     }),
-    handler: async (input) => {
+    handler: async (input, context) => {
+      const log = context.locals.log;
       const { companyName, websiteUrl, email, message } = input;
+
+      note(`${companyName} sent a sponsor enquiry.`);
+      log.set({ form: { name: 'sponsor enquiry', companyName, websiteUrl, messageLength: message.length } });
 
       const resendApiKey = import.meta.env.RESEND_API_KEY;
       const adminEmail = import.meta.env.ADMIN_EMAIL;
 
       if (!resendApiKey) {
-        throw new Error("RESEND_API_KEY is not configured in the server environment variables.");
+        fail(
+          log,
+          "RESEND_API_KEY is not configured in the server environment variables.",
+          "The email service key is missing, so the message could not be sent.",
+        );
       }
       if (!adminEmail) {
-        throw new Error("ADMIN_EMAIL is not configured in the server environment variables.");
+        fail(
+          log,
+          "ADMIN_EMAIL is not configured in the server environment variables.",
+          "The admin email address is not set up, so the message could not be sent.",
+        );
       }
 
       const emailResponse = await fetch("https://api.resend.com/emails", {
@@ -197,10 +254,14 @@ export const server = {
         }),
       });
 
+      log.set({ resend: { status: emailResponse.status } });
+
       if (!emailResponse.ok) {
         const errorText = await emailResponse.text();
-        throw new Error(`Email service returned error: ${errorText}`);
+        fail(log, `Email service returned error: ${errorText}`, "The email service refused the message.");
       }
+
+      note("The message was emailed to the site admin.");
 
       return { success: true };
     },

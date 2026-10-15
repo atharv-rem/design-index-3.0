@@ -3,8 +3,10 @@ import type { APIRoute } from "astro";
 import {
   categoryCacheKey,
   deleteCached,
+  describeCacheKey,
   toolCacheKey,
 } from "@/lib/cache";
+import { logError, logWarn, note } from "@/lib/logger";
 import { RECENT_TOOLS_TAG, categoryTag, purgePageTags, toolTag } from "@/lib/page-cache";
 import { RECENT_TOOLS_CACHE_KEY } from "@/lib/recent-tools";
 
@@ -84,8 +86,14 @@ const getStale = ({ type, record, old_record }: WebhookPayload) => {
 // Point a Supabase Database Webhook (INSERT/UPDATE/DELETE on `design_index`) here, with
 // header `Authorization: Bearer <SUPABASE_WEBHOOK_SECRET>`.
 // Clears the Redis copies first, then the edge-cached pages built from them.
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  const { log } = locals;
+
   if (!webhookSecret || request.headers.get("authorization") !== `Bearer ${webhookSecret}`) {
+    logWarn("auth", "Someone sent a database-change message without a valid token.", {
+      tokenConfigured: Boolean(webhookSecret),
+    });
+
     return Response.json({ error: "Unauthorized." }, { status: 401 });
   }
 
@@ -97,11 +105,20 @@ export const POST: APIRoute = async ({ request }) => {
     return Response.json({ error: "Body must be JSON." }, { status: 400 });
   }
 
+  const changedToolId = payload.record?.primary_key ?? payload.old_record?.primary_key;
+
+  log.set({ change: { kind: payload.type, table: payload.table, toolId: changedToolId } });
+  note(
+    `The database reported a change (${payload.type ?? "unknown type"}) to ${payload.table ?? "an unknown table"}${changedToolId ? `, tool ${changedToolId}` : ""}.`,
+  );
+
   if (payload.table !== "design_index" || !payload.type) {
     return Response.json({ error: "Not a design_index change." }, { status: 400 });
   }
 
   const { keys, tags } = getStale(payload);
+
+  log.set({ change: { cacheEntries: keys.map(describeCacheKey), pageTags: tags } });
 
   if (!keys.length) {
     return Response.json({ deleted: 0, keys, tags });
@@ -111,7 +128,9 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     deleted = await deleteCached(keys);
-  } catch {
+  } catch (error) {
+    logError("Could not clear the changed entries from the data cache.", error);
+
     // Non-2xx lets Supabase surface the failed delivery.
     return Response.json({ error: "Failed to purge cache." }, { status: 502 });
   }
@@ -119,11 +138,12 @@ export const POST: APIRoute = async ({ request }) => {
   // After Redis: a page re-rendered before the delete would re-cache the old rows.
   const pagesPurged = await purgePageTags(tags);
 
-  console.log(
-    `[webhook] ${payload.type} design_index -> purged ${keys.join(", ")}; pages ${tags.join(", ")} (${pagesPurged ? "ok" : "failed"})`,
-  );
+  log.set({ change: { entriesCleared: deleted, pageCopiesCleared: pagesPurged } });
+  note(`Cleared ${deleted} cached entries.`);
 
   if (!pagesPurged) {
+    logError("The data cache was cleared, but the CDN's saved page copies could not be.", "CDN purge failed");
+
     return Response.json({ error: "Failed to purge cached pages.", deleted, keys, tags }, { status: 502 });
   }
 

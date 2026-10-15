@@ -1,21 +1,31 @@
 import type { APIRoute } from "astro";
+import { logError, note, timed } from "@/lib/logger";
 import { supabase } from "@/lib/supabase";
 
 export const prerender = false;
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ locals }) => {
+  const { log } = locals;
+
   try {
-    const { count, error } = await supabase
-      .from("design_index")
-      .select("*", { count: "exact", head: true });
+    const { count, error } = await timed("db", "the tool count", () =>
+      supabase
+        .from("design_index")
+        .select("*", { count: "exact", head: true }),
+    );
 
     if (error) {
-      console.error("Supabase tool count error:", error);
+      logError("Could not count the tools in the database.", new Error(error.message), {
+        toolCount: { databaseErrorCode: error.code },
+      });
       return Response.json(
         { error: "Failed to fetch tool count." },
         { status: 500 }
       );
     }
+
+    log.set({ toolCount: { count: count || 0 } });
+    note(`Counted ${count || 0} tools in the database.`);
 
     return Response.json(
       { count: count || 0 },
@@ -27,7 +37,7 @@ export const GET: APIRoute = async () => {
       }
     );
   } catch (err) {
-    console.error("Unhandled error in tool_count API route:", err);
+    logError("Counting the tools crashed unexpectedly.", err);
     return Response.json(
       { error: "An unexpected error occurred." },
       { status: 500 }

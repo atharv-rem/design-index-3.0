@@ -5,8 +5,8 @@ import { getSponsorCards } from "@/lib/sponsors";
 import { getToolsByCategory } from "@/lib/get-tool-by-category";
 import { PAGE_CACHE, TOOL_DATA_TAG, categoryTag } from "@/lib/page-cache";
 
-const tools = await getToolsByCategory("ui");
-const sponsors = await getSponsorCards();
+// Independent lookups, so they run together. A failure in either still fails the page, as before.
+const [tools, sponsors] = await Promise.all([getToolsByCategory("ui"), getSponsorCards()]);
 
 if (Astro.cache.enabled) {
 	Astro.cache.set({

@@ -1,5 +1,6 @@
 import { dangerouslyDeleteByTag } from "@vercel/functions";
 import { getCachedJson, setCachedJson } from "@/lib/cache";
+import { logError, logSet, note, timed } from "@/lib/logger";
 import { supabase } from "@/lib/supabase";
 
 export type Sponsor = {
@@ -48,16 +49,19 @@ const isLive = (sponsor: Sponsor, now = Date.now()) =>
 
 /** Reads all active sponsors from Supabase and overwrites the Redis copy. */
 export async function refreshSponsors(): Promise<Sponsor[] | null> {
-  const { data, error } = await supabase
-    .from("sponsors")
-    .select(
-      "id, name, description, og_image_link, website_url, priority, starts_at, ends_at, homepage_only, development",
-    )
-    .eq("active", true)
-    .order("priority", { ascending: false })
-    .order("id", { ascending: true });
+  const { data, error } = await timed("db", "the sponsor list", () =>
+    supabase
+      .from("sponsors")
+      .select(
+        "id, name, description, og_image_link, website_url, priority, starts_at, ends_at, homepage_only, development",
+      )
+      .eq("active", true)
+      .order("priority", { ascending: false })
+      .order("id", { ascending: true }),
+  );
 
   if (error) {
+    logError("Could not load the sponsor list from the database.", error);
     return null;
   }
 
@@ -80,9 +84,11 @@ export const SPONSORS_PAGE_TAG = "sponsors";
 export async function purgeSponsorPages(): Promise<boolean> {
   try {
     await dangerouslyDeleteByTag(SPONSORS_PAGE_TAG);
+    note("Cleared the CDN's saved copies of pages that show sponsors.");
+    logSet({ pageCopiesCleared: [SPONSORS_PAGE_TAG] });
     return true;
   } catch (error) {
-    console.error("[sponsors] Failed to purge cached pages:", error);
+    logError("Could not clear the CDN's saved copies of pages that show sponsors.", error);
     return false;
   }
 }
