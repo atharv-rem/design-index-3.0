@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/command";
 import { Drawer, DrawerPopup } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { searchTools } from "@/lib/search";
+import { isRelevant, searchTools } from "@/lib/search";
 import type { SponsorCard } from "@/lib/sponsors";
 import { withUtm } from "@/lib/utm";
 import type { ToolResult } from "@/zustand_store/useSearchStore";
@@ -122,7 +122,7 @@ function SearchPanel({ showHints = false }: { showHints?: boolean }) {
     const timer = setTimeout(async () => {
       try {
         const data = await searchTools(trimmed, controller.signal);
-        setResults(data);
+        setResults(data.results);
         setFailed(false);
         setLoading(false);
       } catch (err) {
@@ -145,8 +145,8 @@ function SearchPanel({ showHints = false }: { showHints?: boolean }) {
     }
 
     // Same relevance split as the home page results tabs.
-    const relevant = results.filter((item) => item.matchedKeywordsCount > 1);
-    const similar = results.filter((item) => item.matchedKeywordsCount === 1);
+    const relevant = results.filter(isRelevant);
+    const similar = results.filter((item) => !isRelevant(item));
 
     const found = [
       { value: "Relevant", items: relevant.slice(0, MAX_ITEMS_PER_GROUP).map(toItem) },

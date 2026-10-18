@@ -28,6 +28,9 @@ export const describeCacheKey = (key: string): string => {
   if (key.startsWith(CATEGORY_KEY_PREFIX)) return `the ${key.slice(CATEGORY_KEY_PREFIX.length)} category list`;
   if (key.startsWith("design-index:sponsors:")) return "the sponsor list";
   if (key === "design-index:databuddy:stats") return "the visitor stats";
+  // Same key as SEARCH_INDEX_CACHE_KEY in search-index.ts (the list of chunks, then each chunk).
+  if (key === "design-index:search:index") return "the search index";
+  if (key.startsWith("design-index:search:index:")) return `search index part ${key.split(":").pop()}`;
   return key;
 };
 
