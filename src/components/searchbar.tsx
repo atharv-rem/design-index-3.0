@@ -568,6 +568,10 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
                 <div className="grid grid-cols-2 gap-3 pb-10 sm:gap-6 lg:grid-cols-3">
                   {gridEntries.map((entry) => {
                     const isSponsor = entry.kind === "sponsor";
+                    // The tool's best page for its strongest matched word ("pricing -> /block/pricing1"):
+                    // the card opens it directly, tagged with our UTM params. Tools without one open
+                    // their page on Design Index.
+                    const deepLink = isSponsor ? null : entry.item.matchedPage;
                     const card = isSponsor
                       ? {
                           key: entry.key,
@@ -578,19 +582,24 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
                         }
                       : {
                           key: String(entry.item.id),
-                          href: `/${entry.item.id}/${encodeURIComponent(entry.item.tool_name)}`,
+                          href: deepLink
+                            ? withUtm(deepLink.url, { content: "search-results" })
+                            : `/${entry.item.id}/${encodeURIComponent(entry.item.tool_name)}`,
                           name: entry.item.tool_name,
                           description: entry.item.description,
                           og_image_link: entry.item.og_image_link,
                         };
-                    // The tool's best page for its strongest matched word ("pricing -> /block/pricing1").
-                    const deepLink = isSponsor ? null : entry.item.matchedPage;
 
-                    // The card is a div with its title link stretched over it (::after), so the deep link
-                    // can sit on top: a link inside a link is not valid HTML.
                     return (
-                    <div
+                    <a
                       key={card.key}
+                      href={card.href}
+                      {...(isSponsor
+                        ? { target: "_blank", rel: "sponsored noopener noreferrer" }
+                        : deepLink
+                          ? { target: "_blank", rel: "noopener noreferrer", title: deepLink.url }
+                          : { "data-cuelume-navigate": true })}
+                      data-cuelume-emphasis="subtle"
                       className="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-[#141416] shadow-[0_1px_2px_rgb(0_0_0/0.04)] ring-1 ring-black/5 transition duration-200 hover:-translate-y-1 hover:shadow-[0_8px_24px_-12px_rgb(0_0_0/0.1)] dark:shadow-[0_4px_14px_rgb(0_0_0/0.8),0_14px_36px_-8px_rgb(0_0_0/0.9),inset_0_1px_0_rgb(255_255_255/0.06)] dark:ring-white/10 dark:hover:shadow-[0_6px_18px_rgb(0_0_0/0.85),0_22px_48px_-8px_rgb(0_0_0/1),inset_0_1px_0_rgb(255_255_255/0.08)]"
                     >
                       {isSponsor && (
@@ -612,33 +621,17 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
                         />
                       </div>
                       <div className="flex flex-1 flex-col gap-1.5 p-3 sm:p-4">
-                        <h3 className="font-google text-[15px] font-semibold leading-snug theme-text-primary sm:text-[17px]">
-                          <a
-                            href={card.href}
-                            {...(isSponsor
-                              ? { target: "_blank", rel: "sponsored noopener noreferrer" }
-                              : { "data-cuelume-navigate": true })}
-                            data-cuelume-emphasis="subtle"
-                            className="outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-app-text"
-                          >
-                            {card.name}
-                          </a>
-                        </h3>
+                        <h3 className="font-google text-[15px] font-semibold leading-snug theme-text-primary sm:text-[17px]">{card.name}</h3>
                         <p className="line-clamp-2 font-google text-[13px] font-medium leading-5 theme-text-soft sm:text-sm">{card.description}</p>
                         {deepLink && (
-                          <a
-                            href={withUtm(deepLink.url, { content: "search-results" })}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title={deepLink.url}
-                            className="relative z-10 mt-0.5 flex min-w-0 items-center gap-1 self-start rounded-md font-google text-[12px] font-medium theme-text-muted transition-colors hover:theme-text-primary hover:underline sm:text-[13px]"
-                          >
+                          // where the card goes
+                          <span className="mt-0.5 flex min-w-0 items-center gap-1 font-google text-[12px] font-medium theme-text-muted transition-colors group-hover:theme-text-primary sm:text-[13px]">
                             <span className="shrink-0">{deepLink.word} →</span>
-                            <span className="truncate">{displayUrl(deepLink.url)}</span>
-                          </a>
+                            <span className="truncate group-hover:underline">{displayUrl(deepLink.url)}</span>
+                          </span>
                         )}
                       </div>
-                    </div>
+                    </a>
                     );
                   })}
                 </div>
