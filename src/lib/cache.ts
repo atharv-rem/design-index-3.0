@@ -120,3 +120,26 @@ export const deleteCached = async (keys: string[], prefixes: string[] = []): Pro
     throw error;
   }
 };
+
+// Adds 1 to a counter that expires `ttlSeconds` after it was first set. Returns the new count,
+// or null when Redis is missing or failed (callers should then let the request through).
+export const incrementCounter = async (key: string, ttlSeconds: number): Promise<number | null> => {
+  if (!redisClient) {
+    return null;
+  }
+
+  try {
+    return await timed("cache", "the form rate limit", async () => {
+      const count = await redisClient.incr(key);
+      if (count === 1) {
+        await redisClient.expire(key, ttlSeconds);
+      }
+      return count;
+    });
+  } catch (error) {
+    logWarn("cache", "Could not check the form rate limit, so the submission was let through.", {
+      problem: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+};

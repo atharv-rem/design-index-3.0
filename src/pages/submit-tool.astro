@@ -2,6 +2,7 @@
 import HomescreenLayout from "../layouts/homescreen.astro";
 import { PAGE_CACHE } from "@/lib/page-cache";
 import { actions } from "astro:actions";
+import FormCaptcha from "@/components/form-captcha.astro";
 
 export const prerender = false;
 
@@ -127,6 +128,7 @@ const fieldClass =
 						</div>
 					)}
 
+					<FormCaptcha />
 					<button
 						type="submit"
 						data-cuelume-tap

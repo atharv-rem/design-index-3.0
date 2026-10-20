@@ -1,0 +1,12 @@
+---
+// Cloudflare Turnstile widget. It adds a hidden "cf-turnstile-response" field to the
+// form, which checkSpam() in src/lib/spam-guard.ts verifies on the server.
+const siteKey = import.meta.env.TURNSTILE_SITE_KEY;
+---
+
+{siteKey && (
+	<>
+		<div class="cf-turnstile mt-5" data-sitekey={siteKey} data-theme="auto"></div>
+		<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+	</>
+)}
