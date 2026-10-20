@@ -1,0 +1,877 @@
+{
+  "source": "design-index-3.0 src/lib/search.ts extractKeywords, unmodified",
+  "app_commit": "ed67cbffc55ce535497d27688e9ac6343cc1dff1",
+  "wink_nlp": "2.4.0",
+  "wink_eng_lite_web_model": "1.8.1",
+  "generated": "2026-10-09",
+  "pairs": [
+    {
+      "input": "checkboxes",
+      "output": [
+        "checkboxe"
+      ]
+    },
+    {
+      "input": "entries",
+      "output": [
+        "entry"
+      ]
+    },
+    {
+      "input": "glass",
+      "output": [
+        "glas"
+      ]
+    },
+    {
+      "input": "status",
+      "output": [
+        "statu"
+      ]
+    },
+    {
+      "input": "statuses",
+      "output": [
+        "statu"
+      ]
+    },
+    {
+      "input": "glasses",
+      "output": [
+        "glas"
+      ]
+    },
+    {
+      "input": "mockups",
+      "output": [
+        "mockup"
+      ]
+    },
+    {
+      "input": "iphone mockup",
+      "output": [
+        "iphone",
+        "mockup"
+      ]
+    },
+    {
+      "input": "free icon set",
+      "output": [
+        "free",
+        "icon",
+        "set"
+      ]
+    },
+    {
+      "input": "dark mode toggle",
+      "output": [
+        "dark",
+        "mode",
+        "toggle"
+      ]
+    },
+    {
+      "input": "3d illustrations",
+      "output": [
+        "illustration",
+        "3d"
+      ]
+    },
+    {
+      "input": "best website tools",
+      "output": []
+    },
+    {
+      "input": "I want a tool to make gradients",
+      "output": [
+        "gradient",
+        "to"
+      ]
+    },
+    {
+      "input": "logo design inspiration",
+      "output": [
+        "logo",
+        "design",
+        "inspiration"
+      ]
+    },
+    {
+      "input": "animated react components",
+      "output": [
+        "component"
+      ]
+    },
+    {
+      "input": "ui kit for figma",
+      "output": [
+        "ui",
+        "kit",
+        "figma",
+        "for"
+      ]
+    },
+    {
+      "input": "hand-drawn illustrations",
+      "output": [
+        "hand",
+        "illustration"
+      ]
+    },
+    {
+      "input": "glassmorphism cards",
+      "output": [
+        "glassmorphism",
+        "card"
+      ]
+    },
+    {
+      "input": "pricing tables",
+      "output": [
+        "pricing",
+        "table"
+      ]
+    },
+    {
+      "input": "font pairing",
+      "output": [
+        "font",
+        "pairing"
+      ]
+    },
+    {
+      "input": "colour palette generator",
+      "output": [
+        "color",
+        "palette",
+        "generator"
+      ]
+    },
+    {
+      "input": "color palettes",
+      "output": [
+        "color",
+        "palette"
+      ]
+    },
+    {
+      "input": "svg icons",
+      "output": [
+        "svg",
+        "icon"
+      ]
+    },
+    {
+      "input": "lottie animations",
+      "output": [
+        "lottie",
+        "animation"
+      ]
+    },
+    {
+      "input": "isometric illustrations",
+      "output": [
+        "isometric",
+        "illustration"
+      ]
+    },
+    {
+      "input": "macbook mockup",
+      "output": [
+        "macbook",
+        "mockup"
+      ]
+    },
+    {
+      "input": "t-shirt mockup",
+      "output": [
+        "shirt",
+        "mockup"
+      ]
+    },
+    {
+      "input": "business cards",
+      "output": [
+        "busines",
+        "card"
+      ]
+    },
+    {
+      "input": "landing pages",
+      "output": [
+        "landing",
+        "page"
+      ]
+    },
+    {
+      "input": "empty states",
+      "output": [
+        "empty",
+        "state"
+      ]
+    },
+    {
+      "input": "loading spinners",
+      "output": [
+        "loading",
+        "spinner"
+      ]
+    },
+    {
+      "input": "datepicker",
+      "output": [
+        "datepicker"
+      ]
+    },
+    {
+      "input": "navigation bars",
+      "output": [
+        "navigation",
+        "bar"
+      ]
+    },
+    {
+      "input": "progress bars",
+      "output": [
+        "progres",
+        "bar"
+      ]
+    },
+    {
+      "input": "boxes",
+      "output": [
+        "box"
+      ]
+    },
+    {
+      "input": "classes",
+      "output": [
+        "clas"
+      ]
+    },
+    {
+      "input": "buses",
+      "output": [
+        "bus"
+      ]
+    },
+    {
+      "input": "analysis",
+      "output": [
+        "analysi"
+      ]
+    },
+    {
+      "input": "series",
+      "output": [
+        "serie"
+      ]
+    },
+    {
+      "input": "species",
+      "output": [
+        "specie"
+      ]
+    },
+    {
+      "input": "news",
+      "output": [
+        "new"
+      ]
+    },
+    {
+      "input": "canvas",
+      "output": [
+        "canva"
+      ]
+    },
+    {
+      "input": "christmas",
+      "output": [
+        "christma"
+      ]
+    },
+    {
+      "input": "gas",
+      "output": [
+        "gas"
+      ]
+    },
+    {
+      "input": "lens",
+      "output": [
+        "len"
+      ]
+    },
+    {
+      "input": "bus",
+      "output": [
+        "bus"
+      ]
+    },
+    {
+      "input": "class",
+      "output": [
+        "clas"
+      ]
+    },
+    {
+      "input": "address",
+      "output": []
+    },
+    {
+      "input": "process",
+      "output": [
+        "proces"
+      ]
+    },
+    {
+      "input": "access",
+      "output": [
+        "acces"
+      ]
+    },
+    {
+      "input": "success",
+      "output": [
+        "succes"
+      ]
+    },
+    {
+      "input": "business",
+      "output": [
+        "busines"
+      ]
+    },
+    {
+      "input": "dresses",
+      "output": [
+        "dres"
+      ]
+    },
+    {
+      "input": "fonts",
+      "output": [
+        "font"
+      ]
+    },
+    {
+      "input": "serif fonts",
+      "output": [
+        "serif",
+        "font"
+      ]
+    },
+    {
+      "input": "handwritten fonts",
+      "output": [
+        "handwritten",
+        "font"
+      ]
+    },
+    {
+      "input": "ai image generator",
+      "output": [
+        "image",
+        "generator",
+        "ai"
+      ]
+    },
+    {
+      "input": "60fps animations",
+      "output": [
+        "fps",
+        "animation",
+        "60fp"
+      ]
+    },
+    {
+      "input": "web3 templates",
+      "output": [
+        "web3",
+        "template"
+      ]
+    },
+    {
+      "input": "8bit pixel art",
+      "output": [
+        "bit",
+        "pixel",
+        "art",
+        "8bit"
+      ]
+    },
+    {
+      "input": "y2k aesthetic",
+      "output": [
+        "y2k",
+        "esthetic"
+      ]
+    },
+    {
+      "input": "ui ux",
+      "output": [
+        "ui",
+        "ux"
+      ]
+    },
+    {
+      "input": "saas dashboards",
+      "output": [
+        "saa",
+        "dashboard"
+      ]
+    },
+    {
+      "input": "ios app screens",
+      "output": [
+        "ios",
+        "application",
+        "screen",
+        "app"
+      ]
+    },
+    {
+      "input": "android widgets",
+      "output": [
+        "android",
+        "widget"
+      ]
+    },
+    {
+      "input": "emoji",
+      "output": [
+        "emoji"
+      ]
+    },
+    {
+      "input": "stickers",
+      "output": [
+        "sticker"
+      ]
+    },
+    {
+      "input": "avatars for profile pictures",
+      "output": [
+        "avatar",
+        "profile",
+        "picture",
+        "for"
+      ]
+    },
+    {
+      "input": "shadcn blocks",
+      "output": [
+        "shadcn",
+        "block"
+      ]
+    },
+    {
+      "input": "tailwind components",
+      "output": [
+        "tailwind",
+        "component"
+      ]
+    },
+    {
+      "input": "people illustrations",
+      "output": [
+        "people",
+        "illustration"
+      ]
+    },
+    {
+      "input": "doctors and nurses icons",
+      "output": [
+        "doctor",
+        "nurse",
+        "icon",
+        "and"
+      ]
+    },
+    {
+      "input": "medical icons",
+      "output": [
+        "medical",
+        "icon"
+      ]
+    },
+    {
+      "input": "women",
+      "output": [
+        "woman"
+      ]
+    },
+    {
+      "input": "children",
+      "output": [
+        "child"
+      ]
+    },
+    {
+      "input": "mice",
+      "output": [
+        "mouse"
+      ]
+    },
+    {
+      "input": "teeth",
+      "output": [
+        "tooth"
+      ]
+    },
+    {
+      "input": "feet",
+      "output": [
+        "foot"
+      ]
+    },
+    {
+      "input": "leaves",
+      "output": []
+    },
+    {
+      "input": "knives",
+      "output": [
+        "knife"
+      ]
+    },
+    {
+      "input": "wolves",
+      "output": [
+        "wolf"
+      ]
+    },
+    {
+      "input": "heroes",
+      "output": [
+        "hero"
+      ]
+    },
+    {
+      "input": "photos",
+      "output": [
+        "photo"
+      ]
+    },
+    {
+      "input": "videos",
+      "output": [
+        "video"
+      ]
+    },
+    {
+      "input": "studios",
+      "output": [
+        "studio"
+      ]
+    },
+    {
+      "input": "radios",
+      "output": [
+        "radio"
+      ]
+    },
+    {
+      "input": "potatoes",
+      "output": [
+        "potato"
+      ]
+    },
+    {
+      "input": "categories",
+      "output": [
+        "category"
+      ]
+    },
+    {
+      "input": "companies",
+      "output": [
+        "company"
+      ]
+    },
+    {
+      "input": "galleries",
+      "output": [
+        "gallery"
+      ]
+    },
+    {
+      "input": "stories",
+      "output": [
+        "story"
+      ]
+    },
+    {
+      "input": "toys",
+      "output": [
+        "toy"
+      ]
+    },
+    {
+      "input": "keys",
+      "output": [
+        "key"
+      ]
+    },
+    {
+      "input": "days",
+      "output": [
+        "day"
+      ]
+    },
+    {
+      "input": "running shoes",
+      "output": [
+        "shoe"
+      ]
+    },
+    {
+      "input": "walking animation",
+      "output": [
+        "animation"
+      ]
+    },
+    {
+      "input": "swimming pool",
+      "output": [
+        "swimming",
+        "pool"
+      ]
+    },
+    {
+      "input": "drawing tablet",
+      "output": [
+        "tablet"
+      ]
+    },
+    {
+      "input": "typing animation",
+      "output": [
+        "typing",
+        "animation"
+      ]
+    },
+    {
+      "input": "holding phone mockup",
+      "output": [
+        "phone",
+        "mockup"
+      ]
+    },
+    {
+      "input": "woman holding phone",
+      "output": [
+        "woman",
+        "phone"
+      ]
+    },
+    {
+      "input": "gaming setup",
+      "output": [
+        "gaming",
+        "setup"
+      ]
+    },
+    {
+      "input": "coffee cup mockup",
+      "output": [
+        "coffee",
+        "cup",
+        "mockup"
+      ]
+    },
+    {
+      "input": "bottle packaging",
+      "output": [
+        "bottle",
+        "packaging"
+      ]
+    },
+    {
+      "input": "wine labels",
+      "output": [
+        "wine",
+        "label"
+      ]
+    },
+    {
+      "input": "beer cans",
+      "output": [
+        "beer",
+        "can"
+      ]
+    },
+    {
+      "input": "cosmetic jars",
+      "output": [
+        "cosmetic",
+        "jar"
+      ]
+    },
+    {
+      "input": "glass bottle",
+      "output": [
+        "glas",
+        "bottle"
+      ]
+    },
+    {
+      "input": "frosted glass effect",
+      "output": [
+        "frosted",
+        "glas",
+        "effect"
+      ]
+    },
+    {
+      "input": "status badges",
+      "output": [
+        "statu",
+        "badge"
+      ]
+    },
+    {
+      "input": "bonuses",
+      "output": [
+        "bonu"
+      ]
+    },
+    {
+      "input": "campuses",
+      "output": [
+        "campu"
+      ]
+    },
+    {
+      "input": "viruses",
+      "output": [
+        "viru"
+      ]
+    },
+    {
+      "input": "axes",
+      "output": [
+        "ax"
+      ]
+    },
+    {
+      "input": "matrices",
+      "output": [
+        "matrix"
+      ]
+    },
+    {
+      "input": "indices",
+      "output": [
+        "index"
+      ]
+    },
+    {
+      "input": "data",
+      "output": [
+        "datum"
+      ]
+    },
+    {
+      "input": "criteria",
+      "output": [
+        "criterion"
+      ]
+    },
+    {
+      "input": "Notion style avatars",
+      "output": [
+        "notion",
+        "style",
+        "avatar"
+      ]
+    },
+    {
+      "input": "Figma plugins",
+      "output": [
+        "figma",
+        "plugin"
+      ]
+    },
+    {
+      "input": "need a website to find free fonts",
+      "output": [
+        "free",
+        "font",
+        "to"
+      ]
+    },
+    {
+      "input": "where can I get vintage textures",
+      "output": [
+        "vintage",
+        "texture",
+        "can",
+        "get"
+      ]
+    },
+    {
+      "input": "retro 80s posters",
+      "output": [
+        "retro",
+        "80s",
+        "poster"
+      ]
+    },
+    {
+      "input": "minimal dashboard ui",
+      "output": [
+        "minimal",
+        "dashboard",
+        "ui"
+      ]
+    },
+    {
+      "input": "e-commerce templates",
+      "output": [
+        "e-commerce",
+        "template"
+      ]
+    },
+    {
+      "input": "email newsletter templates",
+      "output": [
+        "email",
+        "newsletter",
+        "template"
+      ]
+    },
+    {
+      "input": "wedding invitation mockup",
+      "output": [
+        "wedding",
+        "invitation",
+        "mockup"
+      ]
+    },
+    {
+      "input": "halloween colors",
+      "output": [
+        "halloween",
+        "color"
+      ]
+    },
+    {
+      "input": "pastel colour palettes",
+      "output": [
+        "pastel",
+        "color",
+        "palette"
+      ]
+    },
+    {
+      "input": "neon glow effects",
+      "output": [
+        "neon",
+        "glow",
+        "effect"
+      ]
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import { play } from "cuelume";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, Hammer, MousePointerClick, SearchX, Users, X } from "lucide-react";
 import { getOptimizedImageUrl } from "@/lib/images";
+import { isRelevant, searchTools } from "@/lib/search";
 import { withUtm } from "@/lib/utm";
 import ToolImage from "@/components/tool-image";
 import { Kbd } from "@/components/ui/kbd";
@@ -32,12 +33,11 @@ const LOCAL_SPONSOR_LOGOS: Record<string, string> = {
 // Logos that already contain the sponsor's name: shown alone, without the text label.
 const WORDMARK_SPONSORS = new Set(["shadcn labs", "shadcn/labs"]);
 
+// "https://www.shadcnblocks.com/block/pricing1/" -> "shadcnblocks.com/block/pricing1"
+const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/+$/, "");
+
 // One sponsored card after every N results.
 const SPONSOR_INTERVAL = 8;
-
-// The search module bundles the Wink NLP model (~1 MB gzipped), so it is fetched
-// when the search box is focused instead of on page load. Repeat calls reuse the module.
-const loadSearch = () => import("@/lib/search");
 
 export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: SponsorCard[] }) {
   const {
@@ -45,6 +45,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
     activeQuery,
     loading,
     results,
+    notes,
     error,
     activeTab,
     stats,
@@ -53,6 +54,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
     setActiveQuery,
     setLoading,
     setResults,
+    setNotes,
     setError,
     setActiveTab,
     setStats,
@@ -126,8 +128,8 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
     return () => clearTimeout(timer);
   }, [inputValue, activeQuery]);
 
-  const relevantResults = results.filter((item) => item.matchedKeywordsCount > 1);
-  const similarResults = results.filter((item) => item.matchedKeywordsCount === 1);
+  const relevantResults = results.filter(isRelevant);
+  const similarResults = results.filter((item) => !isRelevant(item));
   const displayedResults = activeTab === "relevant" ? relevantResults : similarResults;
   const otherResults = activeTab === "relevant" ? similarResults : relevantResults;
 
@@ -161,7 +163,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
 
   useEffect(() => {
     if (results.length > 0) {
-      const hasRelevant = results.some((item) => item.matchedKeywordsCount > 1);
+      const hasRelevant = results.some(isRelevant);
       setActiveTab(hasRelevant ? "relevant" : "similar");
     }
   }, [results]);
@@ -216,11 +218,11 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
     setActiveQuery(trimmed);
 
     try {
-      const { searchTools } = await loadSearch();
       const data = await searchTools(trimmed);
 
-      setResults(data);
-      play(data.length > 0 ? "ready" : "warning", { emphasis: "subtle" });
+      setResults(data.results);
+      setNotes(data.notes);
+      play(data.results.length > 0 ? "ready" : "warning", { emphasis: "subtle" });
     } catch (err) {
       console.error("Search fetch error:", err);
 
@@ -270,7 +272,6 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
           data-cuelume-type
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          onFocus={() => void loadSearch()}
           onKeyDown={handleKeyDown}
           className="font-google text-[13px] leading-tight theme-text-primary font-medium bg-transparent w-full resize-none overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 outline-hidden focus-visible:outline-hidden tracking-[0.001rem] z-10"
         />
@@ -557,10 +558,20 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
                 </button>
               </div>
 
+              {notes.length > 0 && (
+                <p role="status" className="-mt-3 mb-5 font-google text-[13px] font-medium theme-text-soft">
+                  {notes.join(" ")}
+                </p>
+              )}
+
               {displayedResults.length > 0 ? (
                 <div className="grid grid-cols-2 gap-3 pb-10 sm:gap-6 lg:grid-cols-3">
                   {gridEntries.map((entry) => {
                     const isSponsor = entry.kind === "sponsor";
+                    // The tool's best page for its strongest matched word ("pricing -> /block/pricing1"):
+                    // the card opens it directly, tagged with our UTM params. Tools without one open
+                    // their page on Design Index.
+                    const deepLink = isSponsor ? null : entry.item.matchedPage;
                     const card = isSponsor
                       ? {
                           key: entry.key,
@@ -571,7 +582,9 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
                         }
                       : {
                           key: String(entry.item.id),
-                          href: `/${entry.item.id}/${encodeURIComponent(entry.item.tool_name)}`,
+                          href: deepLink
+                            ? withUtm(deepLink.url, { content: "search-results" })
+                            : `/${entry.item.id}/${encodeURIComponent(entry.item.tool_name)}`,
                           name: entry.item.tool_name,
                           description: entry.item.description,
                           og_image_link: entry.item.og_image_link,
@@ -583,7 +596,9 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
                       href={card.href}
                       {...(isSponsor
                         ? { target: "_blank", rel: "sponsored noopener noreferrer" }
-                        : { "data-cuelume-navigate": true })}
+                        : deepLink
+                          ? { target: "_blank", rel: "noopener noreferrer", title: deepLink.url }
+                          : { "data-cuelume-navigate": true })}
                       data-cuelume-emphasis="subtle"
                       className="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-[#141416] shadow-[0_1px_2px_rgb(0_0_0/0.04)] ring-1 ring-black/5 transition duration-200 hover:-translate-y-1 hover:shadow-[0_8px_24px_-12px_rgb(0_0_0/0.1)] dark:shadow-[0_4px_14px_rgb(0_0_0/0.8),0_14px_36px_-8px_rgb(0_0_0/0.9),inset_0_1px_0_rgb(255_255_255/0.06)] dark:ring-white/10 dark:hover:shadow-[0_6px_18px_rgb(0_0_0/0.85),0_22px_48px_-8px_rgb(0_0_0/1),inset_0_1px_0_rgb(255_255_255/0.08)]"
                     >
@@ -608,6 +623,13 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
                       <div className="flex flex-1 flex-col gap-1.5 p-3 sm:p-4">
                         <h3 className="font-google text-[15px] font-semibold leading-snug theme-text-primary sm:text-[17px]">{card.name}</h3>
                         <p className="line-clamp-2 font-google text-[13px] font-medium leading-5 theme-text-soft sm:text-sm">{card.description}</p>
+                        {deepLink && (
+                          // where the card goes
+                          <span className="mt-0.5 flex min-w-0 items-center gap-1 font-google text-[12px] font-medium theme-text-muted transition-colors group-hover:theme-text-primary sm:text-[13px]">
+                            <span className="shrink-0">{deepLink.word} →</span>
+                            <span className="truncate group-hover:underline">{displayUrl(deepLink.url)}</span>
+                          </span>
+                        )}
                       </div>
                     </a>
                     );
@@ -658,7 +680,7 @@ export default function SearchBar({ sponsors: allSponsors = [] }: { sponsors?: S
               </span>
 
               <span className="mt-2 text-sm theme-text-soft md:text-base font-(family-name:--font-inter-stack) font-medium">
-                Try searching for other terms or categories
+                {notes.length > 0 ? notes.join(" ") : "Try searching for other terms or categories"}
               </span>
               {error && (
                 <div className="text-red-400 font-(family-name:--font-inter-stack) text-[15px] font-medium mb-[10px] items-center justify-center">

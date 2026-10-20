@@ -9,6 +9,7 @@ import {
 import { logError, logWarn, note } from "@/lib/logger";
 import { RECENT_TOOLS_TAG, categoryTag, purgePageTags, toolTag } from "@/lib/page-cache";
 import { RECENT_TOOLS_CACHE_KEY } from "@/lib/recent-tools";
+import { SEARCH_INDEX_CACHE_KEY } from "@/lib/search-index";
 
 export const prerender = false;
 
@@ -52,7 +53,8 @@ const cardChanged = (before: ToolRow, after: ToolRow) =>
 
 /** Works out the minimal Redis keys and page tags a row change makes stale. */
 const getStale = ({ type, record, old_record }: WebhookPayload) => {
-  const keys = new Set<string>();
+  // Any change can touch a tool's name, website, category or keywords, which the search reads.
+  const keys = new Set<string>([SEARCH_INDEX_CACHE_KEY]);
   const tags = new Set<string>();
 
   for (const row of [record, old_record]) {
