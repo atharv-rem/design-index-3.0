@@ -2,6 +2,7 @@ import { defineAction } from 'astro:actions';
 import { z } from 'astro/zod';
 import type { RequestLogger } from 'evlog';
 import { note } from '@/lib/logger';
+import { checkSpam, escapeHtml, httpUrl, spamFields } from '@/lib/spam-guard';
 
 // Records the failure on the request's wide event before throwing (Astro turns the throw
 // into an INTERNAL_SERVER_ERROR result, so the middleware never sees the cause).
@@ -17,12 +18,14 @@ export const server = {
   submitFeedback: defineAction({
     accept: 'form',
     input: z.object({
+      ...spamFields,
       name: z.string().min(1, "Name is required").transform(s => s.trim()),
       email: z.string().email("Invalid email address").transform(s => s.trim()),
       feedback: z.string().min(1, "Feedback is required").transform(s => s.trim()),
     }),
     handler: async (input, context) => {
       const log = context.locals.log;
+      await checkSpam(input, context);
       const { name, email, feedback } = input;
 
       // Never log the submitter's email or message body.
@@ -65,15 +68,15 @@ export const server = {
               <table style="width: 100%; border-collapse: collapse; margin-top: 24px;">
                 <tr style="border-bottom: 1px solid #f3f4f6;">
                   <td style="padding: 12px 0; font-weight: 600; width: 140px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Name</td>
-                  <td style="padding: 12px 0; color: #111827; font-size: 15px; font-weight: 500;">${name}</td>
+                  <td style="padding: 12px 0; color: #111827; font-size: 15px; font-weight: 500;">${escapeHtml(name)}</td>
                 </tr>
                 <tr style="border-bottom: 1px solid #f3f4f6;">
                   <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Email</td>
-                  <td style="padding: 12px 0; font-size: 15px;"><a href="mailto:${email}" style="color: #2563eb; text-decoration: underline;">${email}</a></td>
+                  <td style="padding: 12px 0; font-size: 15px;"><a href="mailto:${escapeHtml(email)}" style="color: #2563eb; text-decoration: underline;">${escapeHtml(email)}</a></td>
                 </tr>
                 <tr>
                   <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: top;">Feedback</td>
-                  <td style="padding: 12px 0; color: #374151; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${feedback}</td>
+                  <td style="padding: 12px 0; color: #374151; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(feedback)}</td>
                 </tr>
               </table>
             </div>
@@ -97,14 +100,16 @@ export const server = {
   submitTool: defineAction({
     accept: 'form',
     input: z.object({
+      ...spamFields,
       toolName: z.string().min(1, "Tool name is required").transform(s => s.trim()),
-      toolUrl: z.string().url("Invalid tool URL").transform(s => s.trim()),
+      toolUrl: httpUrl("Invalid tool URL"),
       category: z.string().min(1, "Category is required").transform(s => s.trim()),
       email: z.string().email("Invalid email address").transform(s => s.trim()),
       reason: z.string().min(1, "Submission reason is required").transform(s => s.trim()),
     }),
     handler: async (input, context) => {
       const log = context.locals.log;
+      await checkSpam(input, context);
       const { toolName, toolUrl, category, email, reason } = input;
 
       note(`Someone suggested a tool: ${toolName}.`);
@@ -146,23 +151,23 @@ export const server = {
               <table style="width: 100%; border-collapse: collapse; margin-top: 24px;">
                 <tr style="border-bottom: 1px solid #f3f4f6;">
                   <td style="padding: 12px 0; font-weight: 600; width: 140px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Tool Name</td>
-                  <td style="padding: 12px 0; color: #111827; font-size: 15px; font-weight: 500;">${toolName}</td>
+                  <td style="padding: 12px 0; color: #111827; font-size: 15px; font-weight: 500;">${escapeHtml(toolName)}</td>
                 </tr>
                 <tr style="border-bottom: 1px solid #f3f4f6;">
                   <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Tool URL</td>
-                  <td style="padding: 12px 0; font-size: 15px;"><a href="${toolUrl}" style="color: #2563eb; text-decoration: underline; font-weight: 500;">${toolUrl}</a></td>
+                  <td style="padding: 12px 0; font-size: 15px;"><a href="${escapeHtml(toolUrl)}" style="color: #2563eb; text-decoration: underline; font-weight: 500;">${escapeHtml(toolUrl)}</a></td>
                 </tr>
                 <tr style="border-bottom: 1px solid #f3f4f6;">
                   <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Category</td>
-                  <td style="padding: 12px 0; color: #111827; font-size: 15px; text-transform: capitalize;">${category}</td>
+                  <td style="padding: 12px 0; color: #111827; font-size: 15px; text-transform: capitalize;">${escapeHtml(category)}</td>
                 </tr>
                 <tr style="border-bottom: 1px solid #f3f4f6;">
                   <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Submitter</td>
-                  <td style="padding: 12px 0; font-size: 15px;"><a href="mailto:${email}" style="color: #2563eb; text-decoration: underline;">${email}</a></td>
+                  <td style="padding: 12px 0; font-size: 15px;"><a href="mailto:${escapeHtml(email)}" style="color: #2563eb; text-decoration: underline;">${escapeHtml(email)}</a></td>
                 </tr>
                 <tr>
                   <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: top;">Why this tool?</td>
-                  <td style="padding: 12px 0; color: #374151; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${reason}</td>
+                  <td style="padding: 12px 0; color: #374151; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(reason)}</td>
                 </tr>
               </table>
             </div>
@@ -186,13 +191,15 @@ export const server = {
   submitSponsor: defineAction({
     accept: 'form',
     input: z.object({
+      ...spamFields,
       companyName: z.string().min(1, "Company name is required").transform(s => s.trim()),
-      websiteUrl: z.string().url("Invalid website URL").transform(s => s.trim()),
+      websiteUrl: httpUrl("Invalid website URL"),
       email: z.string().email("Invalid email address").transform(s => s.trim()),
       message: z.string().min(1, "Message is required").transform(s => s.trim()),
     }),
     handler: async (input, context) => {
       const log = context.locals.log;
+      await checkSpam(input, context);
       const { companyName, websiteUrl, email, message } = input;
 
       note(`${companyName} sent a sponsor enquiry.`);
@@ -234,19 +241,19 @@ export const server = {
               <table style="width: 100%; border-collapse: collapse; margin-top: 24px;">
                 <tr style="border-bottom: 1px solid #f3f4f6;">
                   <td style="padding: 12px 0; font-weight: 600; width: 140px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Company</td>
-                  <td style="padding: 12px 0; color: #111827; font-size: 15px;">${companyName}</td>
+                  <td style="padding: 12px 0; color: #111827; font-size: 15px;">${escapeHtml(companyName)}</td>
                 </tr>
                 <tr style="border-bottom: 1px solid #f3f4f6;">
                   <td style="padding: 12px 0; font-weight: 600; width: 140px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Website</td>
-                  <td style="padding: 12px 0; color: #111827; font-size: 15px;"><a href="${websiteUrl}" style="color: #2563eb; text-decoration: underline;">${websiteUrl}</a></td>
+                  <td style="padding: 12px 0; color: #111827; font-size: 15px;"><a href="${escapeHtml(websiteUrl)}" style="color: #2563eb; text-decoration: underline;">${escapeHtml(websiteUrl)}</a></td>
                 </tr>
                 <tr style="border-bottom: 1px solid #f3f4f6;">
                   <td style="padding: 12px 0; font-weight: 600; width: 140px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Contact</td>
-                  <td style="padding: 12px 0; color: #111827; font-size: 15px;"><a href="mailto:${email}" style="color: #2563eb; text-decoration: underline;">${email}</a></td>
+                  <td style="padding: 12px 0; color: #111827; font-size: 15px;"><a href="mailto:${escapeHtml(email)}" style="color: #2563eb; text-decoration: underline;">${escapeHtml(email)}</a></td>
                 </tr>
                 <tr>
                   <td style="padding: 12px 0; font-weight: 600; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: top;">Message</td>
-                  <td style="padding: 12px 0; color: #374151; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${message}</td>
+                  <td style="padding: 12px 0; color: #374151; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(message)}</td>
                 </tr>
               </table>
             </div>
